@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Automatismes · feuilles imprimables</title>
+<meta name="description" content="Générateur de feuilles d’automatismes A4 avec corrigé, par chapitre, pour la voie professionnelle. Aucune donnée collectée.">
+<meta name="theme-color" content="#5B4CF0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Automatismes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style id="css-fonts">
+/*{{FONTS}}*/
+</style>
+<style id="css-sheet">
+/*{{SHEETCSS}}*/
+</style>
+<style id="css-app">
+/*{{APPCSS}}*/
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#compose" data-go="compose" aria-label="Automatismes, accueil">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#fff" fill-opacity=".22"/><rect x="14" y="8" width="36" height="48" rx="6" fill="#fff"/><rect x="20" y="16" width="16" height="4" rx="2" fill="#5B4CF0"/><rect x="20" y="25" width="24" height="3.5" rx="1.7" fill="#FFB020"/><rect x="20" y="33" width="24" height="3.5" rx="1.7" fill="#12B886"/><rect x="20" y="41" width="14" height="3.5" rx="1.7" fill="#E64980"/><path d="M47 30 40 44h5l-2 10 9-15h-5z" fill="#FF5A5F" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span><b>Automatismes</b><small>Feuilles imprimables avec corrigé</small></span>
+    </a>
+    <nav class="tabs" aria-label="Navigation">
+      <button type="button" data-go="compose">Composer</button>
+      <button type="button" data-go="sheet">Ma feuille</button>
+      <button type="button" data-go="about">À propos</button>
+      <button type="button" data-go="privacy">Confidentialité</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="install" class="install" role="region" aria-label="Installation">
+    <div class="row"><span id="installTxt" style="flex:1 1 16rem"></span>
+      <button type="button" class="btn sm ok" id="installBtn" hidden>Installer</button>
+      <button type="button" class="btn sm sec" id="installClose">Plus tard</button></div>
+  </div>
+
+  <!-- COMPOSER -->
+  <section id="v-compose">
+    <div class="card c1">
+      <h2>1 · Niveau</h2>
+      <div class="chips" id="levels" role="group" aria-label="Niveau"></div>
+      <p class="hint" style="margin:.6rem 0 0">Version pilote : la 2de professionnelle est prête. Les autres niveaux arrivent ensuite.</p>
+    </div>
+    <div class="card c2">
+      <h2>2 · Chapitres et notions</h2>
+      <div class="row" style="margin-bottom:.5rem">
+        <input type="search" id="search" placeholder="Chercher une notion (pourcentage, Thalès, médiane…)" aria-label="Chercher une notion" style="flex:1 1 16rem;width:auto">
+        <button type="button" class="btn sm sec" id="allOn">Tout cocher</button>
+        <button type="button" class="btn sm sec" id="allOff">Tout décocher</button>
+        <button type="button" class="btn sm sec" id="surprise">🎲 Surprends-moi</button>
+      </div>
+      <div class="row" style="margin-bottom:.4rem"><span class="pill" id="selInfo">0 notion cochée</span>
+        <span class="hint"><span class="src f">Flash</span> questions de Flash Maths · <span class="src m">MCV</span> automatismes de Maths et MCV 2de · <span class="src c">cours</span> questions de cours</span></div>
+      <div id="chaps"></div>
+    </div>
+    <div class="card c3">
+      <h2>3 · Réglages du tirage</h2>
+      <div class="grid2">
+        <label class="fld">Nombre de questions : <b id="nOut">12</b><input type="range" id="n" min="4" max="40" step="1" value="12"></label>
+        <label class="fld">Forme des réponses
+          <select id="mode"><option value="auto">Réponse libre pour les calculs, choix pour le reste</option><option value="qcm">Questions à choix (QCM) partout où c’est possible</option></select></label>
+        <fieldset style="border:0;padding:0;margin:0"><legend style="font-weight:800;font-size:.92rem;margin-bottom:.25rem">Sources des questions</legend>
+          <label class="row" style="gap:.5rem"><input type="checkbox" id="srcF" checked> Flash Maths</label>
+          <label class="row" style="gap:.5rem"><input type="checkbox" id="srcM" checked> Maths et MCV 2de</label></fieldset>
+      </div>
+      <div class="row" style="margin-top:1rem"><button type="button" class="btn" id="create">✨ Créer la feuille</button>
+        <span class="hint">Tu pourras ensuite déplacer, modifier, remplacer ou ajouter des questions.</span></div>
+    </div>
+  </section>
+
+  <!-- MA FEUILLE -->
+  <section id="v-sheet" hidden>
+    <div class="studio">
+      <div class="ctrl">
+        <div class="card c1">
+          <h3>Titre et présentation</h3>
+          <div class="ctrl">
+            <label class="fld">Titre<input type="text" id="sTitle" maxlength="120"></label>
+            <label class="fld">Sous-titre (facultatif)<input type="text" id="sSub" maxlength="160" placeholder="Ex. Classe de 2MRCU · 10 minutes"></label>
+            <div class="grid2" style="gap:.6rem">
+              <label class="fld">Police<select id="sFont"></select></label>
+              <label class="fld">Taille : <b id="sSizeOut">11 pt</b><input type="range" id="sSize" min="8" max="18" step="1" value="11"></label>
+              <label class="fld">Colonnes<select id="sCols"><option value="1">1 colonne</option><option value="2">2 colonnes</option></select></label>
+              <label class="fld">Zone de réponse<select id="sMode"><option value="auto">Libre pour les calculs</option><option value="qcm">QCM partout</option></select></label>
+            </div>
+            <div class="row" style="gap:.9rem">
+              <label class="row" style="gap:.4rem"><input type="checkbox" id="sNom"> Nom, prénom</label>
+              <label class="row" style="gap:.4rem"><input type="checkbox" id="sClasse"> Classe</label>
+              <label class="row" style="gap:.4rem"><input type="checkbox" id="sDate"> Date</label>
+            </div>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sBw"> Noir et blanc (économie d’encre)</label>
+            <p class="hint" style="margin:0">Les polices autres que Nunito dépendent de celles installées sur l’appareil.</p>
+          </div>
+        </div>
+        <div class="card c2">
+          <h3>Sortie</h3>
+          <div class="ctrl">
+            <label class="fld">Contenu<select id="sContent"><option value="feuille">Feuille élève seule</option><option value="both">Feuille + corrigé à la suite</option><option value="corrige">Corrigé seul</option></select></label>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sExpl"> Explications dans le corrigé</label>
+            <p class="hint" style="margin:0">Nom du fichier : <span class="kbd" id="fileInfo"></span></p>
+            <div class="row"><button type="button" class="btn ok" id="pdfBtn">⬇ Télécharger le PDF</button><button type="button" class="btn" id="printBtn">🖨 Imprimer</button></div>
+            <div class="row"><button type="button" class="btn sm sec" id="jsonBtn">Exporter la feuille (.json)</button><button type="button" class="btn sm sec" id="importBtn">Importer</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+          </div>
+        </div>
+        <div class="card c3">
+          <div class="row" style="justify-content:space-between"><h3 style="margin:0">Questions · <span id="count"></span></h3></div>
+          <div class="row" style="margin:.5rem 0"><button type="button" class="btn sm" id="addOne">＋ Ajouter une question</button><button type="button" class="btn sm sec" id="redrawAll">🎲 Nouveau tirage</button></div>
+          <ul class="qlist" id="qlist" aria-label="Liste des questions"></ul>
+          <p class="hint">Glisse le numéro, ou utilise ↑ ↓, pour réordonner. ✎ modifie, ↻ propose une autre question de la même notion.</p>
+        </div>
+      </div>
+      <div>
+        <div class="pvbar"><h3 style="margin:0">Aperçu A4</h3><span class="hint" id="pgInfo"></span></div>
+        <div class="preview" id="preview"><div id="pages"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section id="v-about" class="page-view" hidden>
+    <div class="card c1">
+      <h2>À propos</h2>
+      <p><b>Automatismes</b> fabrique des feuilles d’automatismes au format A4, avec corrigé, à partir des questions de <b>Flash Maths</b> et des automatismes de <b>Maths et MCV</b>. Les nombres sont tirés au hasard et les réponses sont calculées par programme : chaque feuille est différente.</p>
+      <h3>Comment faire</h3>
+      <ol><li>Dans <b>Composer</b>, coche les chapitres ou les notions, choisis le nombre de questions.</li>
+        <li>Clique sur <b>Créer la feuille</b>, puis déplace, modifie, remplace ou ajoute des questions.</li>
+        <li>Règle le titre, la police et la taille, puis <b>télécharge le PDF</b> ou <b>imprime</b>.</li></ol>
+      <h3>Bon à savoir</h3>
+      <ul><li>Le <b>PDF téléchargé</b> est fait de pages A4 en images nettes : le texte n’y est pas sélectionnable. Pour un PDF vectoriel, utilise <b>Imprimer</b> puis « Enregistrer au format PDF ».</li>
+        <li>Le corrigé est disponible pour tout le monde, comme les réponses des autres applis du casier.</li>
+        <li>Les formules s’écrivent entre <span class="kbd">$…$</span> dans l’éditeur (exemple : <span class="kbd">$\dfrac{3}{4}$</span>). Balises permises : <span class="kbd">&lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;</span>.</li>
+        <li>« Exporter la feuille » garde la liste des questions et leur tirage : tu retrouves exactement la même feuille plus tard.</li></ul>
+      <h3>Sources et licence</h3>
+      <p>Questions de <b>Flash Maths</b> (tom-rougeaud/flash) et de <b>Maths et MCV · 2de</b> (tom-rougeaud/mcv). Formules : KaTeX. Police : Nunito.<br>
+      Licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC BY-NC 4.0</a> : utilisation, adaptation et partage libres, sans usage commercial, en citant l’auteur.</p>
+      <p>Conçu par <b>Tom Rougeaud</b>, professeur de mathématiques-sciences (académie de Dijon). Suggestions et signalements : <a href="https://tom-rougeaud.github.io/casier/">casier de ressources</a> · <a href="https://linkedin.com/in/tomrougeaud">LinkedIn</a>.</p>
+      <p class="hint">Version v1 (pilote 2de pro).</p>
+    </div>
+  </section>
+
+  <!-- CONFIDENTIALITÉ -->
+  <section id="v-privacy" class="page-view" hidden>
+    <div class="card c4">
+      <h2>Confidentialité</h2>
+      <ul>
+        <li><b>Aucune donnée n’est collectée ni envoyée.</b> Pas de compte, pas de cookie, pas de publicité, pas de traceur, pas de statistiques de visite.</li>
+        <li>Les polices, les formules et les questions sont <b>intégrées à la page</b> : aucun appel à un site extérieur.</li>
+        <li>La feuille en cours et tes réglages sont enregistrés <b>dans ton navigateur</b> (stockage local), sur cet appareil seulement. Ils ne passent pas d’un appareil à un autre.</li>
+        <li>Si tu installes l’appli, une copie de la page est gardée sur l’appareil pour qu’elle s’ouvre sans connexion.</li>
+        <li>Les feuilles contiennent un champ « Nom, prénom » vide à remplir à la main : l’appli n’enregistre aucun nom d’élève.</li>
+      </ul>
+      <p id="storeInfo" class="muted"></p>
+      <button type="button" class="btn warn" id="clearBtn">Effacer mes données sur cet appareil</button>
+    </div>
+  </section>
+
+  <div class="foot">Automatismes · CC BY-NC 4.0 · Tom Rougeaud · <a href="#about" data-go="about">À propos</a> · <a href="#privacy" data-go="privacy">Confidentialité</a> · <a href="https://tom-rougeaud.github.io/casier/">Casier</a> · <a href="https://linkedin.com/in/tomrougeaud">LinkedIn</a>
+    · <button type="button" class="btn sm sec" id="clearBtn2" style="padding:.15rem .6rem">Effacer</button></div>
+</main>
+
+<!-- fenêtre d’édition -->
+<div class="modal" id="mEdit" role="dialog" aria-modal="true" aria-labelledby="eTitle">
+  <div class="box">
+    <h2 id="eTitle">Modifier la question <span id="eNum"></span></h2>
+    <div class="ctrl">
+      <label class="fld">Énoncé<textarea id="eQ" rows="4"></textarea></label>
+      <label class="fld">Réponse (corrigé)<textarea id="eA" rows="2"></textarea></label>
+      <label class="fld">Explication (corrigé)<textarea id="eE" rows="3"></textarea></label>
+      <label class="row" style="gap:.5rem" id="eFigRow"><input type="checkbox" id="eFig"> Masquer la figure</label>
+      <p class="hint" style="margin:0">Formules entre <span class="kbd">$…$</span>. Balises permises : &lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;. Les choix d’un QCM ne se modifient pas ici : utilise ↻ pour une autre question.</p>
+      <div class="row"><button type="button" class="btn ok" id="eSave">Enregistrer</button><button type="button" class="btn sec" id="eCancel">Annuler</button><button type="button" class="btn sm sec" id="eReset">Rétablir l’original</button></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="printRoot" aria-hidden="true"></div>
+<div id="measure" aria-hidden="true"></div>
+
+<script type="application/json" id="fm-cours">/*{{COURS}}*/</script>
+<script>/*{{KATEX}}*/</script>
+<script>var FLASH_ENGINE=(function(){/*{{FLASHENGINE}}*/})();</script>
+<script>/*{{MCVGENS}}*/</script>
+<script>/*{{CORE}}*/</script>
+<script>/*{{APP}}*/</script>
+</body>
+</html>

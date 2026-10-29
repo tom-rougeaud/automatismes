@@ -1,0 +1,71 @@
+/* Feuille A4 — styles de la page (aperçu, impression et export PDF). Tout ce qui sert à la feuille est ici. */
+.page{--ink:#1d1a3a;--acc:#5B4CF0;--accl:#EEEBFF;--accd:#3B2FC9;--line:#cfcbe8;--line2:#cfcbe8;--violet-l:#EEEBFF;--violet-d:#3B2FC9;
+  position:relative;box-sizing:border-box;width:210mm;height:297mm;padding:11mm 13mm 8mm;background:#fff;color:var(--ink);display:flex;flex-direction:column;overflow:hidden;
+  font-family:var(--sf,"Nunito",Arial,sans-serif);font-size:var(--sz,11pt);line-height:1.38;text-align:left}
+.page *{box-sizing:border-box}
+.page .ph.first{margin-bottom:5mm}
+.page .ph .band{display:flex;gap:4mm;align-items:stretch}
+.page .ph .bar{width:2.4mm;border-radius:2mm;background:var(--acc);flex:none}
+.page .ph h1{margin:0;font-size:1.75em;line-height:1.1;font-weight:900;letter-spacing:-.01em;color:var(--ink)}
+.page .ph .sub{margin-top:1.2mm;font-size:.95em;font-weight:700;color:#5b5780}
+.page .ph .meta{margin-top:1.2mm;font-size:.78em;font-weight:700;color:#7a769b}
+.page .ph .fields{display:flex;flex-wrap:wrap;gap:3mm 6mm;margin-top:5mm;font-weight:800;font-size:.92em}
+.page .ph .fields span{display:inline-flex;align-items:flex-end;gap:2mm;flex:1 1 auto;min-width:30mm}
+.page .ph .fields i{flex:1;border-bottom:1.2px solid var(--ink);height:5.2mm;min-width:14mm}
+.page .ph.slim{display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid var(--line);padding-bottom:1.6mm;margin-bottom:4mm;font-size:.78em;font-weight:800;color:#7a769b}
+.page .pb{flex:1 1 auto;min-height:0;overflow:hidden;column-count:var(--cols,1);column-gap:9mm;column-fill:auto;column-rule:1px dotted var(--line)}
+.page .pf{flex:none;display:flex;justify-content:space-between;gap:4mm;margin-top:2mm;padding-top:1.5mm;border-top:1px solid var(--line);font-size:.68em;font-weight:700;color:#8a86a8}
+
+/* question */
+.page .qb{display:grid;grid-template-columns:7.2mm 1fr;gap:3mm;break-inside:avoid;page-break-inside:avoid;margin:0 0 4.2mm;padding:0}
+.page .qn{width:7.2mm;height:7.2mm;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:.85em;display:flex;align-items:center;justify-content:center;margin-top:.4mm}
+.page.bw .qn{background:#fff;color:var(--ink);border:1.4px solid var(--ink)}
+.page .qc{min-width:0}
+.page .qt{font-weight:700;overflow-wrap:anywhere}
+.page .qt .katex{font-size:1.04em}
+.page .fig{display:flex;justify-content:center;margin:2mm auto 0;max-width:100%}
+.page .figsvg{width:100%;height:auto;max-height:52mm;display:block}
+.page.cols2 .figsvg{max-height:46mm}
+.page .figtab{border-collapse:collapse;margin:.5mm auto;font-weight:800;background:#fff;font-size:.92em}
+.page .figtab th,.page .figtab td{padding:.9mm 2.6mm;text-align:center;border:1px solid var(--ink)}
+.page .figtab th{background:var(--accl);color:var(--accd)}
+.page.bw .figtab th{background:#eee;color:var(--ink)}
+.page .figcode{margin:.5mm auto;background:#f4f2ff;color:#221E4F;border:1px solid var(--line);border-radius:2.5mm;padding:2mm 3mm;font:700 .9em/1.5 "Courier New",ui-monospace,monospace;white-space:pre;overflow:hidden}
+.page.bw .figsvg{filter:grayscale(1) contrast(1.15)}
+
+/* zones de réponse */
+.page .al{display:flex;align-items:flex-end;gap:2mm;margin-top:2.4mm;font-weight:800;font-size:.9em}
+.page .al .lab{color:#6a668f;flex:none}
+.page .al .line{flex:1 1 auto;border-bottom:1.2px dotted var(--ink);height:5.5mm;min-width:16mm}
+.page .al .un{flex:none;color:var(--ink)}
+.page ul.ch{list-style:none;margin:2mm 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:1.4mm 4mm}
+.page ul.ch.one,.page.cols2 ul.ch{grid-template-columns:1fr}
+.page ul.ch li{display:flex;gap:2mm;align-items:flex-start;font-weight:700;font-size:.95em;overflow-wrap:anywhere}
+.page .cb{flex:none;width:4.2mm;height:4.2mm;border:1.4px solid var(--ink);border-radius:1.1mm;margin-top:.5mm;background:#fff}
+.page .lt{flex:none;font-weight:900;color:var(--acc)}
+.page.bw .lt{color:var(--ink)}
+.page .vf{display:flex;gap:7mm;margin-top:2.2mm;font-weight:800;font-size:.95em}
+.page .vf span{display:inline-flex;align-items:center;gap:2mm}
+.page .qxr{display:flex;flex-wrap:wrap;gap:2mm 5mm;margin-top:2.2mm;font-weight:800;font-size:.92em;align-items:center}
+.page .qxr span{display:inline-flex;align-items:center;gap:1.6mm}
+.page .as{display:grid;grid-template-columns:1fr 1fr;gap:1.6mm 9mm;margin-top:2mm;font-weight:700;font-size:.95em}
+.page .as .col{display:flex;flex-direction:column;gap:1.6mm}
+.page .as .it{display:flex;gap:2mm;border:1.2px solid var(--line);border-radius:2mm;padding:1.2mm 2.4mm;align-items:center;background:#fff}
+.page .asr{display:flex;flex-wrap:wrap;gap:1.5mm 6mm;margin-top:2.2mm;font-weight:800;font-size:.9em}
+.page .asr span{display:inline-flex;align-items:flex-end;gap:1.6mm}
+.page .asr i{display:inline-block;width:9mm;border-bottom:1.2px solid var(--ink);height:5mm}
+.page .or{margin-top:1.8mm;font-weight:700;font-size:.95em}
+.page .or .how{font-weight:800;color:#6a668f;font-size:.9em;margin-bottom:1.2mm}
+.page .or .its{display:flex;flex-wrap:wrap;gap:1.4mm 3mm}
+.page .or .its span{display:inline-flex;gap:1.6mm;align-items:center;border:1.2px solid var(--line);border-radius:2mm;padding:.8mm 2.2mm;background:#fff}
+.page .orr{display:flex;flex-wrap:wrap;gap:1.6mm;margin-top:2.2mm;align-items:center;font-weight:800;font-size:.9em}
+.page .orr i{display:inline-block;width:8.5mm;height:6.4mm;border:1.2px solid var(--ink);border-radius:1.4mm}
+
+/* corrigé */
+.page .cr{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.8mm;display:grid;grid-template-columns:6.4mm 1fr;gap:2.4mm;font-size:.95em}
+.page .cr .qn{width:6.4mm;height:6.4mm;font-size:.8em}
+.page .cr .ca{font-weight:800}
+.page .cr .ca .lt{margin-right:1.2mm}
+.page .cr .qs{font-weight:600;color:#6a668f;font-size:.88em;margin-top:.4mm}
+.page .cr .ex{display:block;margin-top:.8mm;font-weight:600;color:#3a3660;font-size:.92em}
+.page .tex{font-family:"Courier New",monospace}
