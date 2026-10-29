@@ -152,10 +152,35 @@ var AUTO = (function () {
     pytD: 'Dans un triangle rectangle, calcule l’hypoténuse (valeur approchée, théorème de Pythagore).', recip: 'Avec la réciproque du théorème de Pythagore : ce triangle est-il rectangle ?',
     thales: 'Avec le théorème de Thalès, calcule la longueur demandée.', aireR: 'Calcule l’aire de cette figure.', aireD: 'Calcule l’aire de ce disque.',
     volP: 'Calcule le volume de ce solide (attention aux unités).', volC: 'Calcule le volume de ce cylindre.', agr: 'Cette figure est agrandie (ou réduite). Calcule la nouvelle aire.', conv: 'Convertis.',
-    tcMarg: 'Dans un tableau croisé d’effectifs, donne l’effectif marginal demandé.', tcCase: 'Complète le tableau croisé : retrouve l’effectif de la case demandée.',
-    tcPct: 'Retrouve l’effectif à partir du pourcentage.', tcFreq: 'Calcule la fréquence de cette case par rapport à l’effectif total.', tcCond: 'Calcule la fréquence conditionnelle demandée.',
-    tcSum: 'Dans un tableau de fréquences, complète la case manquante (le total fait 100 %).', tcParmi: 'Lis bien « parmi les… » : par quel effectif faut-il diviser ?', tcCompare: 'Compare les deux taux pour choisir le meilleur.'
+    tcMarg: 'Des personnes (ou des commandes) sont classées selon deux critères dans un tableau croisé d’effectifs. L’effectif marginal d’une ligne ou d’une colonne est son total : additionne les deux nombres donnés.',
+    tcCase: 'Dans un tableau croisé d’effectifs, le total d’une ligne est la somme de ses cases. Retrouve la case manquante : total − case connue.',
+    tcPct: 'Dans un tableau croisé, l’effectif d’un groupe se calcule avec : pourcentage × effectif total.',
+    tcFreq: 'Dans un tableau croisé, la fréquence d’une case est : effectif de la case ÷ effectif total (en pourcentage).',
+    tcCond: 'Fréquence conditionnelle : effectif de la case ÷ effectif du groupe considéré (en pourcentage).',
+    tcSum: 'Les quatre cases d’un tableau de fréquences (deux critères) donnent ensemble 100 %. Retrouve la quatrième case.',
+    tcParmi: 'Dans un tableau croisé, lis bien « parmi les… » : par quel effectif faut-il diviser ?',
+    tcCompare: 'Compare les deux taux de réussite (acheteurs ÷ visiteurs) pour choisir le meilleur.'
   };
+
+  /* phrases trop courtes des manuels : on les complète (données et contexte) */
+  var AUTOFIX = [
+    [/^Intérêts de ([\d ]+ €) à ([\d,]+ %) pendant (.+?) \?$/, 'On place $1 à $2 par an pendant $3, en intérêts simples. Calcule les intérêts.'],
+    [/^([\d ]+ €) placés à ([\d,]+ %) pendant (.+?) : (intérêts|valeur acquise) \?$/, function (m, a, b, c, d) { return 'On place ' + a + ' à ' + b + ' par an pendant ' + c + ', en intérêts simples. Calcule ' + (d === 'intérêts' ? 'les intérêts' : 'la valeur acquise (capital + intérêts)') + '.'; }],
+    [/^Intérêts simples de ([\d ]+ €) à ([\d,]+ %) pendant (.+?) \?$/, 'On place $1 à $2 par an pendant $3, en intérêts simples. Calcule les intérêts.'],
+    [/^([\d ]+ €) à ([\d,]+ %) pendant (.+?), en intérêts simples : (intérêts|valeur acquise) \?$/, function (m, a, b, c, d) { return 'On place ' + a + ' à ' + b + ' par an pendant ' + c + ', en intérêts simples. Calcule ' + (d === 'intérêts' ? 'les intérêts' : 'la valeur acquise (capital + intérêts)') + '.'; }],
+    [/^([\d ]+ €) placés à ([\d,]+ %) pendant (.+?), en intérêts simples : (intérêts|valeur acquise) \?$/, function (m, a, b, c, d) { return 'On place ' + a + ' à ' + b + ' par an pendant ' + c + ', en intérêts simples. Calcule ' + (d === 'intérêts' ? 'les intérêts' : 'la valeur acquise (capital + intérêts)') + '.'; }],
+    [/^Moyenne de (.+) \?$/, 'Calcule la moyenne de $1.'],
+    [/^Médiane de la série (.+) \?$/, 'Calcule la médiane de la série : $1.'],
+    [/^(\d+) élèves sur (\d+) : fréquence en % \?$/, 'Sur $2 élèves, $1 sont concernés. Calcule la fréquence, en pourcentage.'],
+    [/^Diamètre (.+) : quel est le rayon \?$/, 'Un cercle a pour diamètre $1. Quel est son rayon ?'],
+    [/^Avec π ≈ 3, aire d’un disque de rayon (.+) \?$/, 'On prend π ≈ 3. Calcule l’aire d’un disque de rayon $1.'],
+    [/^Triangle rectangle de côtés de l’angle droit (.+) et (.+)\. Hypoténuse, en cm \?$/, 'Dans un triangle rectangle, les côtés de l’angle droit mesurent $1 et $2. Calcule l’hypoténuse, en cm.'],
+    [/^(\d+) places de cinéma coûtent (\d+) €\. Combien coûtent (\d+) places \?$/, '$1 places de cinéma coûtent $2 € (proportionnalité). Combien coûtent $3 places ?'],
+    [/^Une (hausse|baisse) de (.+) revient à multiplier par…$/, 'Une $1 de $2 revient à multiplier par quel coefficient ?']
+  ];
+  function fixAuto(t) { var n = String(t).replace(/[\u00a0\u202f]/g, ' '); for (var i = 0; i < AUTOFIX.length; i++) { if (AUTOFIX[i][0].test(n)) return n.replace(AUTOFIX[i][0], AUTOFIX[i][1]).replace(/, en intérêts simples, en intérêts simples/, ', en intérêts simples').replace(/(\d) (\d{3})(?!\d)/g, '$1\u202f$2'); } return String(t); }
+  /* retouches de quelques énoncés de la banque Flash qui parlent d’une figure absente */
+  var FLASHFIX = { cc_geo: [/chaque figure/, 'chaque forme géométrique'] };
 
   /* ───────── catalogue unifié (5 niveaux) ───────── */
   var AM = {};  /* modules d’automatismes des manuels : a3 (3ᵉ), a1 (1re), aT (Tle) */
@@ -231,7 +256,7 @@ var AUTO = (function () {
   function makeAuto(id, seed) {
     var p = String(id).split(':'), mod = AM[p[0]]; if (!mod) return null;
     var q = mod.gen(p[1], seed >>> 0)[+p[2]]; if (!q) return null;
-    var N = { src: 'auto', id: id, seed: seed, titre: '', d: 1, unit: '', qRaw: q.t, explRaw: q.x || '', figHtml: '', rawIsHtml: false, tags: true, ansRaw: String(q.a), numeric: false };
+    var N = { src: 'auto', id: id, seed: seed, titre: '', d: 1, unit: '', qRaw: fixAuto(q.t), explRaw: q.x || '', figHtml: '', rawIsHtml: false, tags: true, ansRaw: String(q.a), numeric: false };
     if (q.choices) { N.type = 'qcm'; N.choices = q.choices.slice(); N.ans = q.ok; N.ansRaw = String(q.choices[q.ok]); }
     else { N.type = 'libre'; N.numeric = true; }
     return N;
@@ -240,6 +265,7 @@ var AUTO = (function () {
     try {
       var N = src === 'flash' ? makeFlash(id, seed) : src === 'mcv' ? makeMcv(id, seed) : src === 'auto' ? makeAuto(id, seed) : null;
       if (N && src === 'mcv' && CONS[id]) N.cons = CONS[id];
+      if (N && src === 'flash' && FLASHFIX[id]) N.qRaw = String(N.qRaw).replace(FLASHFIX[id][0], FLASHFIX[id][1]);
       return N;
     } catch (e) { return null; }
   }

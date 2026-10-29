@@ -1,6 +1,6 @@
 /* Automatismes — interface (pas la feuille : voir sheet.css) */
 :root{--violet:#2B4C7E;--violet-d:#1F3A63;--violet-l:#EAF0F8;--rouge:#A8483F;--orange:#B7791F;--vert:#2F7D5B;--bleu:#3A6EA5;--rose:#7A4B8A;
-  --ink:#1E2A3A;--mut:#5C6779;--bg:#F4F6F9;--card:#fff;--line:#D9DFE8;--r:18px;--f:"Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+  --ink:#1E2A3A;--mut:#5C6779;--bg:#F4F6F9;--card:#fff;--line:#D9DFE8;--r:18px;--f:"Trebuchet MS","Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
@@ -110,3 +110,60 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
 }
 #mEdit .box>.ctrl>.row:last-child{position:sticky;bottom:-1.3rem;background:#fff;padding:.7rem 0 .2rem;margin-top:.2rem;border-top:2px solid var(--line);z-index:2}
 .modal.side .eprev{max-height:11rem}
+
+/* ───── v3 : en-tête fixe, onglets, zones colorées ───── */
+.top{position:sticky;top:0;z-index:60}
+.top .wrap{gap:.6rem 1rem}
+.top .btn{box-shadow:none}
+.top .btn.sm{padding:.4rem .85rem}
+.top .btn.sec{background:rgba(255,255,255,.14);color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.55) inset}
+.top .btn.ok{background:#2F7D5B}
+.top .btn:not(.ok):not(.sec){background:#fff;color:var(--violet-d)}
+.top .btn[disabled]{opacity:.5}
+.topacts{display:flex;gap:.4rem;flex-wrap:wrap}
+.brand b{font-size:1.15rem}
+@media(max-width:760px){.brand small{display:none}.brand b{font-size:1rem}.brand svg{width:36px;height:36px}.topacts{margin-left:auto}nav.tabs{margin-left:0;width:100%;order:3}}
+main{padding-top:1.6rem}
+.studio{margin-top:.4rem}
+@media(min-width:901px){.ctrl-col{position:sticky;top:calc(var(--hh,64px) + 1rem);max-height:calc(100vh - var(--hh,64px) - 2rem);overflow:auto;border-radius:var(--r)}}
+.tabsbox{padding:.7rem .8rem .4rem;margin-bottom:0}
+.tabbar{display:flex;flex-wrap:wrap;gap:.3rem;padding-bottom:.5rem;margin-bottom:.4rem;border-bottom:2px solid var(--line);scrollbar-width:thin}
+.tabbar button{flex:none;border:2px solid transparent;background:transparent;border-radius:999px;padding:.38rem .85rem;font-weight:800;cursor:pointer;color:var(--mut)}
+.tabbar button:hover{background:var(--violet-l)}
+.tabbar button[aria-selected="true"]{background:var(--violet);color:#fff}
+.tabbar button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.tabpanel{padding:.3rem 0 .4rem}
+/* zones : une couleur par thème d’édition */
+.zone{--zb:#C7CDD8;--zbg:#EDEFF3;--zt:#3A4556;border:2px solid var(--zb);background:var(--zbg);border-radius:14px;padding:.6rem .8rem .75rem;margin-bottom:.7rem;display:grid;gap:.45rem}
+.zone>h4{margin:0;font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;color:var(--zt);font-weight:900}
+.zone .hint{color:var(--zt);opacity:.85}
+.zone input[type=text],.zone input[type=number],.zone select,.zone textarea{background:#fff;border-color:var(--zb)}
+.z-titre{--zb:#B7C8E0;--zbg:#EAF0F8;--zt:#1F3A63}
+.z-consigne{--zb:#C5CDDA;--zbg:#EFF2F7;--zt:#33415A}
+.z-font{--zb:#CDBFDD;--zbg:#F0EBF5;--zt:#5E3A6B}
+.z-size{--zb:#B5D3C1;--zbg:#E8F2EC;--zt:#1F5E43}
+.z-color{--zb:#D2D2D2;--zbg:#F2F2F2;--zt:#444}
+.z-space{--zb:#E2CE9F;--zbg:#F7F0DF;--zt:#6E4A0E}
+.z-lines{--zb:#B3D2D8;--zbg:#E6F1F3;--zt:#1E5560}
+.z-layout{--zb:#C7CDD8;--zbg:#EDEFF3;--zt:#3A4556}
+.z-pts{--zb:#E0B7B1;--zbg:#F7EAE8;--zt:#8C342D}
+.z-pts2{--zb:#E0B7B1;--zbg:#FAF1EF;--zt:#8C342D}
+.z-q{--zb:#C7CDD8;--zbg:#F1F3F7;--zt:#3A4556}
+.z-file{--zb:#CDD2B8;--zbg:#EFF1E5;--zt:#4A5130}
+.z-file2{--zb:#CDD2B8;--zbg:#F6F7EE;--zt:#4A5130}
+.ptstable{display:grid;gap:.3rem;max-height:18rem;overflow:auto}
+.ptsrow{display:grid;grid-template-columns:1.8rem 1fr 5rem;gap:.5rem;align-items:center;background:#fff;border:1px solid var(--zb);border-radius:10px;padding:.25rem .5rem;font-size:.85rem}
+.ptsrow b{color:var(--zt)}
+.ptsrow span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ptsrow input{width:100%;padding:.2rem .4rem;border-radius:8px}
+.ptstot{display:flex;justify-content:space-between;font-weight:900;color:var(--zt);padding:.3rem .5rem}
+.qcard .gapb{font-size:.72rem;font-weight:900}
+/* éditeur : sous l’en-tête fixe */
+.modal{padding-top:calc(var(--hh,64px) + 1rem)}
+.modal.side{padding:calc(var(--hh,64px) + 1rem) .8rem .8rem}
+.modal .box{max-height:calc(100vh - var(--hh,64px) - 2rem)}
+.modal.side .box{max-height:none}
+#mEdit .box>.ctrl>.zone{margin-bottom:.1rem}
+
+label.row{flex-wrap:nowrap;align-items:flex-start}label.row input[type=checkbox]{flex:none;margin-top:.2rem}
+.tabbar button{padding:.34rem .7rem}

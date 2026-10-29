@@ -3,14 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Automatismes · feuilles imprimables</title>
+<title>Automatismes de maths en lycée pro · feuilles imprimables</title>
 <meta name="description" content="Générateur de feuilles d’automatismes A4 avec corrigé, par chapitre, pour la voie professionnelle. Aucune donnée collectée.">
 <meta name="theme-color" content="#2B4C7E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Automatismes">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,/*{{FAVSVG}}*/">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,/*{{FAV32}}*/">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <style id="css-fonts">
 /*{{FONTS}}*/
 </style>
@@ -22,11 +25,11 @@
 </style>
 </head>
 <body>
-<header class="top">
+<header class="top" id="top">
   <div class="wrap">
-    <a class="brand" href="#compose" data-go="compose" aria-label="Automatismes, accueil">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#fff" fill-opacity=".22"/><rect x="14" y="8" width="36" height="48" rx="6" fill="#fff"/><rect x="20" y="16" width="16" height="4" rx="2" fill="#2B4C7E"/><rect x="20" y="25" width="24" height="3.5" rx="1.7" fill="#B7791F"/><rect x="20" y="33" width="24" height="3.5" rx="1.7" fill="#2F7D5B"/><rect x="20" y="41" width="14" height="3.5" rx="1.7" fill="#7A4B8A"/><path d="M47 30 40 44h5l-2 10 9-15h-5z" fill="#A8483F" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
-      <span><b>Automatismes</b><small>Feuilles imprimables avec corrigé</small></span>
+    <a class="brand" href="#compose" data-go="compose" aria-label="Automatismes de maths en lycée pro, accueil">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#fff" fill-opacity=".16"/>/*{{LOGOTILES}}*/</svg>
+      <span><b>Automatismes de maths en lycée pro</b><small>Feuilles imprimables avec corrigé</small></span>
     </a>
     <nav class="tabs" aria-label="Navigation">
       <button type="button" data-go="compose">Composer</button>
@@ -34,6 +37,11 @@
       <button type="button" data-go="about">À propos</button>
       <button type="button" data-go="privacy">Confidentialité</button>
     </nav>
+    <div class="topacts" role="group" aria-label="Exporter la feuille">
+      <button type="button" class="btn sm ok" id="pdfBtn" title="Télécharger la feuille en PDF">⬇ PDF</button>
+      <button type="button" class="btn sm" id="printBtn" title="Imprimer la feuille">🖨 Imprimer</button>
+      <button type="button" class="btn sm sec" id="jsonBtn" title="Exporter la feuille (.json) pour la retrouver plus tard">Exporter</button>
+    </div>
   </div>
 </header>
 
@@ -78,54 +86,84 @@
   <!-- MA FEUILLE -->
   <section id="v-sheet" hidden>
     <div class="studio">
-      <div class="ctrl">
-        <div class="card c1">
-          <h3>Titre et présentation</h3>
-          <div class="ctrl">
-            <label class="fld">Titre<input type="text" id="sTitle" maxlength="120"></label>
-            <label class="fld">Sous-titre (facultatif)<input type="text" id="sSub" maxlength="160" placeholder="Ex. Classe de 2MRCU · 10 minutes"></label>
-            <div class="grid2" style="gap:.6rem">
-              <label class="fld">Police<select id="sFont"></select></label>
-              <label class="fld">Taille : <b id="sSizeOut">11 pt</b><input type="range" id="sSize" min="8" max="18" step="1" value="11"></label>
-              <label class="fld">Colonnes<select id="sCols"><option value="1">1 colonne</option><option value="2">2 colonnes</option></select></label>
-              <label class="fld">Zone de réponse<select id="sMode"><option value="auto">Libre pour les calculs</option><option value="qcm">QCM partout</option></select></label>
-            </div>
-            <label class="row" style="gap:.5rem"><input type="checkbox" id="sHeads"> Titre de chapitre avant chaque groupe de questions</label>
-            <label class="row" style="gap:.5rem"><input type="checkbox" id="sCons"> Thème, consigne et phrase d’aide pour chaque question</label>
-            <label class="fld">Consigne générale (facultatif)<input type="text" id="sIntro" maxlength="300" placeholder="Ex. Sans calculatrice. Écris seulement le résultat."></label>
-            <label class="fld">Place pour les calculs<select id="sWork"><option value="auto">Automatique (selon la question)</option><option value="none">Aucune</option><option value="small">Petite (1 cm)</option><option value="medium">Moyenne (2 cm)</option><option value="large">Grande (3,5 cm)</option></select></label>
-            <label class="fld">Espace entre les questions : <b id="sGapOut">5 mm</b><input type="range" id="sGap" min="0" max="30" step="1" value="5"></label>
-            <p class="hint" style="margin:0">Réglage général. Chaque question peut avoir son propre espace (boutons ⇕ de la liste ou ✎).</p>
-            <div class="row" style="gap:.9rem">
-              <label class="row" style="gap:.4rem"><input type="checkbox" id="sScore"> Encart de notation</label>
-              <label class="row" style="gap:.4rem">Notée sur <input type="number" id="sTotal" min="1" max="1000" step="1" value="20" style="width:5rem;border:2px solid var(--line);border-radius:12px;padding:.35rem .5rem"></label>
-            </div>
-            <label class="fld">Barème<select id="sScoreMode"><option value="equal">Identique pour toutes les questions</option><option value="custom">Différencié : je choisis les points de chaque question</option></select></label>
-            <label class="row" style="gap:.5rem"><input type="checkbox" id="sShowPts"> Afficher les points à côté de chaque question</label>
-            <div class="row" style="gap:.9rem">
-              <label class="row" style="gap:.4rem"><input type="checkbox" id="sNom"> Nom, prénom</label>
-              <label class="row" style="gap:.4rem"><input type="checkbox" id="sClasse"> Classe</label>
-              <label class="row" style="gap:.4rem"><input type="checkbox" id="sDate"> Date</label>
-            </div>
-            <label class="row" style="gap:.5rem"><input type="checkbox" id="sBw"> Noir et blanc (économie d’encre)</label>
-            <p class="hint" style="margin:0">Les polices autres que Nunito dépendent de celles installées sur l’appareil.</p>
+      <div class="ctrl-col">
+        <div class="card tabsbox">
+          <div class="tabbar" role="tablist" aria-label="Réglages de la feuille">
+            <button type="button" role="tab" data-tab="titres" aria-selected="true">Titres</button>
+            <button type="button" role="tab" data-tab="police" aria-selected="false">Police</button>
+            <button type="button" role="tab" data-tab="espace" aria-selected="false">Espacement</button>
+            <button type="button" role="tab" data-tab="bareme" aria-selected="false">Barème</button>
+            <button type="button" role="tab" data-tab="questions" aria-selected="false">Questions</button>
+            <button type="button" role="tab" data-tab="fichier" aria-selected="false">Fichier</button>
           </div>
-        </div>
-        <div class="card c2">
-          <h3>Sortie</h3>
-          <div class="ctrl">
-            <label class="fld">Contenu<select id="sContent"><option value="feuille">Feuille élève seule</option><option value="both">Feuille + corrigé à la suite</option><option value="corrige">Corrigé seul</option></select></label>
-            <label class="row" style="gap:.5rem"><input type="checkbox" id="sExpl"> Explications dans le corrigé</label>
-            <p class="hint" style="margin:0">Nom du fichier : <span class="kbd" id="fileInfo"></span></p>
-            <div class="row"><button type="button" class="btn ok" id="pdfBtn">⬇ Télécharger le PDF</button><button type="button" class="btn" id="printBtn">🖨 Imprimer</button></div>
-            <div class="row"><button type="button" class="btn sm sec" id="jsonBtn">Exporter la feuille (.json)</button><button type="button" class="btn sm sec" id="importBtn">Importer</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+
+          <div class="tabpanel" id="tab-titres" role="tabpanel" data-panel="titres">
+            <div class="zone z-titre"><h4>Titre et sous-titre</h4>
+              <label class="fld">Titre<input type="text" id="sTitle" maxlength="120"></label>
+              <label class="fld">Sous-titre (facultatif)<input type="text" id="sSub" maxlength="160" placeholder="Ex. Classe de 2MRCU · 10 minutes"></label></div>
+            <div class="zone z-consigne"><h4>Consigne générale</h4>
+              <label class="fld">Phrase affichée sous l’en-tête (facultatif)<input type="text" id="sIntro" maxlength="300" placeholder="Ex. Sans calculatrice. Écris seulement le résultat."></label></div>
+            <div class="zone z-titre"><h4>En-tête de l’élève</h4>
+              <div class="row" style="gap:.9rem">
+                <label class="row" style="gap:.4rem"><input type="checkbox" id="sNom"> Nom, prénom</label>
+                <label class="row" style="gap:.4rem"><input type="checkbox" id="sClasse"> Classe</label>
+                <label class="row" style="gap:.4rem"><input type="checkbox" id="sDate"> Date</label></div></div>
+            <div class="zone z-consigne"><h4>Aides sur la feuille</h4>
+              <label class="row" style="gap:.5rem"><input type="checkbox" id="sHeads"> Titre de chapitre avant chaque groupe de questions</label>
+              <label class="row" style="gap:.5rem;margin-top:.4rem"><input type="checkbox" id="sCons"> Thème, consigne et phrase d’aide pour chaque question</label></div>
           </div>
-        </div>
-        <div class="card c3">
-          <div class="row" style="justify-content:space-between"><h3 style="margin:0">Questions · <span id="count"></span></h3></div>
-          <div class="row" style="margin:.5rem 0"><button type="button" class="btn sm" id="addOne">＋ Ajouter une question</button><button type="button" class="btn sm sec" id="redrawAll">🎲 Nouveau tirage</button></div>
-          <ul class="qlist" id="qlist" aria-label="Liste des questions"></ul>
-          <p class="hint">Glisse le numéro, ou utilise ↑ ↓, pour réordonner. ✎ modifie, ↻ propose une autre question de la même notion.</p>
+
+          <div class="tabpanel" id="tab-police" role="tabpanel" data-panel="police" hidden>
+            <div class="zone z-font"><h4>Police</h4>
+              <label class="fld">Police de la feuille<select id="sFont"></select></label>
+              <p class="hint" style="margin:.4rem 0 0">Les polices autres que Nunito dépendent de celles installées sur l’appareil.</p></div>
+            <div class="zone z-size"><h4>Taille du texte</h4>
+              <label class="fld">Taille : <b id="sSizeOut">11 pt</b><input type="range" id="sSize" min="8" max="18" step="1" value="11"></label></div>
+            <div class="zone z-color"><h4>Couleurs</h4>
+              <label class="row" style="gap:.5rem"><input type="checkbox" id="sBw"> Noir et blanc (économie d’encre)</label></div>
+          </div>
+
+          <div class="tabpanel" id="tab-espace" role="tabpanel" data-panel="espace" hidden>
+            <div class="zone z-space"><h4>Espace entre les questions</h4>
+              <label class="fld">Réglage général : <b id="sGapOut">5 mm</b><input type="range" id="sGap" min="0" max="30" step="1" value="5"></label>
+              <p class="hint" style="margin:.4rem 0 0">Chaque question peut avoir son propre espace (boutons ⇕ dans l’onglet « Questions », ou ✎).</p></div>
+            <div class="zone z-lines"><h4>Lignes de réponse</h4>
+              <label class="fld">Nombre de lignes pour les réponses libres<select id="sLines"><option value="1">1 ligne</option><option value="2">2 lignes</option><option value="3">3 lignes</option><option value="4">4 lignes</option><option value="5">5 lignes</option><option value="6">6 lignes</option></select></label></div>
+            <div class="zone z-layout"><h4>Colonnes et forme des réponses</h4>
+              <div class="grid2" style="gap:.6rem">
+                <label class="fld">Colonnes<select id="sCols"><option value="1">1 colonne</option><option value="2">2 colonnes</option></select></label>
+                <label class="fld">Zone de réponse<select id="sMode"><option value="auto">Réponse libre (lignes)</option><option value="qcm">QCM partout</option></select></label></div></div>
+          </div>
+
+          <div class="tabpanel" id="tab-bareme" role="tabpanel" data-panel="bareme" hidden>
+            <div class="zone z-pts"><h4>Encart de notation</h4>
+              <label class="row" style="gap:.5rem"><input type="checkbox" id="sScore"> Ajouter un encart « Note : … / N » sur la feuille</label>
+              <div class="grid2" style="gap:.6rem;margin-top:.5rem">
+                <label class="fld">Notée sur<input type="number" id="sTotal" min="1" max="1000" step="1" value="20"></label>
+                <label class="fld">Barème<select id="sScoreMode"><option value="equal">Identique pour toutes les questions</option><option value="custom">Différencié (points au choix)</option></select></label></div>
+              <label class="row" style="gap:.5rem;margin-top:.5rem"><input type="checkbox" id="sShowPts"> Afficher les points à côté de chaque question</label></div>
+            <div class="zone z-pts2"><h4>Points de chaque question</h4>
+              <p class="hint" style="margin:0 0 .5rem" id="ptsHint">Active l’encart de notation pour régler les points.</p>
+              <div id="ptsTable" class="ptstable"></div>
+              <div class="row" style="margin-top:.6rem"><button type="button" class="btn sm sec" id="ptsEqual">Répartir équitablement</button><button type="button" class="btn sm sec" id="ptsOne">1 point partout</button></div></div>
+          </div>
+
+          <div class="tabpanel" id="tab-questions" role="tabpanel" data-panel="questions" hidden>
+            <div class="zone z-q"><h4>Questions · <span id="count"></span></h4>
+              <div class="row" style="margin:0 0 .6rem"><button type="button" class="btn sm" id="addOne">＋ Ajouter une question</button><button type="button" class="btn sm sec" id="redrawAll">🎲 Nouveau tirage</button></div>
+              <ul class="qlist" id="qlist" aria-label="Liste des questions"></ul>
+              <p class="hint">Glisse le numéro, ou utilise ↑ ↓, pour réordonner. ✎ modifie (texte, taille, police, espace, lignes, points), ↻ propose une autre question de la même notion, ⇕ règle l’espace sous la question.</p></div>
+          </div>
+
+          <div class="tabpanel" id="tab-fichier" role="tabpanel" data-panel="fichier" hidden>
+            <div class="zone z-file"><h4>Contenu du fichier</h4>
+              <label class="fld">Contenu<select id="sContent"><option value="feuille">Feuille élève seule</option><option value="both">Feuille + corrigé à la suite</option><option value="corrige">Corrigé seul</option></select></label>
+              <label class="row" style="gap:.5rem;margin-top:.5rem"><input type="checkbox" id="sExpl"> Explications dans le corrigé</label>
+              <p class="hint" style="margin:.5rem 0 0">Nom du fichier : <span class="kbd" id="fileInfo"></span></p>
+              <p class="hint" style="margin:.3rem 0 0">Les boutons PDF, Imprimer et Exporter restent en haut de l’écran.</p></div>
+            <div class="zone z-file2"><h4>Reprendre une feuille</h4>
+              <div class="row"><button type="button" class="btn sm sec" id="importBtn">Importer une feuille (.json)</button><input type="file" id="importFile" accept=".json,application/json" hidden></div></div>
+          </div>
         </div>
       </div>
       <div>
@@ -153,7 +191,7 @@
       <p>Formules : KaTeX. Police : Nunito.<br>
       Licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC BY-NC 4.0</a> : utilisation, adaptation et partage libres, sans usage commercial, en citant l’auteur.</p>
       <p>Conçu par <b>Tom Rougeaud</b>, professeur de mathématiques-sciences (académie de Dijon). Suggestions et signalements : <a href="https://tom-rougeaud.github.io/casier/">casier de ressources</a> · <a href="https://linkedin.com/in/tomrougeaud">LinkedIn</a>.</p>
-      <p class="hint">Version v2.</p>
+      <p class="hint">Version v3.</p>
     </div>
   </section>
 
@@ -182,17 +220,28 @@
   <div class="box">
     <h2 id="eTitle">Modifier la question <span id="eNum"></span></h2>
     <div class="ctrl">
-      <label class="fld">Énoncé<textarea id="eQ" rows="4"></textarea></label>
-      <label class="fld">Réponse (corrigé)<textarea id="eA" rows="2"></textarea></label>
-      <label class="fld">Explication (corrigé)<textarea id="eE" rows="3"></textarea></label>
-      <label class="row" style="gap:.5rem" id="eFigRow"><input type="checkbox" id="eFig"> Masquer la figure</label>
       <div class="eprevbox"><div class="hint" style="margin:0 0 .3rem;font-weight:800">Aperçu sur la feuille</div><div id="ePrev" class="eprev"></div></div>
-      <label class="fld" id="ePtsRow">Points de cette question<input type="number" id="ePts" min="0" max="100" step="0.25" value="1" style="width:6rem"></label>
-      <label class="row" style="gap:.5rem"><input type="checkbox" id="eWorkAuto"> Place pour les calculs automatique</label>
-      <label class="fld">Place pour les calculs : <b id="eWorkOut">0 mm</b><input type="range" id="eWork" min="0" max="80" step="1" value="0"></label>
-      <label class="row" style="gap:.5rem"><input type="checkbox" id="eGapAuto"> Même espace que le réglage général</label>
-      <label class="fld">Espace sous cette question : <b id="eGapOut">5 mm</b><input type="range" id="eGap" min="0" max="40" step="1" value="5"></label>
-      <p class="hint" style="margin:0">Formules entre <span class="kbd">$…$</span>. Balises permises : &lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;. Les choix d’un QCM ne se modifient pas ici : utilise ↻ pour une autre question.</p>
+      <div class="zone z-q"><h4>Texte</h4>
+        <label class="fld">Énoncé<textarea id="eQ" rows="3"></textarea></label>
+        <label class="fld">Réponse (corrigé)<textarea id="eA" rows="2"></textarea></label>
+        <label class="fld">Explication (corrigé)<textarea id="eE" rows="2"></textarea></label>
+        <label class="row" style="gap:.5rem" id="eFigRow"><input type="checkbox" id="eFig"> Masquer la figure</label>
+        <p class="hint" style="margin:0">Formules entre <span class="kbd">$…$</span>. Balises permises : &lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;. Les choix d’un QCM ne se modifient pas ici : utilise ↻ pour une autre question.</p></div>
+      <div class="zone z-font"><h4>Police de cette question</h4>
+        <label class="row" style="gap:.5rem"><input type="checkbox" id="eFontAuto"> Même police que la feuille</label>
+        <label class="fld">Police<select id="eFont"></select></label></div>
+      <div class="zone z-size"><h4>Taille du texte de cette question</h4>
+        <label class="row" style="gap:.5rem"><input type="checkbox" id="eSizeAuto"> Même taille que la feuille</label>
+        <label class="fld">Taille : <b id="eSizeOut">11 pt</b><input type="range" id="eSize" min="8" max="18" step="1" value="11"></label></div>
+      <div class="zone z-space"><h4>Espace sous cette question</h4>
+        <label class="row" style="gap:.5rem"><input type="checkbox" id="eGapAuto"> Même espace que le réglage général</label>
+        <label class="fld">Espace : <b id="eGapOut">5 mm</b><input type="range" id="eGap" min="0" max="40" step="1" value="5"></label></div>
+      <div class="zone z-lines"><h4>Lignes de réponse</h4>
+        <label class="row" style="gap:.5rem"><input type="checkbox" id="eLinesAuto"> Même nombre de lignes que la feuille</label>
+        <label class="fld">Lignes : <b id="eLinesOut">2</b><input type="range" id="eLines" min="1" max="8" step="1" value="2"></label></div>
+      <div class="zone z-pts" id="ePtsRow"><h4>Points de cette question</h4>
+        <label class="fld">Points<input type="number" id="ePts" min="0" max="100" step="0.25" value="1" style="width:6rem"></label>
+        <p class="hint" style="margin:.3rem 0 0" id="ePtsHint"></p></div>
       <div class="row"><button type="button" class="btn ok" id="eSave">Enregistrer</button><button type="button" class="btn sec" id="eCancel">Annuler</button><button type="button" class="btn sm sec" id="eReset">Rétablir l’original</button></div>
     </div>
   </div>

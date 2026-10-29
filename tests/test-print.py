@@ -8,7 +8,7 @@ with sync_playwright() as p:
     pg.add_init_script("window.print = function(){ window.__printed = document.title; window.__np = document.querySelectorAll('#printRoot .page').length; };")
     pg.goto('file://' + os.path.join(ROOT, 'index.html')); pg.wait_for_selector('#chaps details')
     pg.set_input_files('#importFile', os.path.join(SH, 'qa-sheet.json')); pg.wait_for_selector('#pages .page'); pg.wait_for_timeout(600)
-    pg.select_option('#sContent', 'both'); pg.click('#printBtn'); pg.wait_for_timeout(900)
+    pg.click('.tabbar button[data-tab=fichier]'); pg.select_option('#sContent', 'both'); pg.click('#printBtn'); pg.wait_for_timeout(900)
     printed = pg.evaluate('window.__printed'); npages = pg.evaluate('window.__np')
     print('titre pendant impression :', printed, '| pages dans printRoot :', npages)
     pg.emulate_media(media='print'); out = os.path.join(SH, 'print.pdf'); pg.pdf(path=out, prefer_css_page_size=True, print_background=True)

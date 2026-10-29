@@ -4,10 +4,11 @@
   var APP_VER = 'v1', PFX = 'automatismes_' + APP_VER + '_';
   var LINKS = { casier: 'https://tom-rougeaud.github.io/casier/', linkedin: 'https://linkedin.com/in/tomrougeaud' };
   var FONTS = [
-    ['Nunito', '"Nunito",Arial,sans-serif', 'Nunito (intégrée)'], ['Arial', 'Arial,Helvetica,sans-serif', 'Arial'], ['Verdana', 'Verdana,Geneva,sans-serif', 'Verdana'],
-    ['Trebuchet', '"Trebuchet MS",Verdana,sans-serif', 'Trebuchet MS'], ['Georgia', 'Georgia,"Times New Roman",serif', 'Georgia'], ['Times', '"Times New Roman",Times,serif', 'Times New Roman'],
+    ['Trebuchet', '"Trebuchet MS","Nunito",Verdana,sans-serif', 'Trebuchet MS'], ['Nunito', '"Nunito",Arial,sans-serif', 'Nunito (intégrée)'], ['Arial', 'Arial,Helvetica,sans-serif', 'Arial'],
+    ['Verdana', 'Verdana,Geneva,sans-serif', 'Verdana'], ['Georgia', 'Georgia,"Times New Roman",serif', 'Georgia'], ['Times', '"Times New Roman",Times,serif', 'Times New Roman'],
     ['Courier', '"Courier New",monospace', 'Courier New']
   ];
+  var DEFAULT_TITLE = 'Automatismes de maths en lycée pro';
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
   var esc = AUTO.esc;
@@ -28,12 +29,13 @@
   /* ───────── état ───────── */
   var cat, state, toastT = null;
   function defSheet() {
-    return { title: 'Automatismes', subtitle: '', items: [], font: 'Nunito', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de', gap: 5, heads: true, cons: true, work: 'auto', intro: '', score: false, total: 20, scoreMode: 'equal', showPts: true };
+    return { title: DEFAULT_TITLE, subtitle: '', items: [], font: 'Trebuchet', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de',
+      gap: 5, heads: true, cons: true, lines: 2, intro: '', score: false, total: 20, scoreMode: 'equal', showPts: true };
   }
-  function defState() { return { view: 'compose', level: '2de', sel: {}, n: 12, mode: 'auto', sheet: defSheet(), openChaps: {} }; }
+  function defState() { return { v: 3, tab: 'titres', view: 'compose', level: '2de', sel: {}, n: 12, mode: 'auto', sheet: defSheet(), openChaps: {} }; }
   function loadState() {
     var s = defState();
-    try { var raw = store.get('state'); if (raw) { var o = JSON.parse(raw); if (o && typeof o === 'object') { for (var k in s) if (o[k] !== undefined) s[k] = o[k]; s.sheet = sanitizeSheet(o.sheet) || defSheet(); } } } catch (e) { s = defState(); }
+    try { var raw = store.get('state'); if (raw) { var o = JSON.parse(raw); if (o && typeof o === 'object') { for (var k in s) if (o[k] !== undefined) s[k] = o[k]; s.sheet = sanitizeSheet(o.sheet) || defSheet(); if (o.v !== 3) { if (s.sheet.font === 'Nunito') s.sheet.font = 'Trebuchet'; if (s.sheet.title === 'Automatismes') s.sheet.title = DEFAULT_TITLE; s.v = 3; } } } } catch (e) { s = defState(); }
     return s;
   }
   var saveT = null;
@@ -51,7 +53,7 @@
     s.level = AUTO.isLevel(o.level) ? o.level : '2de';
     s.gap = clampN(o.gap, 0, 30, 5); s.score = !!o.score; s.total = clampN(o.total, 1, 1000, 20);
     s.heads = o.heads !== false; s.cons = o.cons !== false; s.showPts = o.showPts !== false;
-    s.work = ['none', 'auto', 'small', 'medium', 'large'].indexOf(o.work) >= 0 ? o.work : 'auto';
+    s.lines = clampN(o.lines, 1, 8, 2);
     s.scoreMode = o.scoreMode === 'custom' ? 'custom' : 'equal'; s.intro = String(o.intro || '').slice(0, 300);
     s.mode = o.mode === 'qcm' ? 'qcm' : 'auto'; s.seed = clampN(o.seed, 1, 2147483646, 1);
     s.chapIds = Array.isArray(o.chapIds) ? o.chapIds.filter(function (x) { return AUTO.isChap(s.level, x); }).slice(0, 20) : [];
@@ -67,7 +69,9 @@
       }
       var row = { src: it.src, id: it.id, seed: seed, o: over };
       if (it.gap !== undefined && it.gap !== null && isFinite(+it.gap)) row.gap = clampN(it.gap, 0, 40, 5);
-      if (it.work !== undefined && it.work !== null && isFinite(+it.work)) row.work = clampN(it.work, 0, 80, 0);
+      if (it.lines !== undefined && it.lines !== null && isFinite(+it.lines)) row.lines = clampN(it.lines, 1, 8, 2);
+      if (it.size !== undefined && it.size !== null && isFinite(+it.size)) row.size = clampN(it.size, 8, 18, 11);
+      if (typeof it.font === 'string' && FONTS.some(function (f) { return f[0] === it.font; })) row.font = it.font;
       if (it.pts !== undefined && it.pts !== null && isFinite(+it.pts)) row.pts = clampPts(it.pts);
       s.items.push(row);
     });
@@ -101,7 +105,16 @@
     Array.prototype.forEach.call(document.querySelectorAll('nav.tabs button'), function (b) { if (b.dataset.go === state.view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
     if (state.view === 'compose') renderCompose();
     if (state.view === 'sheet') renderSheet();
+    updateTop();
   }
+  /* boutons figés dans l’en-tête : actifs seulement s’il y a une feuille ; hauteur d’en-tête exposée en CSS */
+  function updateTop() {
+    var has = !!(state && state.sheet && state.sheet.items.length);
+    var ta = document.querySelector('.topacts'); if (ta) ta.hidden = state.view !== 'sheet';
+    ['pdfBtn', 'printBtn', 'jsonBtn'].forEach(function (id) { var b = $(id); if (b) { b.disabled = !has; b.title = has ? '' : 'Compose d’abord une feuille de questions'; } });
+    syncHH();
+  }
+  function syncHH() { var t = document.querySelector('.top'); if (t) document.documentElement.style.setProperty('--hh', t.offsetHeight + 'px'); }
 
   /* ───────── écran « Composer » ───────── */
   function selectedKeys() {
@@ -160,9 +173,10 @@
     lv.chapters.forEach(function (c) { if (c.items.some(function (it) { return keys.indexOf(it.key) >= 0; })) chapIds.push(c.id); });
     var old = state.sheet;
     items = sortByChapter(items, state.level);
-    state.sheet = sanitizeSheet({ level: state.level, heads: old.heads, cons: old.cons, work: old.work, intro: old.intro, gap: old.gap, score: old.score, total: old.total, scoreMode: old.scoreMode, showPts: old.showPts, title: old.title, subtitle: old.subtitle, font: old.font, size: old.size, cols: old.cols, nom: old.nom, date: old.date, classe: old.classe, bw: old.bw, content: old.content, expl: old.expl, mode: state.mode, seed: seed, chapIds: chapIds, items: items });
+    state.sheet = sanitizeSheet({ level: state.level, heads: old.heads, cons: old.cons, lines: old.lines, intro: old.intro, gap: old.gap, score: old.score, total: old.total, scoreMode: old.scoreMode, showPts: old.showPts, title: old.title, subtitle: old.subtitle, font: old.font, size: old.size, cols: old.cols, nom: old.nom, date: old.date, classe: old.classe, bw: old.bw, content: old.content, expl: old.expl, mode: state.mode, seed: seed, chapIds: chapIds, items: items });
     state.sheet.chapIds = chapIds;
-    if (!state.sheet.title || state.sheet.title === 'Automatismes') state.sheet.title = chapIds.length === 1 ? shortTitle(chapIds[0]) : 'Automatismes';
+    if (!state.sheet.title || state.sheet.title === 'Automatismes') state.sheet.title = DEFAULT_TITLE;
+    if (!state.sheet.subtitle && chapIds.length === 1) state.sheet.subtitle = shortTitle(chapIds[0]);
     save(); go('sheet');
   }
   function shortChap(t) { return String(t).replace(/^\d+ · /, '').replace(/ \(.*$/, ''); }
@@ -176,9 +190,13 @@
   /* ───────── mise en page de la feuille (pages A4) ───────── */
   var LT = AUTO.LETTERS;
   function qView(it, mode) { var N = AUTO.makeQuestion(it.src, it.id, it.seed); return N ? AUTO.view(N, it.o, mode) : null; }
-  function answerArea(v) {
+  function answerArea(v, lines) {
     var t = v.type, h = '';
-    if (t === 'libre') return '<div class="al"><span class="lab">' + (v.est ? 'Ton estimation :' : 'Réponse :') + '</span><span class="line"></span>' + (v.unit ? '<span class="un">' + AUTO.rt(v.unit) + '</span>' : '') + '</div>';
+    if (t === 'libre') {
+      var h0 = '<div class="al"><span class="lab">' + (v.est ? 'Ton estimation :' : 'Réponse :') + '</span><span class="line"></span>' + (v.unit ? '<span class="un">' + AUTO.rt(v.unit) + '</span>' : '') + '</div>';
+      for (var k = 1; k < (lines || 1); k++) h0 += '<div class="al2"><span class="line"></span></div>';
+      return h0;
+    }
     if (t === 'vf') return '<div class="vf"><span><i class="cb"></i> Vrai</span><span><i class="cb"></i> Faux</span></div>';
     if (t === 'qx') return '<div class="qxr"><span class="lt">Étape fausse :</span>' + (v.choices || []).map(function (c) { return '<span><i class="cb"></i>' + c.replace(/^Étape\s*/, '') + '</span>'; }).join('') + '</div>';
     if (t === 'qcm') {
@@ -200,16 +218,11 @@
     if (S.scoreMode !== 'custom') return S.total;
     var t = 0; S.items.forEach(function (it) { t += it.pts !== undefined ? it.pts : 1; }); return Math.round(t * 100) / 100;
   }
-  function autoWork(v, chapId, mode) {
-    if (mode === 'none') return 0; if (mode === 'small') return 10; if (mode === 'medium') return 20; if (mode === 'large') return 35;
-    if (v.type === 'libre') { if (v.est) return 0; var w = v.d >= 3 ? 22 : v.d === 2 ? 14 : 9; return chapId === 'metiers' ? Math.max(w, 24) : w; }
-    return v.type === 'qx' ? 10 : 0;
-  }
-  /* réglages d’une question sur la feuille : espace, zone de calcul, points, consigne */
+  /* réglages d’une question sur la feuille : espace, lignes de réponse, points, consigne, taille, police */
   function qOpts(S, it, v) {
     var c = AUTO.chapterOf(cat, S.level, it.src, it.id), n = S.items.length;
     var pts = S.score && S.showPts ? (S.scoreMode === 'custom' ? (it.pts !== undefined ? it.pts : 1) : S.total / Math.max(1, n)) : null;
-    return { gap: it.gap !== undefined ? it.gap : S.gap, work: it.work !== undefined ? it.work : autoWork(v, c ? c.id : '', S.work), pts: pts, cons: S.cons, chap: c };
+    return { gap: it.gap !== undefined ? it.gap : S.gap, lines: it.lines !== undefined ? it.lines : S.lines, pts: pts, cons: S.cons, chap: c, size: it.size, font: it.font };
   }
   function insText(v) {
     if (v.type === 'qcm') return 'Une seule bonne réponse : coche-la.';
@@ -224,9 +237,9 @@
     var kick = o.cons && v.titre ? v.titre : '', pts = o.pts !== null && o.pts !== undefined ? '(' + ptsLabel(o.pts) + ')' : '';
     var qh = kick || pts ? '<div class="qh"><span class="qk">' + esc(kick) + '</span>' + (pts ? '<span class="pts">' + pts + '</span>' : '') + '</div>' : '';
     var ins = o.cons ? insText(v) : '';
-    return '<article class="qb t-' + v.type + '" data-i="' + i + '" style="margin-bottom:' + o.gap + 'mm"><div class="qn">' + (i + 1) + '</div><div class="qc">' + qh +
+    return '<article class="qb t-' + v.type + '" data-i="' + i + '" style="margin-bottom:' + o.gap + 'mm' + (o.size ? ';font-size:' + o.size + 'pt' : '') + (o.font ? ';font-family:' + fontCss(o.font) : '') + '"><div class="qn">' + (i + 1) + '</div><div class="qc">' + qh +
       (o.cons && v.cons ? '<div class="qcn">' + esc(v.cons) + '</div>' : '') + '<div class="qt">' + v.qHtml + '</div>' + (v.figHtml ? '<div class="fig">' + v.figHtml + '</div>' : '') +
-      (ins ? '<div class="ins">' + ins + '</div>' : '') + answerArea(v) + (o.work > 0 ? '<div class="wk" style="height:' + o.work + 'mm"><span>Calculs</span></div>' : '') + '</div></article>';
+      (ins ? '<div class="ins">' + ins + '</div>' : '') + answerArea(v, o.lines) + '</div></article>';
   }
   function chapHead(S, c, prev) {
     if (!S.heads || !c || (prev && prev.id === c.id)) return '';
@@ -253,7 +266,7 @@
       if (label !== 'corrige' && S.score) { var pp = S.total / Math.max(1, n); sc = '<div class="score"><div class="sl">Note</div><div class="sv"><i></i><span>/ ' + String(totalPts(S)).replace('.', ',') + '</span></div>' + (S.scoreMode === 'custom' ? '<div class="sp">barème par question</div>' : '<div class="sp">' + String(Math.round(pp * 100) / 100).replace('.', ',') + ' pt par question</div>') + '</div>'; }
       head = '<div class="ph first"><div class="band"><div class="bar"></div><div class="bt"><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div>' + sc + '</div>' + fields + (label !== 'corrige' && S.intro ? '<div class="intro">' + AUTO.rtUser(S.intro) + '</div>' : '') + '</div>';
     } else head = '<div class="ph slim"><span>' + AUTO.rtUser(tt) + '</span><span>' + levelInfo(S.level).court + '</span></div>';
-    p.innerHTML = head + '<div class="pb"></div><div class="pf"><span>Automatismes · Tom Rougeaud · CC BY-NC 4.0</span><span class="pn"></span></div>';
+    p.innerHTML = head + '<div class="pb"></div><div class="pf"><span>Automatismes de maths en lycée pro · Tom Rougeaud · CC BY-NC 4.0</span><span class="pn"></span></div>';
     return p;
   }
   function overflow(pb) { return pb.scrollHeight > pb.clientHeight + 1 || pb.scrollWidth > pb.clientWidth + 1; }
@@ -292,16 +305,50 @@
   function renderSheet() {
     var S = state.sheet;
     $('sTitle').value = S.title; $('sSub').value = S.subtitle; $('sFont').value = S.font; $('sSize').value = S.size; $('sSizeOut').textContent = S.size + ' pt';
-    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw; $('sGap').value = S.gap; $('sGapOut').textContent = S.gap + ' mm'; $('sScore').checked = S.score; $('sTotal').value = S.total; $('sScoreMode').value = S.scoreMode; $('sShowPts').checked = S.showPts; syncScoreUi();
-    $('sHeads').checked = S.heads; $('sCons').checked = S.cons; $('sWork').value = S.work; $('sIntro').value = S.intro;
+    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw;
+    $('sGap').value = S.gap; $('sGapOut').textContent = S.gap + ' mm'; $('sLines').value = String(S.lines);
+    $('sScore').checked = S.score; $('sScoreMode').value = S.scoreMode; $('sShowPts').checked = S.showPts; syncScoreUi();
+    $('sHeads').checked = S.heads; $('sCons').checked = S.cons; $('sIntro').value = S.intro;
     $('sContent').value = S.content; $('sExpl').checked = S.expl; $('sMode').value = S.mode;
     $('fileInfo').textContent = currentName(contentSuffix(S.content));
+    showTab(state.tab || 'titres');
     renderList(); renderPreview();
   }
+  var TABS = ['titres', 'police', 'espace', 'bareme', 'questions', 'fichier'];
+  function showTab(t) {
+    if (TABS.indexOf(t) < 0) t = 'titres'; state.tab = t;
+    Array.prototype.forEach.call(document.querySelectorAll('.tabbar button'), function (b) { b.setAttribute('aria-selected', b.dataset.tab === t ? 'true' : 'false'); });
+    Array.prototype.forEach.call(document.querySelectorAll('.tabpanel'), function (p) { p.hidden = p.dataset.panel !== t; });
+    save();
+  }
+  function itemPts(S, it) { return S.scoreMode === 'custom' ? (it.pts !== undefined ? it.pts : 1) : Math.round(S.total / Math.max(1, S.items.length) * 100) / 100; }
   function syncScoreUi() {
     var S = state.sheet; $('sScoreMode').disabled = !S.score; $('sShowPts').disabled = !S.score;
     $('sTotal').disabled = !S.score || S.scoreMode === 'custom';
     $('sTotal').value = S.scoreMode === 'custom' ? totalPts(S) : S.total;
+    $('ptsEqual').disabled = !S.score; $('ptsOne').disabled = !S.score;
+    $('ptsHint').textContent = !S.score ? 'Active l’encart de notation (case ci-dessus) pour régler les points.' : S.scoreMode === 'custom' ? 'Barème différencié : le total de l’encart est la somme des points.' : 'Barème identique. Change les points d’une question pour passer en barème différencié.';
+    renderPtsTable();
+  }
+  function renderPtsTable() {
+    var S = state.sheet, host = $('ptsTable'); host.innerHTML = '';
+    if (!S.score) return;
+    S.items.forEach(function (it, i) {
+      var v = qView(it, S.mode); if (!v) return; var txt = AUTO.plainSrc(v.qEdit); if (txt.length > 46) txt = txt.slice(0, 44) + '…';
+      var r = el('div', 'ptsrow'); r.innerHTML = '<b>' + (i + 1) + '</b><span title="' + esc(txt) + '">' + esc(txt) + '</span><input type="number" class="ptin" min="0" max="100" step="0.25" value="' + itemPts(S, it) + '" data-i="' + i + '" aria-label="Points de la question ' + (i + 1) + '">';
+      host.appendChild(r);
+    });
+    var t = el('div', 'ptstot', '<span>Total</span><span>' + String(totalPts(S)).replace('.', ',') + ' pts</span>'); host.appendChild(t);
+  }
+  /* modifie les points d’une question ; en barème identique, passe d’abord en barème différencié */
+  function setPts(i, val) {
+    var S = state.sheet, it = S.items[i]; if (!it) return;
+    if (S.scoreMode !== 'custom') {
+      var share = Math.max(0, Math.round(S.total / Math.max(1, S.items.length) * 4) / 4);
+      S.items.forEach(function (x) { x.pts = share; }); S.scoreMode = 'custom'; $('sScoreMode').value = 'custom';
+      toast('Barème différencié activé : le total de l’encart est maintenant la somme des points.', 'ok', 4200);
+    }
+    it.pts = clampPts(val);
   }
   function renderList() {
     var S = state.sheet, ul = $('qlist'); ul.innerHTML = '';
@@ -309,13 +356,16 @@
       var v = qView(it, S.mode); if (!v) return;
       var li = el('li', 'qcard'); li.draggable = true; li.dataset.i = i;
       var txt = AUTO.plainSrc(v.qEdit); if (txt.length > 120) txt = txt.slice(0, 118) + '…';
-      li.innerHTML = '<div class="num" title="Glisser pour déplacer">' + (i + 1) + '</div><div class="tx"><b>' + esc(v.titre) + (it.o && Object.keys(it.o).length ? ' · modifiée' : '') + ' · espace ' + (it.gap !== undefined ? it.gap : S.gap) + ' mm' + (it.gap !== undefined ? ' (perso)' : '') + '</b><span>' + esc(txt) + '</span></div>' +
-        '<div class="acts">' + (S.score && S.scoreMode === 'custom' ? '<label class="ptl" title="Points de cette question">Points <input type="number" class="ptin" min="0" max="100" step="0.25" value="' + (it.pts !== undefined ? it.pts : 1) + '" data-i="' + i + '" aria-label="Points de la question ' + (i + 1) + '"></label>' : '') + '<button class="ib" data-a="up" title="Monter" aria-label="Monter la question ' + (i + 1) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-a="down" title="Descendre" aria-label="Descendre la question ' + (i + 1) + '"' + (i === S.items.length - 1 ? ' disabled' : '') + '>↓</button>' +
-        '<button class="ib" data-a="gapm" title="Réduire l’espace sous cette question" aria-label="Réduire l’espace sous la question ' + (i + 1) + '">⇕−</button><button class="ib" data-a="gapp" title="Augmenter l’espace sous cette question" aria-label="Augmenter l’espace sous la question ' + (i + 1) + '">⇕+</button>' +
+      var edited = it.o && Object.keys(it.o).length ? ' · modifiée' : '';
+      li.innerHTML = '<div class="num" title="Glisser pour déplacer">' + (i + 1) + '</div><div class="tx"><b>' + esc(v.titre || 'Question') + edited + ' · espace ' + (it.gap !== undefined ? it.gap : S.gap) + ' mm' + (it.gap !== undefined ? ' (perso)' : '') + '</b><span>' + esc(txt) + '</span></div>' +
+        '<div class="acts">' + (S.score ? '<label class="ptl" title="Points de cette question">Points <input type="number" class="ptin" min="0" max="100" step="0.25" value="' + itemPts(S, it) + '" data-i="' + i + '" aria-label="Points de la question ' + (i + 1) + '"></label>' : '') +
+        '<button class="ib gapb" data-a="gapm" title="Réduire l’espace sous cette question" aria-label="Réduire l’espace sous la question ' + (i + 1) + '">⇕−</button><button class="ib gapb" data-a="gapp" title="Augmenter l’espace sous cette question" aria-label="Augmenter l’espace sous la question ' + (i + 1) + '">⇕+</button>' +
+        '<button class="ib" data-a="up" title="Monter" aria-label="Monter la question ' + (i + 1) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-a="down" title="Descendre" aria-label="Descendre la question ' + (i + 1) + '"' + (i === S.items.length - 1 ? ' disabled' : '') + '>↓</button>' +
         '<button class="ib" data-a="edit" title="Modifier" aria-label="Modifier la question ' + (i + 1) + '">✎</button><button class="ib" data-a="redo" title="Autre question de la même notion" aria-label="Retirer la question ' + (i + 1) + '">↻</button><button class="ib" data-a="del" title="Supprimer" aria-label="Supprimer la question ' + (i + 1) + '">🗑</button></div>';
       ul.appendChild(li);
     });
     $('count').textContent = S.items.length + ' question' + (S.items.length > 1 ? 's' : '');
+    renderPtsTable(); updateTop();
   }
   function schedulePreview() { clearTimeout(prevT); prevT = setTimeout(function () { renderPreview(); $('fileInfo').textContent = currentName(contentSuffix(state.sheet.content)); }, 160); save(); }
   function fitScale(box) { var w = box.clientWidth - 8; var px = 210 * 96 / 25.4; return Math.max(0.25, Math.min(1, w / px)); }
@@ -342,8 +392,11 @@
     $('eQ').value = v.qEdit; $('eA').value = v.aEdit; $('eE').value = v.eEdit; $('eFig').checked = !!(it.o && it.o.nofig); $('eFigRow').hidden = !v.hasFig;
     var o = qOpts(S, it, v);
     $('eGapAuto').checked = it.gap === undefined; $('eGap').value = o.gap; $('eGap').disabled = it.gap === undefined; $('eGapOut').textContent = o.gap + ' mm';
-    $('eWorkAuto').checked = it.work === undefined; $('eWork').value = o.work; $('eWork').disabled = it.work === undefined; $('eWorkOut').textContent = o.work + ' mm';
-    $('ePtsRow').hidden = !(S.score && S.scoreMode === 'custom'); $('ePts').value = it.pts !== undefined ? it.pts : 1;
+    $('eLinesAuto').checked = it.lines === undefined; $('eLines').value = o.lines; $('eLines').disabled = it.lines === undefined; $('eLinesOut').textContent = String(o.lines);
+    $('eSizeAuto').checked = it.size === undefined; $('eSize').value = it.size !== undefined ? it.size : S.size; $('eSize').disabled = it.size === undefined; $('eSizeOut').textContent = $('eSize').value + ' pt';
+    $('eFontAuto').checked = it.font === undefined; $('eFont').value = it.font !== undefined ? it.font : S.font; $('eFont').disabled = it.font === undefined;
+    $('ePtsRow').hidden = !S.score; $('ePts').value = itemPts(S, it);
+    $('ePtsHint').textContent = S.scoreMode === 'custom' ? 'Barème différencié.' : 'En changeant ce nombre, le barème devient différencié (les autres questions gardent leur part équitable).';
     $('eNum').textContent = String(i + 1);
     $('mEdit').classList.toggle('side', window.innerWidth >= 1100);
     updateEPrev(); openModal('mEdit'); setTimeout(function () { $('eQ').focus(); }, 30);
@@ -355,8 +408,10 @@
     if (q !== base.qEdit) o.q = q; if (a !== base.aEdit) o.a = a; if (e !== base.eEdit) o.e = e; if ($('eFig').checked) o.nofig = true;
     it.o = o;
     if ($('eGapAuto').checked) delete it.gap; else it.gap = clampN($('eGap').value, 0, 40, 5);
-    if ($('eWorkAuto').checked) delete it.work; else it.work = clampN($('eWork').value, 0, 80, 0);
-    if (S.score && S.scoreMode === 'custom') it.pts = clampPts($('ePts').value);
+    if ($('eLinesAuto').checked) delete it.lines; else it.lines = clampN($('eLines').value, 1, 8, 2);
+    if ($('eSizeAuto').checked) delete it.size; else it.size = clampN($('eSize').value, 8, 18, 11);
+    if ($('eFontAuto').checked) delete it.font; else it.font = $('eFont').value;
+    if (S.score) { var cur = itemPts(S, it), nv = clampPts($('ePts').value); if (S.scoreMode === 'custom' || Math.abs(nv - cur) > 0.001) setPts(editIdx, nv); }
     return it;
   }
   function updateEPrev() {
@@ -383,7 +438,7 @@
     S.items.forEach(function (x, k) { if (k !== i) { var N = AUTO.makeQuestion(x.src, x.id, x.seed); if (N) used[AUTO.signature(N)] = 1; } });
     for (var k = 1; k < 40; k++) {
       var seed = (it.seed + k * 104729 + Math.floor(Math.random() * 1e6)) >>> 0, N2 = AUTO.makeQuestion(it.src, it.id, seed);
-      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; ['gap', 'work', 'pts'].forEach(function (k) { if (it[k] !== undefined) S.items[i][k] = it[k]; }); save(); renderList(); renderPreview(); return; }
+      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; ['gap', 'lines', 'size', 'font', 'pts'].forEach(function (k) { if (it[k] !== undefined) S.items[i][k] = it[k]; }); save(); renderList(); renderPreview(); return; }
     }
     toast('Cette notion n’a pas d’autre question différente.', 'err');
   }
@@ -547,9 +602,16 @@
     $('sShowPts').addEventListener('change', function () { state.sheet.showPts = this.checked; schedulePreview(); });
     $('sHeads').addEventListener('change', function () { state.sheet.heads = this.checked; schedulePreview(); });
     $('sCons').addEventListener('change', function () { state.sheet.cons = this.checked; schedulePreview(); });
-    $('sWork').addEventListener('change', function () { state.sheet.work = this.value; schedulePreview(); });
+    $('sLines').addEventListener('change', function () { state.sheet.lines = clampN(this.value, 1, 8, 2); schedulePreview(); });
     $('sIntro').addEventListener('input', function () { state.sheet.intro = this.value.slice(0, 300); schedulePreview(); });
-    $('qlist').addEventListener('input', function (e) { var t = e.target; if (!t.classList || !t.classList.contains('ptin')) return; var it = state.sheet.items[+t.dataset.i]; if (!it) return; it.pts = clampPts(t.value); $('sTotal').value = totalPts(state.sheet); schedulePreview(); });
+    function ptsChange(e) {
+      var t = e.target; if (!t.classList || !t.classList.contains('ptin')) return;
+      setPts(+t.dataset.i, t.value); save(); syncScoreUi(); Array.prototype.forEach.call(document.querySelectorAll('#qlist .ptin'), function (x) { x.value = itemPts(state.sheet, state.sheet.items[+x.dataset.i]); }); schedulePreview();
+    }
+    $('qlist').addEventListener('change', ptsChange); $('ptsTable').addEventListener('change', ptsChange);
+    $('ptsEqual').addEventListener('click', function () { var S = state.sheet; S.scoreMode = 'equal'; S.items.forEach(function (x) { delete x.pts; }); $('sScoreMode').value = 'equal'; syncScoreUi(); renderList(); schedulePreview(); });
+    $('ptsOne').addEventListener('click', function () { var S = state.sheet; S.scoreMode = 'custom'; S.items.forEach(function (x) { x.pts = 1; }); $('sScoreMode').value = 'custom'; syncScoreUi(); renderList(); schedulePreview(); });
+    Array.prototype.forEach.call(document.querySelectorAll('.tabbar button'), function (b) { b.addEventListener('click', function () { showTab(b.dataset.tab); }); });
     $('sTotal').addEventListener('input', function () { var v = Math.round(+this.value); if (isFinite(v) && v >= 1) { state.sheet.total = Math.min(1000, v); schedulePreview(); } });
     $('sMode').addEventListener('change', function () { state.sheet.mode = this.value === 'qcm' ? 'qcm' : 'auto'; save(); renderList(); schedulePreview(); });
     $('qlist').addEventListener('click', function (e) {
@@ -575,8 +637,12 @@
     $('eFig').addEventListener('change', liveEdit);
     $('eGapAuto').addEventListener('change', function () { $('eGap').disabled = this.checked; liveEdit(); });
     $('eGap').addEventListener('input', function () { $('eGapOut').textContent = this.value + ' mm'; liveEdit(); });
-    $('eWorkAuto').addEventListener('change', function () { $('eWork').disabled = this.checked; liveEdit(); });
-    $('eWork').addEventListener('input', function () { $('eWorkOut').textContent = this.value + ' mm'; liveEdit(); });
+    $('eLinesAuto').addEventListener('change', function () { $('eLines').disabled = this.checked; liveEdit(); });
+    $('eLines').addEventListener('input', function () { $('eLinesOut').textContent = this.value; liveEdit(); });
+    $('eSizeAuto').addEventListener('change', function () { $('eSize').disabled = this.checked; liveEdit(); });
+    $('eSize').addEventListener('input', function () { $('eSizeOut').textContent = this.value + ' pt'; liveEdit(); });
+    $('eFontAuto').addEventListener('change', function () { $('eFont').disabled = this.checked; liveEdit(); });
+    $('eFont').addEventListener('change', liveEdit);
     $('ePts').addEventListener('input', liveEdit);
     Array.prototype.forEach.call(document.querySelectorAll('.modal'), function (m) { m.addEventListener('click', function (e) { if (e.target === m) { if (m.id === 'mEdit') cancelEdit(); else m.classList.remove('on'); } }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') Array.prototype.forEach.call(document.querySelectorAll('.modal.on'), function (m) { if (m.id === 'mEdit') cancelEdit(); else m.classList.remove('on'); }); });
@@ -590,8 +656,8 @@
     cat = AUTO.buildCatalogue(); state = loadState();
     var h = (location.hash || '').replace('#', ''); if (VIEWS.indexOf(h) >= 0) state.view = h;
     if (state.view === 'sheet' && !state.sheet.items.length) state.view = 'compose';
-    FONTS.forEach(function (f) { var o = el('option'); o.value = f[0]; o.textContent = f[2]; $('sFont').appendChild(o); });
-    bind(); setupInstall(); render();
+    FONTS.forEach(function (f) { var o = el('option'); o.value = f[0]; o.textContent = f[2]; $('sFont').appendChild(o); var o2 = el('option'); o2.value = f[0]; o2.textContent = f[2]; $('eFont').appendChild(o2); });
+    bind(); setupInstall(); render(); syncHH(); window.addEventListener('resize', syncHH);
     window.__auto = { state: function () { return state; }, cat: cat, buildPages: buildPages, rasterize: rasterize, makePdf: makePdf, exportPdf: exportPdf };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();

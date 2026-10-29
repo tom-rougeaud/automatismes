@@ -16,9 +16,10 @@ Les nombres sont tirés au hasard, les réponses sont calculées : chaque feuill
 
 ## Fonctions
 
-- **Questions** : 479 notions réparties sur 5 niveaux (avec figures), classées en chapitres. Un titre de chapitre, un thème et une consigne précèdent les questions ; place pour les calculs et barème (identique ou différencié) réglables.
+- **Questions** : 479 notions réparties sur 5 niveaux (avec figures), classées en chapitres. Un titre de chapitre, un thème et une consigne précèdent les questions ; 1 à 8 lignes de réponse (2 par défaut, pas d’encart de calcul), chaque question dans un cadre arrondi, barème identique ou différencié (points réglables par question).
 - **Types de questions** : réponse libre, QCM, vrai/faux, association, mise en ordre, estimation, étape fausse à repérer.
 - **Édition** : glisser-déposer ou ↑ ↓, modifier l’énoncé, la réponse et l’explication (formules entre `$…$`), masquer une figure, autre question de la même notion, ajout, suppression.
+- **Interface** : boutons PDF / Imprimer / Exporter figés en haut de « Ma feuille » ; réglages rangés en onglets colorés (Titres, Police, Espacement, Barème, Questions, Fichier) ; police Trebuchet MS par défaut (police du système : remplacée par Nunito là où elle n’est pas installée).
 - **Présentation** : titre, sous-titre, police, taille, 1 ou 2 colonnes, champs Nom/Classe/Date, noir et blanc.
 - **Sorties** : PDF (pages A4 en images nettes), impression (PDF vectoriel via le navigateur), export et import de la feuille en `.json` (liste des questions et graines de tirage).
 - **Installable** sur l’écran d’accueil (PWA), utilisable hors connexion.
