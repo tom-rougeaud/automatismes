@@ -58,25 +58,45 @@ var AUTO = (function () {
     return h.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
   }
 
-  /* ───────── catalogue unifié 2de pro ───────── */
-  var CHAPS_2DE = [
-    { id: 'c1', num: 1, slug: 'prix-marges-tva', titre: '1 · Prix, marges et TVA (pourcentages, évolutions)' },
-    { id: 'c2', num: 2, slug: 'statistique', titre: '2 · Statistique' },
-    { id: 'c3', num: 3, slug: 'premier-degre', titre: '3 · Premier degré (équations, inéquations, calcul littéral)' },
-    { id: 'c4', num: 4, slug: 'factures-interets', titre: '4 · Factures, réductions, intérêts' },
-    { id: 'c5', num: 5, slug: 'fonctions', titre: '5 · Fonctions' },
-    { id: 'c6', num: 6, slug: 'probabilites', titre: '6 · Probabilités' },
-    { id: 'c7', num: 7, slug: 'geometrie', titre: '7 · Géométrie, grandeurs et mesures' },
-    { id: 'c8', num: 8, slug: 'croisement-variables', titre: '8 · Croisement de deux variables' },
-    { id: 'metiers', num: 9, slug: 'problemes-metiers', titre: 'Problèmes des métiers (plusieurs étapes)' },
-    { id: 'algo', num: 10, slug: 'algorithmique-tableur', titre: 'Algorithmique et tableur' }
-  ];
-  /* chapitres de Flash Maths → chapitres unifiés */
-  var FLASH_CHAP = {
-    'Proportionnalité et pourcentages': 'c1', 'Statistiques': 'c2',
-    'Équations et calcul littéral': 'c3', 'Fonctions affines et linéaires': 'c5', 'Grandeurs, mesures et volumes': 'c7',
-    'Géométrie et trigonométrie': 'c7', 'Problèmes des métiers (plusieurs étapes)': 'metiers', 'Algorithmique et tableur': 'algo'
+  /* ───────── niveaux et chapitres ───────── */
+  var FC = {  /* correspondance des chapitres de la banque → chapitres de l’appli */
+    nb: 'Calcul mental et automatismes', prop: 'Proportionnalité et pourcentages', stat: 'Statistiques', equa: 'Équations et calcul littéral',
+    fonc: 'Fonctions affines et linéaires', gran: 'Grandeurs, mesures et volumes', geo: 'Géométrie et trigonométrie', metiers: 'Problèmes des métiers (plusieurs étapes)', algo: 'Algorithmique et tableur'
   };
+  function T(id, titre, slg) { return { id: id, titre: titre, slug: slg || slug(titre.replace(/ \(.*$/, '')) }; }
+  var COMMUN = { nb: T('nb', 'Nombres et calculs', 'nombres-calculs'), metiers: T('metiers', 'Problèmes des métiers (plusieurs étapes)', 'problemes-metiers'), algo: T('algo', 'Algorithmique et tableur', 'algorithmique-tableur'),
+    geop: T('geop', 'Géométrie plane', 'geometrie-plane'), espace: T('espace', 'Géométrie dans l’espace', 'geometrie-espace') };
+  function numbered(arr) { return arr.map(function (t, i) { return T('c' + (i + 1), (i + 1) + ' · ' + t, slug(t.replace(/ \(.*$/, '').split(' : ')[0])); }); }
+  var LEVELS = [
+    { id: 'cap', label: 'CAP', court: 'CAP', niv: 'cap',
+      chaps: [COMMUN.nb, T('prop', 'Proportionnalité et pourcentages', 'proportionnalite-pourcentages'), T('stat', 'Statistiques', 'statistiques'), T('equa', 'Équations et calcul littéral', 'equations-calcul-litteral'),
+        T('fonc', 'Fonctions', 'fonctions'), T('gran', 'Grandeurs, mesures et volumes', 'grandeurs-mesures-volumes'), T('geo', 'Géométrie et trigonométrie', 'geometrie-trigonometrie'), COMMUN.metiers, COMMUN.algo],
+      fmap: {} },
+    { id: '3pm', label: '3ᵉ Prépa-Métiers', court: '3PM', niv: '3pm', auto: 'a3',
+      chaps: numbered(['Nombres entiers et arithmétique', 'Fractions, puissances de 10 et écriture scientifique', 'Calcul littéral et équations', 'Proportionnalité, pourcentages, grandeurs composées', 'Fonctions', 'Statistiques',
+        'Probabilités', 'Théorème de Pythagore et trigonométrie', 'Échelles, agrandissements, réductions et Thalès', 'Espace et transformations (volumes)']).concat([COMMUN.metiers, COMMUN.algo]),
+      fmap: { 'Calcul mental et automatismes': 'c2', 'Proportionnalité et pourcentages': 'c4', 'Grandeurs, mesures et volumes': 'c10', 'Géométrie et trigonométrie': 'c8', 'Statistiques': 'c6', 'Équations et calcul littéral': 'c3',
+        'Fonctions affines et linéaires': 'c5', 'Problèmes des métiers (plusieurs étapes)': 'metiers', 'Algorithmique et tableur': 'algo' } },
+    { id: '2de', label: '2de Bac Pro', court: '2de pro', niv: '2nde', mcv: true,
+      chaps: [COMMUN.nb, T('c1', '1 · Prix, marges et TVA (pourcentages, évolutions)', 'prix-marges-tva'), T('c2', '2 · Statistiques', 'statistiques'), T('c3', '3 · Premier degré (équations, inéquations, calcul littéral)', 'premier-degre'),
+        T('c4', '4 · Factures, réductions, intérêts', 'factures-interets'), T('c5', '5 · Fonctions', 'fonctions'), T('c6', '6 · Probabilités', 'probabilites'), T('c7', '7 · Géométrie, grandeurs et mesures', 'geometrie'),
+        T('c8', '8 · Croisement de deux variables', 'croisement-variables'), COMMUN.metiers, COMMUN.algo],
+      fmap: { 'Calcul mental et automatismes': 'nb', 'Proportionnalité et pourcentages': 'c1', 'Statistiques': 'c2', 'Équations et calcul littéral': 'c3', 'Fonctions affines et linéaires': 'c5', 'Grandeurs, mesures et volumes': 'c7',
+        'Géométrie et trigonométrie': 'c7', 'Problèmes des métiers (plusieurs étapes)': 'metiers', 'Algorithmique et tableur': 'algo' } },
+    { id: '1re', label: '1ʳᵉ pro', court: '1re pro', niv: '1re', auto: 'a1',
+      chaps: numbered(['Calculs commerciaux et financiers', 'Résolution graphique', 'Fonctions du second degré', 'Dérivation', 'Suites numériques', 'Statistique à deux variables', 'Probabilités', 'Géométrie dans l’espace']).concat([COMMUN.geop, COMMUN.metiers]),
+      fmap: { 'Évolutions et calcul économique': 'c1', 'Proportionnalité et pourcentages': 'c1', 'Statistiques et probabilités': 'c6', 'Statistiques': 'c6', 'Fonctions numériques': 'c2', 'Fonctions affines et linéaires': 'c2', 'Équations et calcul littéral': 'c3',
+        'Géométrie plane': 'geop', 'Géométrie et trigonométrie': 'geop', 'Grandeurs, mesures et volumes': 'c8', 'Problèmes des métiers (plusieurs étapes)': 'metiers' } },
+    { id: 'tle', label: 'Tle pro', court: 'Tle pro', niv: 'term', auto: 'aT',
+      chaps: numbered(['Suites numériques', 'Calculs commerciaux et financiers', 'Fonctions polynômes de degré 3', 'Fonctions exponentielles et logarithme décimal', 'Statistique à deux variables', 'Probabilités', 'Exponentielle de base e et logarithme népérien']).concat([COMMUN.espace]),
+      fmap: { 'Suites numériques': 'c1', 'Dérivation et optimisation': 'c3', 'Fonctions numériques': 'c4', 'Statistiques et probabilités': 'c6', 'Probabilités': 'c6', 'Géométrie dans l’espace': 'espace', 'Grandeurs, mesures et volumes': 'espace' } }
+  ];
+  (function () { var f = {}; Object.keys(FC).forEach(function (k) { f[FC[k]] = k; }); LEVELS[0].fmap = f; })();
+  function levelDef(id) { return LEVELS.filter(function (l) { return l.id === id; })[0] || null; }
+  function chapDef(levelId, chapId) { var l = levelDef(levelId); if (!l) return null; return l.chaps.filter(function (c) { return c.id === chapId; })[0] || null; }
+  function isLevel(id) { return !!levelDef(id); }
+  function isChap(levelId, chapId) { return !!chapDef(levelId, chapId); }
+
   /* générateurs Maths et MCV 2de : chapitre + intitulé */
   var MCV = {
     pctOf: ['c1', 'Pourcentage d’une quantité'], prop: ['c1', 'Calculer un pourcentage (part sur total)'], ecrit: ['c1', 'Passer de % à décimal et inversement'],
@@ -105,20 +125,74 @@ var AUTO = (function () {
     tcParmi: ['c8', 'Lire « parmi les… »'], tcCompare: ['c8', 'Comparer deux taux']
   };
 
+  /* consignes : une phrase qui donne le contexte des questions très courtes (générateurs de calcul rapide) */
+  var CONS = {
+    pctOf: 'Calcule le pourcentage d’une quantité.', prop: 'Exprime cette part en pourcentage (« a sur b »).', ecrit: 'Complète : passe de l’écriture décimale à l’écriture en pourcentage (ou l’inverse).',
+    cmOf: 'Donne le coefficient multiplicateur (CM) associé à cette évolution.', evolOf: 'Donne l’évolution en pourcentage associée à ce coefficient multiplicateur (hausse ou baisse).',
+    apply: 'Calcule la nouvelle valeur après cette hausse ou cette baisse.', taux: 'Calcule le taux d’évolution entre la valeur de départ et la valeur d’arrivée.',
+    succ: 'Deux évolutions se suivent. Calcule le taux d’évolution global.', depart: 'Retrouve la valeur de départ, avant l’évolution.',
+    ht2ttc: 'Calcule le prix TTC à partir du prix HT.', ttc2ht: 'Calcule le prix HT à partir du prix TTC.', tva6: 'Calcule le montant de la TVA contenue dans ce prix TTC.',
+    marge: 'Calcule le taux demandé, en pourcentage.', og1: 'Sans calculatrice, donne un ordre de grandeur du prix après la remise.',
+    moy: 'Calcule la moyenne de cette série.', moyP: 'Calcule la moyenne pondérée de cette série.', med: 'Détermine la médiane de cette série (range d’abord les valeurs).',
+    etendue: 'Calcule l’étendue de cette série.', q1: 'Détermine le premier quartile de cette série.', q3: 'Détermine le troisième quartile de cette série.', eiq: 'Calcule l’écart interquartile de cette série.',
+    freq: 'Calcule la fréquence, en pourcentage.', angle: 'Dans un diagramme circulaire, calcule l’angle du secteur qui correspond à cette fréquence.',
+    sigma: 'Avec la calculatrice, détermine l’écart type de cette série.', mode: 'Détermine le mode (la valeur la plus fréquente) de cette série.',
+    eq1: 'Résous l’équation.', eq2: 'Résous l’équation.', eq3: 'Résous l’équation.', ineq: 'Résous l’inéquation.', trad: 'Traduis ce problème par une équation, puis résous-la.',
+    estSol: 'Teste si ce nombre est solution de l’équation (remplace x par ce nombre).', ivl: 'Écris cet encadrement sous la forme d’un intervalle.',
+    remise: 'Calcule le prix net après la remise.', remises2: 'Calcule le net commercial après les deux remises successives.', factTTC: 'Calcule le total TTC de cette facture.',
+    intA: 'Calcule les intérêts simples produits (durée en années).', intM: 'Calcule les intérêts simples produits (durée en mois).', intJ: 'Calcule les intérêts simples produits (durée en jours).',
+    valAc: 'Calcule la valeur acquise (capital + intérêts).', tauxI: 'Calcule le taux d’intérêt annuel.', dureeI: 'Calcule la durée du placement, en mois.',
+    imAff: 'Calcule l’image de ce nombre par la fonction.', imCar: 'Calcule l’image de ce nombre par la fonction.', antAff: 'Détermine l’antécédent de ce nombre par la fonction.',
+    coefDir: 'Calcule le coefficient directeur (la pente) de la droite.', ordOr: 'Détermine l’ordonnée à l’origine de la droite (équation y = ax + b).',
+    lin: 'Dans cette situation de proportionnalité, calcule le coefficient demandé.', sens: 'Indique le sens de variation de cette fonction affine (croissante ou décroissante).',
+    appart: 'Ce point appartient-il à la droite ? Remplace x et y dans l’équation.',
+    proba: 'Dans une situation d’équiprobabilité, calcule la probabilité de l’événement.', probaFr: 'Calcule la probabilité de l’événement.', contraire: 'Calcule la probabilité de l’événement contraire.',
+    freqObs: 'Calcule la fréquence observée.', denomb: 'Dénombre les possibilités (principe multiplicatif).', de2: 'On lance deux dés à six faces. Dénombre les issues demandées.',
+    pytH: 'Dans un triangle rectangle, calcule l’hypoténuse (théorème de Pythagore).', pytC: 'Dans un triangle rectangle, calcule le côté manquant (théorème de Pythagore).',
+    pytD: 'Dans un triangle rectangle, calcule l’hypoténuse (valeur approchée, théorème de Pythagore).', recip: 'Avec la réciproque du théorème de Pythagore : ce triangle est-il rectangle ?',
+    thales: 'Avec le théorème de Thalès, calcule la longueur demandée.', aireR: 'Calcule l’aire de cette figure.', aireD: 'Calcule l’aire de ce disque.',
+    volP: 'Calcule le volume de ce solide (attention aux unités).', volC: 'Calcule le volume de ce cylindre.', agr: 'Cette figure est agrandie (ou réduite). Calcule la nouvelle aire.', conv: 'Convertis.',
+    tcMarg: 'Dans un tableau croisé d’effectifs, donne l’effectif marginal demandé.', tcCase: 'Complète le tableau croisé : retrouve l’effectif de la case demandée.',
+    tcPct: 'Retrouve l’effectif à partir du pourcentage.', tcFreq: 'Calcule la fréquence de cette case par rapport à l’effectif total.', tcCond: 'Calcule la fréquence conditionnelle demandée.',
+    tcSum: 'Dans un tableau de fréquences, complète la case manquante (le total fait 100 %).', tcParmi: 'Lis bien « parmi les… » : par quel effectif faut-il diviser ?', tcCompare: 'Compare les deux taux pour choisir le meilleur.'
+  };
+
+  /* ───────── catalogue unifié (5 niveaux) ───────── */
+  var AM = {};  /* modules d’automatismes des manuels : a3 (3ᵉ), a1 (1re), aT (Tle) */
+  function autoSample(mod, cid, k) { try { var q = mod.gen(cid, 3)[k]; return q ? plain(q.t).slice(0, 78) : ''; } catch (e) { return ''; } }
   function buildCatalogue() {
-    var chaps = {}; var out = CHAPS_2DE.map(function (c) { var o = { id: c.id, num: c.num, slug: c.slug, titre: c.titre, items: [] }; chaps[c.id] = o; return o; });
-    FE.BANK.forEach(function (it) {
-      if (it.niv.indexOf('2nde') < 0) return;
-      var cid = FLASH_CHAP[it.chap]; if (!cid) return;
-      chaps[cid].items.push({ key: 'f:' + it.id, src: 'flash', id: it.id, titre: it.titre, d: it.d || 1, cours: !!it.cours, chap: cid });
+    var levels = LEVELS.map(function (L) {
+      var chaps = {}, out = L.chaps.map(function (c) { var o = { id: c.id, slug: c.slug, titre: c.titre, items: [] }; chaps[c.id] = o; return o; });
+      FE.BANK.forEach(function (it) {
+        if (it.niv.indexOf(L.niv) < 0) return;
+        var cid = L.fmap[it.chap];
+        if (!cid || !chaps[cid]) return;
+        chaps[cid].items.push({ key: 'f:' + L.id + ':' + it.id, src: 'flash', id: it.id, titre: it.titre, d: it.d || 1, cours: !!it.cours, chap: cid, level: L.id });
+      });
+      if (L.mcv) Object.keys(MC.G).forEach(function (id) {
+        var m = MCV[id]; if (!m || !chaps[m[0]]) return;
+        chaps[m[0]].items.push({ key: 'm:' + L.id + ':' + id, src: 'mcv', id: id, titre: m[1], d: 1, cours: false, chap: m[0], level: L.id });
+      });
+      if (L.auto && AM[L.auto]) Object.keys(AM[L.auto].A).forEach(function (cid) {
+        if (!chaps[cid]) return;
+        var n = 0; try { n = AM[L.auto].gen(cid, 1).length; } catch (e) { n = 0; }
+        for (var k = 0; k < n; k++) {
+          var id = L.auto + ':' + cid + ':' + k;
+          chaps[cid].items.push({ key: 'a:' + L.id + ':' + id, src: 'auto', id: id, titre: autoSample(AM[L.auto], cid, k) || ('Question ' + (k + 1)), d: 1, cours: false, chap: cid, level: L.id });
+        }
+      });
+      return { id: L.id, label: L.label, court: L.court, chapters: out.filter(function (c) { return c.items.length; }) };
     });
-    Object.keys(MC.G).forEach(function (id) {
-      var m = MCV[id]; if (!m) return;
-      chaps[m[0]].items.push({ key: 'm:' + id, src: 'mcv', id: id, titre: m[1], d: 1, cours: false, chap: m[0] });
-    });
-    return { levels: [{ id: '2de', label: '2de Bac Pro', court: '2de pro', chapters: out.filter(function (c) { return c.items.length; }) }] };
+    return { levels: levels };
   }
+  function keyOf(levelId, src, id) { return (src === 'flash' ? 'f:' : src === 'mcv' ? 'm:' : 'a:') + levelId + ':' + id; }
   function itemByKey(cat, key) { var r = null; cat.levels.forEach(function (l) { l.chapters.forEach(function (c) { c.items.forEach(function (it) { if (it.key === key) r = it; }); }); }); return r; }
+  /* chapitre d’une question dans un niveau : { id, titre, rang } */
+  function chapterOf(cat, levelId, src, id) {
+    var k = keyOf(levelId, src, id), res = null;
+    cat.levels.forEach(function (l) { l.chapters.forEach(function (c, i) { c.items.forEach(function (it) { if (it.key === k) res = { id: c.id, titre: c.titre, rang: i }; }); }); });
+    return res;
+  }
 
   /* ───────── fabrication d’une question normalisée ───────── */
   var LETTERS = 'ABCDEFGH';
@@ -154,18 +228,32 @@ var AUTO = (function () {
     N.ansIsHtml = true;
     return N;
   }
-  function makeQuestion(src, id, seed) { try { return src === 'flash' ? makeFlash(id, seed) : makeMcv(id, seed); } catch (e) { return null; } }
+  function makeAuto(id, seed) {
+    var p = String(id).split(':'), mod = AM[p[0]]; if (!mod) return null;
+    var q = mod.gen(p[1], seed >>> 0)[+p[2]]; if (!q) return null;
+    var N = { src: 'auto', id: id, seed: seed, titre: '', d: 1, unit: '', qRaw: q.t, explRaw: q.x || '', figHtml: '', rawIsHtml: false, tags: true, ansRaw: String(q.a), numeric: false };
+    if (q.choices) { N.type = 'qcm'; N.choices = q.choices.slice(); N.ans = q.ok; N.ansRaw = String(q.choices[q.ok]); }
+    else { N.type = 'libre'; N.numeric = true; }
+    return N;
+  }
+  function makeQuestion(src, id, seed) {
+    try {
+      var N = src === 'flash' ? makeFlash(id, seed) : src === 'mcv' ? makeMcv(id, seed) : src === 'auto' ? makeAuto(id, seed) : null;
+      if (N && src === 'mcv' && CONS[id]) N.cons = CONS[id];
+      return N;
+    } catch (e) { return null; }
+  }
 
   /* rendu final d’une question (avec modifications éventuelles) → champs HTML prêts pour la page */
   function view(N, over, mode) {
     over = over || {};
-    var V = { type: N.type, titre: N.titre, src: N.src, id: N.id };
+    var V = { type: N.type, titre: N.titre, src: N.src, id: N.id, cons: N.cons || '' };
     var qEditable = N.rawIsHtml ? htmlToEdit(N.qRaw) : String(N.qRaw);
     V.qEdit = over.q !== undefined ? over.q : qEditable;
-    V.qHtml = over.q !== undefined ? rtUser(over.q) : (N.rawIsHtml ? N.qRaw : rt(N.qRaw));
+    V.qHtml = over.q !== undefined ? rtUser(over.q) : (N.rawIsHtml ? N.qRaw : N.tags ? rtUser(N.qRaw) : rt(N.qRaw));
     var aEdit = N.ansIsHtml ? htmlToEdit(N.mcvA ? N.mcvA : N.ansRaw) : String(N.ansRaw);
     V.aEdit = over.a !== undefined ? over.a : aEdit;
-    V.aHtml = over.a !== undefined ? rtUser(over.a) : (N.ansIsHtml ? (N.mcvA ? N.mcvA : N.ansRaw) : rt(N.ansRaw));
+    V.aHtml = over.a !== undefined ? rtUser(over.a) : (N.ansIsHtml ? (N.mcvA ? N.mcvA : N.ansRaw) : N.tags ? rtUser(N.ansRaw) : rt(N.ansRaw));
     V.eEdit = over.e !== undefined ? over.e : String(N.explRaw || '');
     V.eHtml = N.explRaw || over.e !== undefined ? rtUser(V.eEdit) : '';
     V.figHtml = over.nofig ? '' : N.figHtml;
@@ -174,7 +262,7 @@ var AUTO = (function () {
     var t = N.type;
     if (t === 'qcm' && mode !== 'qcm' && N.numeric) t = 'libre';
     V.type = t;
-    if (t === 'qcm' || t === 'qx') V.choices = (N.choices || []).map(function (c) { return N.rawIsHtml ? c : rt(c); });
+    if (t === 'qcm' || t === 'qx') V.choices = (N.choices || []).map(function (c) { return N.rawIsHtml ? c : N.tags ? rtUser(c) : rt(c); });
     if (t === 'assoc') { V.L = N.L.map(rt); V.R = N.R.map(rt); }
     if (t === 'ordre') { V.D = N.D.map(rt); V.how = N.how; }
     if (t === 'qx') V.choices = (N.choices || []).map(function (c) { return rt(c); });
@@ -210,18 +298,19 @@ var AUTO = (function () {
   function signature(N) { return plain(N.rawIsHtml ? N.qRaw : rt(N.qRaw)) + '|' + (N.figHtml ? N.figHtml.length : 0); }
 
   /* nom de fichier : niveau_chapitres_nombre-questions */
-  function fileName(level, chapIds, n, suffix) {
-    var names = chapIds.map(function (id) { var c = CHAPS_2DE.filter(function (x) { return x.id === id; })[0]; return c ? c.slug : (slug(id) || 'chapitre'); });
+  function fileName(levelId, chapIds, n, suffix) {
+    var L = levelDef(levelId) || LEVELS[2], lv = slug(L.court);
+    var names = chapIds.map(function (id) { var c = chapDef(L.id, id); return c ? c.slug : (slug(id) || 'chapitre'); });
     var chap = names.length === 0 ? 'sans-chapitre' : names.length <= 3 ? names.join('+') : names.length + '-chapitres';
-    return level + '_' + chap + '_' + n + '-question' + (n > 1 ? 's' : '') + (suffix || '') + '.pdf';
+    return lv + '_' + chap + '_' + n + '-question' + (n > 1 ? 's' : '') + (suffix || '') + '.pdf';
   }
 
   return {
-    init: function (o) { FE = o.FE; MC = o.MC; KX = o.katex || null; RT = {}; },
+    init: function (o) { FE = o.FE; MC = o.MC; KX = o.katex || null; RT = {}; AM = o.AM || {}; },
     setKatex: function (k) { KX = k; RT = {}; },
     esc: esc, rt: rt, rtUser: rtUser, plain: plain, plainSrc: plainSrc, slug: slug, mulberry32: mulberry32, shuffle: shuffle,
     buildCatalogue: buildCatalogue, itemByKey: itemByKey, makeQuestion: makeQuestion, view: view, draw: draw, signature: signature,
-    fileName: fileName, htmlToEdit: htmlToEdit, CHAPS_2DE: CHAPS_2DE, LETTERS: LETTERS
+    fileName: fileName, htmlToEdit: htmlToEdit, LEVELS: LEVELS, levelDef: levelDef, chapDef: chapDef, isLevel: isLevel, isChap: isChap, keyOf: keyOf, chapterOf: chapterOf, LETTERS: LETTERS
   };
 })();
 if (typeof module !== 'undefined') module.exports = AUTO;

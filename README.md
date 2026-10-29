@@ -9,14 +9,14 @@ Les nombres sont tirés au hasard, les réponses sont calculées : chaque feuill
 
 ## En bref
 
-1. On coche des chapitres ou des notions (2de pro pour le pilote) et un nombre de questions.
+1. On coche des chapitres ou des notions (CAP, 3ᵉ Prépa-Métiers, 2de pro, 1re pro, Tle pro) et un nombre de questions.
 2. On obtient une feuille A4 avec figures, tableaux et graphiques, et son corrigé.
 3. On déplace, modifie, remplace ou ajoute des questions, on règle le titre, la police et la taille.
 4. On télécharge un PDF nommé `niveau_chapitres_nombre-questions.pdf`, ou on imprime.
 
 ## Fonctions
 
-- **Questions** : 159 notions de 2de pro (avec figures), classées en 10 chapitres par thème du programme. Pas de chapitre « automatismes » à part : toute la feuille est un exerciseur d’automatismes.
+- **Questions** : 479 notions réparties sur 5 niveaux (avec figures), classées en chapitres. Un titre de chapitre, un thème et une consigne précèdent les questions ; place pour les calculs et barème (identique ou différencié) réglables.
 - **Types de questions** : réponse libre, QCM, vrai/faux, association, mise en ordre, estimation, étape fausse à repérer.
 - **Édition** : glisser-déposer ou ↑ ↓, modifier l’énoncé, la réponse et l’explication (formules entre `$…$`), masquer une figure, autre question de la même notion, ajout, suppression.
 - **Présentation** : titre, sous-titre, police, taille, 1 ou 2 colonnes, champs Nom/Classe/Date, noir et blanc.

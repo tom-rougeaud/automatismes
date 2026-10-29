@@ -3,8 +3,13 @@
 const fs = require('fs'), path = require('path');
 const R = (p) => fs.readFileSync(path.join(__dirname, p), 'utf8');
 const safe = (js) => js.replace(/<\/script/gi, '<\\/script');
-const VERSION = 'v1';
+const VERSION = 'v2';
 let html = R('src/index.template.html');
+/* automatismes des manuels (3ᵉ, 1re, Tle) : chaque module est isolé avec son propre fichier d’outils */
+function mods() {
+  const one = (d, v) => `${v}:(function(){var module={exports:{}};${R('sources/' + d + '/gens.js')}\nvar gm=module.exports;module={exports:{}};var require=function(){return gm;};${R('sources/' + d + '/auto.js')}\nreturn module.exports;})()`;
+  return 'window.MCA={' + [one('auto3', 'a3'), one('auto1', 'a1'), one('autoT', 'aT')].join(',') + '};';
+}
 const parts = {
   FONTS: R('src/vendor/nunito.css') + '\n' + R('src/vendor/katex.css'),
   SHEETCSS: R('src/sheet.css'),
@@ -13,6 +18,7 @@ const parts = {
   KATEX: safe(R('src/vendor/katex.min.js')),
   FLASHENGINE: safe(R('sources/flash/engine_body.js')),
   MCVGENS: safe(R('sources/mcv2de/gens.js')),
+  MCAMODS: safe(mods()),
   CORE: safe(R('src/core.js').replace(/\nif \(typeof module[^\n]*\n?$/, '\n')),
   APP: safe(R('src/app.js'))
 };

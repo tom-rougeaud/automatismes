@@ -28,7 +28,7 @@
   /* ───────── état ───────── */
   var cat, state, toastT = null;
   function defSheet() {
-    return { title: 'Automatismes', subtitle: '', items: [], font: 'Nunito', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de', gap: 5, score: false, total: 20 };
+    return { title: 'Automatismes', subtitle: '', items: [], font: 'Nunito', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de', gap: 5, heads: true, cons: true, work: 'auto', intro: '', score: false, total: 20, scoreMode: 'equal', showPts: true };
   }
   function defState() { return { view: 'compose', level: '2de', sel: {}, n: 12, mode: 'auto', sheet: defSheet(), openChaps: {} }; }
   function loadState() {
@@ -38,6 +38,7 @@
   }
   var saveT = null;
   function save() { clearTimeout(saveT); saveT = setTimeout(function () { try { store.set('state', JSON.stringify(state)); } catch (e) { } }, 250); }
+  function clampPts(v) { v = +v; return isFinite(v) ? Math.max(0, Math.min(100, Math.round(v * 4) / 4)) : 1; }
   function clampN(v, a, b, d) { v = +v; return isFinite(v) ? Math.max(a, Math.min(b, Math.round(v))) : d; }
   function sanitizeSheet(o) {
     if (!o || typeof o !== 'object') return null;
@@ -47,12 +48,16 @@
     s.size = clampN(o.size, 8, 18, 11); s.cols = o.cols === 2 ? 2 : 1;
     s.nom = o.nom !== false; s.date = o.date !== false; s.classe = o.classe !== false; s.bw = !!o.bw; s.expl = o.expl !== false;
     s.content = ['feuille', 'both', 'corrige'].indexOf(o.content) >= 0 ? o.content : 'feuille';
+    s.level = AUTO.isLevel(o.level) ? o.level : '2de';
     s.gap = clampN(o.gap, 0, 30, 5); s.score = !!o.score; s.total = clampN(o.total, 1, 1000, 20);
+    s.heads = o.heads !== false; s.cons = o.cons !== false; s.showPts = o.showPts !== false;
+    s.work = ['none', 'auto', 'small', 'medium', 'large'].indexOf(o.work) >= 0 ? o.work : 'auto';
+    s.scoreMode = o.scoreMode === 'custom' ? 'custom' : 'equal'; s.intro = String(o.intro || '').slice(0, 300);
     s.mode = o.mode === 'qcm' ? 'qcm' : 'auto'; s.seed = clampN(o.seed, 1, 2147483646, 1);
-    s.chapIds = Array.isArray(o.chapIds) ? o.chapIds.filter(function (x) { return AUTO.CHAPS_2DE.some(function (c) { return c.id === x; }); }).slice(0, 20) : [];
+    s.chapIds = Array.isArray(o.chapIds) ? o.chapIds.filter(function (x) { return AUTO.isChap(s.level, x); }).slice(0, 20) : [];
     s.items = [];
     (Array.isArray(o.items) ? o.items : []).slice(0, 100).forEach(function (it) {
-      if (!it || (it.src !== 'flash' && it.src !== 'mcv') || typeof it.id !== 'string' || !AUTO.itemByKey(cat, (it.src === 'flash' ? 'f:' : 'm:') + it.id)) return;
+      if (!it || ['flash', 'mcv', 'auto'].indexOf(it.src) < 0 || typeof it.id !== 'string' || !AUTO.itemByKey(cat, AUTO.keyOf(s.level, it.src, it.id))) return;
       var seed = clampN(it.seed, 0, 4294967295, 1), over = {};
       if (it.o && typeof it.o === 'object') {
         if (typeof it.o.q === 'string') over.q = it.o.q.slice(0, 1500);
@@ -62,6 +67,8 @@
       }
       var row = { src: it.src, id: it.id, seed: seed, o: over };
       if (it.gap !== undefined && it.gap !== null && isFinite(+it.gap)) row.gap = clampN(it.gap, 0, 40, 5);
+      if (it.work !== undefined && it.work !== null && isFinite(+it.work)) row.work = clampN(it.work, 0, 80, 0);
+      if (it.pts !== undefined && it.pts !== null && isFinite(+it.pts)) row.pts = clampPts(it.pts);
       s.items.push(row);
     });
     return s;
@@ -133,8 +140,9 @@
     $('mode').value = state.mode;
     updateCompose();
     var ch = $('levels'); ch.innerHTML = '';
-    [['2de', '2de pro', true], ['cap', 'CAP', false], ['3pm', '3ᵉ Prépa-Métiers', false], ['1re', '1ʳᵉ pro', false], ['tle', 'Tle pro', false]].forEach(function (L) {
-      var b = el('button', 'chip', esc(L[1]) + (L[2] ? '' : ' · bientôt')); b.type = 'button'; b.setAttribute('aria-pressed', L[0] === state.level ? 'true' : 'false'); if (!L[2]) b.disabled = true;
+    cat.levels.forEach(function (L) {
+      var b = el('button', 'chip', esc(L.label)); b.type = 'button'; b.setAttribute('aria-pressed', L.id === state.level ? 'true' : 'false');
+      b.addEventListener('click', function () { if (state.level === L.id) return; state.level = L.id; save(); renderCompose(); });
       ch.appendChild(b);
     });
   }
@@ -151,12 +159,19 @@
     var chapIds = [], lv = levelInfo(state.level);
     lv.chapters.forEach(function (c) { if (c.items.some(function (it) { return keys.indexOf(it.key) >= 0; })) chapIds.push(c.id); });
     var old = state.sheet;
-    state.sheet = sanitizeSheet({ title: old.title, subtitle: old.subtitle, font: old.font, size: old.size, cols: old.cols, nom: old.nom, date: old.date, classe: old.classe, bw: old.bw, content: old.content, expl: old.expl, mode: state.mode, seed: seed, chapIds: chapIds, items: items });
+    items = sortByChapter(items, state.level);
+    state.sheet = sanitizeSheet({ level: state.level, heads: old.heads, cons: old.cons, work: old.work, intro: old.intro, gap: old.gap, score: old.score, total: old.total, scoreMode: old.scoreMode, showPts: old.showPts, title: old.title, subtitle: old.subtitle, font: old.font, size: old.size, cols: old.cols, nom: old.nom, date: old.date, classe: old.classe, bw: old.bw, content: old.content, expl: old.expl, mode: state.mode, seed: seed, chapIds: chapIds, items: items });
     state.sheet.chapIds = chapIds;
     if (!state.sheet.title || state.sheet.title === 'Automatismes') state.sheet.title = chapIds.length === 1 ? shortTitle(chapIds[0]) : 'Automatismes';
     save(); go('sheet');
   }
-  function shortTitle(id) { var c = AUTO.CHAPS_2DE.filter(function (x) { return x.id === id; })[0]; return c ? c.titre.replace(/^\d+ · /, '').replace(/ \(.*$/, '') : 'Automatismes'; }
+  function shortChap(t) { return String(t).replace(/^\d+ · /, '').replace(/ \(.*$/, ''); }
+  function shortTitle(id) { var c = AUTO.chapDef(state.level, id); return c ? shortChap(c.titre) : 'Automatismes'; }
+  function sortByChapter(items, level) {
+    var a = items.map(function (it, k) { var c = AUTO.chapterOf(cat, level, it.src, it.id); return { it: it, k: k, r: c ? c.rang : 999 }; });
+    a.sort(function (x, y) { return x.r - y.r || x.k - y.k; });
+    return a.map(function (x) { return x.it; });
+  }
 
   /* ───────── mise en page de la feuille (pages A4) ───────── */
   var LT = AUTO.LETTERS;
@@ -180,17 +195,51 @@
     }
     return '';
   }
-  function qBlock(v, i, gap) {
-    return '<article class="qb t-' + v.type + '" style="margin-bottom:' + gap + 'mm"><div class="qn">' + (i + 1) + '</div><div class="qc"><div class="qt">' + v.qHtml + '</div>' + (v.figHtml ? '<div class="fig">' + v.figHtml + '</div>' : '') + answerArea(v) + '</div></article>';
+  function ptsLabel(p) { var r = Math.round(p * 100) / 100; return String(r).replace('.', ',') + (r > 1 ? ' pts' : ' pt'); }
+  function totalPts(S) {
+    if (S.scoreMode !== 'custom') return S.total;
+    var t = 0; S.items.forEach(function (it) { t += it.pts !== undefined ? it.pts : 1; }); return Math.round(t * 100) / 100;
+  }
+  function autoWork(v, chapId, mode) {
+    if (mode === 'none') return 0; if (mode === 'small') return 10; if (mode === 'medium') return 20; if (mode === 'large') return 35;
+    if (v.type === 'libre') { if (v.est) return 0; var w = v.d >= 3 ? 22 : v.d === 2 ? 14 : 9; return chapId === 'metiers' ? Math.max(w, 24) : w; }
+    return v.type === 'qx' ? 10 : 0;
+  }
+  /* réglages d’une question sur la feuille : espace, zone de calcul, points, consigne */
+  function qOpts(S, it, v) {
+    var c = AUTO.chapterOf(cat, S.level, it.src, it.id), n = S.items.length;
+    var pts = S.score && S.showPts ? (S.scoreMode === 'custom' ? (it.pts !== undefined ? it.pts : 1) : S.total / Math.max(1, n)) : null;
+    return { gap: it.gap !== undefined ? it.gap : S.gap, work: it.work !== undefined ? it.work : autoWork(v, c ? c.id : '', S.work), pts: pts, cons: S.cons, chap: c };
+  }
+  function insText(v) {
+    if (v.type === 'qcm') return 'Une seule bonne réponse : coche-la.';
+    if (v.type === 'vf') return 'Coche la bonne case.';
+    if (v.type === 'qx') return 'Coche l’étape qui contient l’erreur.';
+    if (v.type === 'assoc') return 'Écris la lettre qui correspond à chaque numéro.';
+    if (v.type === 'ordre') return 'Écris les lettres dans le bon ordre.';
+    if (v.type === 'libre' && v.est) return 'Estime : une valeur proche suffit.';
+    return '';
+  }
+  function qBlock(v, i, o) {
+    var kick = o.cons && v.titre ? v.titre : '', pts = o.pts !== null && o.pts !== undefined ? '(' + ptsLabel(o.pts) + ')' : '';
+    var qh = kick || pts ? '<div class="qh"><span class="qk">' + esc(kick) + '</span>' + (pts ? '<span class="pts">' + pts + '</span>' : '') + '</div>' : '';
+    var ins = o.cons ? insText(v) : '';
+    return '<article class="qb t-' + v.type + '" data-i="' + i + '" style="margin-bottom:' + o.gap + 'mm"><div class="qn">' + (i + 1) + '</div><div class="qc">' + qh +
+      (o.cons && v.cons ? '<div class="qcn">' + esc(v.cons) + '</div>' : '') + '<div class="qt">' + v.qHtml + '</div>' + (v.figHtml ? '<div class="fig">' + v.figHtml + '</div>' : '') +
+      (ins ? '<div class="ins">' + ins + '</div>' : '') + answerArea(v) + (o.work > 0 ? '<div class="wk" style="height:' + o.work + 'mm"><span>Calculs</span></div>' : '') + '</div></article>';
+  }
+  function chapHead(S, c, prev) {
+    if (!S.heads || !c || (prev && prev.id === c.id)) return '';
+    return '<div class="chh"><span>Chapitre</span>' + esc(shortChap(c.titre)) + '</div>';
   }
   function corrAnswer(v) {
     if (v.type === 'qcm') return '<span class="lt">' + LT[v.ansIdx] + '.</span>' + v.choices[v.ansIdx];
     if (v.type === 'qx') return v.aHtml;
     return v.aHtml;
   }
-  function corrBlock(v, i, expl) {
+  function corrBlock(v, i, expl, pts) {
     var qs = AUTO.plainSrc(v.qEdit); if (qs.length > 90) qs = qs.slice(0, 88) + '…';
-    return '<article class="cr"><div class="qn">' + (i + 1) + '</div><div><div class="ca">' + corrAnswer(v) + '</div><div class="qs">' + esc(qs) + '</div>' + (expl && v.eHtml ? '<span class="ex">' + v.eHtml + '</span>' : '') + '</div></article>';
+    return '<article class="cr"><div class="qn">' + (i + 1) + '</div><div><div class="ca">' + corrAnswer(v) + (pts !== null && pts !== undefined ? ' <span class="pts">(' + ptsLabel(pts) + ')</span>' : '') + '</div><div class="qs">' + esc(qs) + '</div>' + (expl && v.eHtml ? '<span class="ex">' + v.eHtml + '</span>' : '') + '</div></article>';
   }
   function newPage(S, first, label) {
     var p = el('div', 'page' + (S.bw ? ' bw' : '') + (S.cols === 2 ? ' cols2' : ''));
@@ -201,8 +250,8 @@
       var fields = '';
       if (label !== 'corrige' && (S.nom || S.date || S.classe)) fields = '<div class="fields">' + (S.nom ? '<span>Nom, prénom : <i></i></span>' : '') + (S.classe ? '<span>Classe : <i></i></span>' : '') + (S.date ? '<span>Date : <i></i></span>' : '') + '</div>';
       var sc = '';
-      if (label !== 'corrige' && S.score) { var pp = S.total / Math.max(1, n); sc = '<div class="score"><div class="sl">Note</div><div class="sv"><i></i><span>/ ' + S.total + '</span></div><div class="sp">' + String(Math.round(pp * 100) / 100).replace('.', ',') + ' pt par question</div></div>'; }
-      head = '<div class="ph first"><div class="band"><div class="bar"></div><div class="bt"><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div>' + sc + '</div>' + fields + '</div>';
+      if (label !== 'corrige' && S.score) { var pp = S.total / Math.max(1, n); sc = '<div class="score"><div class="sl">Note</div><div class="sv"><i></i><span>/ ' + String(totalPts(S)).replace('.', ',') + '</span></div>' + (S.scoreMode === 'custom' ? '<div class="sp">barème par question</div>' : '<div class="sp">' + String(Math.round(pp * 100) / 100).replace('.', ',') + ' pt par question</div>') + '</div>'; }
+      head = '<div class="ph first"><div class="band"><div class="bar"></div><div class="bt"><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div>' + sc + '</div>' + fields + (label !== 'corrige' && S.intro ? '<div class="intro">' + AUTO.rtUser(S.intro) + '</div>' : '') + '</div>';
     } else head = '<div class="ph slim"><span>' + AUTO.rtUser(tt) + '</span><span>' + levelInfo(S.level).court + '</span></div>';
     p.innerHTML = head + '<div class="pb"></div><div class="pf"><span>Automatismes · Tom Rougeaud · CC BY-NC 4.0</span><span class="pn"></span></div>';
     return p;
@@ -221,15 +270,21 @@
   /* construit toutes les pages d’une feuille (tableau d’éléments .page, chez #measure) */
   function buildPages(S, content) {
     $('measure').innerHTML = '';
-    var pages = [], views = [], gaps = [];
-    S.items.forEach(function (it) { var v = qView(it, S.mode); if (v) { views.push(v); gaps.push(it.gap !== undefined ? it.gap : S.gap); } });
-    if (content !== 'corrige') paginate(S, views.map(function (v, i) { return qBlock(v, i, gaps[i]); }), 'sujet', pages);
-    if (content !== 'feuille') paginate(S, views.map(function (v, i) { return corrBlock(v, i, S.expl); }), 'corrige', pages);
+    var pages = [], blocks = [], cblocks = [], prev = null;
+    S.items.forEach(function (it, k) {
+      var v = qView(it, S.mode); if (!v) return;
+      var o = qOpts(S, it, v), h = chapHead(S, o.chap, prev), i = blocks.length; prev = o.chap || prev;
+      var wrap = function (x) { return h ? '<div class="qw">' + h + x + '</div>' : x; };
+      blocks.push(wrap(qBlock(v, i, o)));
+      cblocks.push(wrap(corrBlock(v, i, S.expl, S.score && S.showPts ? (S.scoreMode === 'custom' ? (it.pts !== undefined ? it.pts : 1) : S.total / Math.max(1, S.items.length)) : null)));
+    });
+    if (content !== 'corrige') paginate(S, blocks, 'sujet', pages);
+    if (content !== 'feuille') paginate(S, cblocks, 'corrige', pages);
     var code = S.seed.toString(36).toUpperCase();
     pages.forEach(function (p, i) { p.querySelector('.pn').textContent = 'Feuille ' + code + ' · page ' + (i + 1) + ' / ' + pages.length; });
     return pages;
   }
-  function currentName(suffix) { return AUTO.fileName(levelInfo(state.sheet.level).court.replace(/\s+/g, '-'), state.sheet.chapIds, state.sheet.items.length, suffix); }
+  function currentName(suffix) { return AUTO.fileName(state.sheet.level, state.sheet.chapIds, state.sheet.items.length, suffix); }
   function contentSuffix(c) { return c === 'corrige' ? '_corrige' : c === 'both' ? '_avec-corrige' : ''; }
 
   /* ───────── écran « Ma feuille » ───────── */
@@ -237,10 +292,16 @@
   function renderSheet() {
     var S = state.sheet;
     $('sTitle').value = S.title; $('sSub').value = S.subtitle; $('sFont').value = S.font; $('sSize').value = S.size; $('sSizeOut').textContent = S.size + ' pt';
-    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw; $('sGap').value = S.gap; $('sGapOut').textContent = S.gap + ' mm'; $('sScore').checked = S.score; $('sTotal').value = S.total; $('sTotal').disabled = !S.score;
+    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw; $('sGap').value = S.gap; $('sGapOut').textContent = S.gap + ' mm'; $('sScore').checked = S.score; $('sTotal').value = S.total; $('sScoreMode').value = S.scoreMode; $('sShowPts').checked = S.showPts; syncScoreUi();
+    $('sHeads').checked = S.heads; $('sCons').checked = S.cons; $('sWork').value = S.work; $('sIntro').value = S.intro;
     $('sContent').value = S.content; $('sExpl').checked = S.expl; $('sMode').value = S.mode;
     $('fileInfo').textContent = currentName(contentSuffix(S.content));
     renderList(); renderPreview();
+  }
+  function syncScoreUi() {
+    var S = state.sheet; $('sScoreMode').disabled = !S.score; $('sShowPts').disabled = !S.score;
+    $('sTotal').disabled = !S.score || S.scoreMode === 'custom';
+    $('sTotal').value = S.scoreMode === 'custom' ? totalPts(S) : S.total;
   }
   function renderList() {
     var S = state.sheet, ul = $('qlist'); ul.innerHTML = '';
@@ -249,7 +310,7 @@
       var li = el('li', 'qcard'); li.draggable = true; li.dataset.i = i;
       var txt = AUTO.plainSrc(v.qEdit); if (txt.length > 120) txt = txt.slice(0, 118) + '…';
       li.innerHTML = '<div class="num" title="Glisser pour déplacer">' + (i + 1) + '</div><div class="tx"><b>' + esc(v.titre) + (it.o && Object.keys(it.o).length ? ' · modifiée' : '') + ' · espace ' + (it.gap !== undefined ? it.gap : S.gap) + ' mm' + (it.gap !== undefined ? ' (perso)' : '') + '</b><span>' + esc(txt) + '</span></div>' +
-        '<div class="acts"><button class="ib" data-a="up" title="Monter" aria-label="Monter la question ' + (i + 1) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-a="down" title="Descendre" aria-label="Descendre la question ' + (i + 1) + '"' + (i === S.items.length - 1 ? ' disabled' : '') + '>↓</button>' +
+        '<div class="acts">' + (S.score && S.scoreMode === 'custom' ? '<label class="ptl" title="Points de cette question">Points <input type="number" class="ptin" min="0" max="100" step="0.25" value="' + (it.pts !== undefined ? it.pts : 1) + '" data-i="' + i + '" aria-label="Points de la question ' + (i + 1) + '"></label>' : '') + '<button class="ib" data-a="up" title="Monter" aria-label="Monter la question ' + (i + 1) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-a="down" title="Descendre" aria-label="Descendre la question ' + (i + 1) + '"' + (i === S.items.length - 1 ? ' disabled' : '') + '>↓</button>' +
         '<button class="ib" data-a="gapm" title="Réduire l’espace sous cette question" aria-label="Réduire l’espace sous la question ' + (i + 1) + '">⇕−</button><button class="ib" data-a="gapp" title="Augmenter l’espace sous cette question" aria-label="Augmenter l’espace sous la question ' + (i + 1) + '">⇕+</button>' +
         '<button class="ib" data-a="edit" title="Modifier" aria-label="Modifier la question ' + (i + 1) + '">✎</button><button class="ib" data-a="redo" title="Autre question de la même notion" aria-label="Retirer la question ' + (i + 1) + '">↻</button><button class="ib" data-a="del" title="Supprimer" aria-label="Supprimer la question ' + (i + 1) + '">🗑</button></div>';
       ul.appendChild(li);
@@ -274,30 +335,55 @@
   }
   function move(i, j) { var a = state.sheet.items; if (j < 0 || j >= a.length) return; var t = a.splice(i, 1)[0]; a.splice(j, 0, t); save(); renderList(); renderPreview(); }
 
-  /* édition d’une question */
-  var editIdx = -1;
+  /* édition d’une question : l’aperçu de la feuille se met à jour pendant la frappe */
+  var editIdx = -1, editBackup = null, liveT = null;
   function openEdit(i) {
-    var it = state.sheet.items[i], v = qView(it, state.sheet.mode); if (!v) return; editIdx = i;
+    var S = state.sheet, it = S.items[i], v = qView(it, S.mode); if (!v) return; editIdx = i; editBackup = JSON.stringify(it);
     $('eQ').value = v.qEdit; $('eA').value = v.aEdit; $('eE').value = v.eEdit; $('eFig').checked = !!(it.o && it.o.nofig); $('eFigRow').hidden = !v.hasFig;
-    var gv = it.gap !== undefined ? it.gap : state.sheet.gap; $('eGapAuto').checked = it.gap === undefined; $('eGap').value = gv; $('eGap').disabled = it.gap === undefined; $('eGapOut').textContent = gv + ' mm';
-    $('eNum').textContent = String(i + 1); openModal('mEdit'); setTimeout(function () { $('eQ').focus(); }, 30);
+    var o = qOpts(S, it, v);
+    $('eGapAuto').checked = it.gap === undefined; $('eGap').value = o.gap; $('eGap').disabled = it.gap === undefined; $('eGapOut').textContent = o.gap + ' mm';
+    $('eWorkAuto').checked = it.work === undefined; $('eWork').value = o.work; $('eWork').disabled = it.work === undefined; $('eWorkOut').textContent = o.work + ' mm';
+    $('ePtsRow').hidden = !(S.score && S.scoreMode === 'custom'); $('ePts').value = it.pts !== undefined ? it.pts : 1;
+    $('eNum').textContent = String(i + 1);
+    $('mEdit').classList.toggle('side', window.innerWidth >= 1100);
+    updateEPrev(); openModal('mEdit'); setTimeout(function () { $('eQ').focus(); }, 30);
   }
-  function saveEdit() {
-    var it = state.sheet.items[editIdx]; if (!it) { closeModal('mEdit'); return; }
-    var N = AUTO.makeQuestion(it.src, it.id, it.seed), base = AUTO.view(N, null, state.sheet.mode), o = {};
+  function readEdit() {
+    var S = state.sheet, it = S.items[editIdx]; if (!it) return null;
+    var N = AUTO.makeQuestion(it.src, it.id, it.seed), base = AUTO.view(N, null, S.mode), o = {};
     var q = $('eQ').value.slice(0, 1500), a = $('eA').value.slice(0, 600), e = $('eE').value.slice(0, 1500);
     if (q !== base.qEdit) o.q = q; if (a !== base.aEdit) o.a = a; if (e !== base.eEdit) o.e = e; if ($('eFig').checked) o.nofig = true;
+    it.o = o;
     if ($('eGapAuto').checked) delete it.gap; else it.gap = clampN($('eGap').value, 0, 40, 5);
-    it.o = o; save(); closeModal('mEdit'); renderList(); renderPreview();
+    if ($('eWorkAuto').checked) delete it.work; else it.work = clampN($('eWork').value, 0, 80, 0);
+    if (S.score && S.scoreMode === 'custom') it.pts = clampPts($('ePts').value);
+    return it;
   }
-  function resetEdit() { var it = state.sheet.items[editIdx]; if (it) it.o = {}; save(); closeModal('mEdit'); renderList(); renderPreview(); }
+  function updateEPrev() {
+    var S = state.sheet, it = S.items[editIdx], host = $('ePrev'); if (!it || !host) return;
+    var v = qView(it, S.mode); if (!v) return; var o = qOpts(S, it, v);
+    var p = el('div', 'page mini' + (S.bw ? ' bw' : '') + (S.cols === 2 ? ' cols2' : '')); p.style.cssText = '--sf:' + fontCss(S.font) + ';--sz:' + S.size + 'pt';
+    p.innerHTML = qBlock(v, editIdx, o) + '<div class="sep">Corrigé</div>' + corrBlock(v, editIdx, true, o.pts);
+    host.innerHTML = ''; host.appendChild(p);
+  }
+  function liveEdit() {
+    if (!readEdit()) return; updateEPrev(); clearTimeout(liveT);
+    liveT = setTimeout(function () { renderList(); renderPreview(); setTimeout(function () { var q = document.querySelector('#pages article.qb[data-i="' + editIdx + '"]'); if (q && $('mEdit').classList.contains('side') && q.scrollIntoView) { try { q.scrollIntoView({ block: 'nearest' }); } catch (x) { } } }, 80); }, 300);
+  }
+  function saveEdit() { clearTimeout(liveT); readEdit(); editIdx = -1; editBackup = null; save(); closeModal('mEdit'); renderList(); renderPreview(); }
+  function cancelEdit() {
+    clearTimeout(liveT);
+    if (editIdx >= 0 && editBackup) { try { state.sheet.items[editIdx] = JSON.parse(editBackup); } catch (e) { } }
+    editIdx = -1; editBackup = null; closeModal('mEdit'); renderList(); renderPreview();
+  }
+  function resetEdit() { clearTimeout(liveT); var it = state.sheet.items[editIdx]; if (it) it.o = {}; editIdx = -1; editBackup = null; save(); closeModal('mEdit'); renderList(); renderPreview(); }
 
   function redo(i) {
     var S = state.sheet, it = S.items[i], used = {};
     S.items.forEach(function (x, k) { if (k !== i) { var N = AUTO.makeQuestion(x.src, x.id, x.seed); if (N) used[AUTO.signature(N)] = 1; } });
     for (var k = 1; k < 40; k++) {
       var seed = (it.seed + k * 104729 + Math.floor(Math.random() * 1e6)) >>> 0, N2 = AUTO.makeQuestion(it.src, it.id, seed);
-      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; if (it.gap !== undefined) S.items[i].gap = it.gap; save(); renderList(); renderPreview(); return; }
+      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; ['gap', 'work', 'pts'].forEach(function (k) { if (it[k] !== undefined) S.items[i][k] = it[k]; }); save(); renderList(); renderPreview(); return; }
     }
     toast('Cette notion n’a pas d’autre question différente.', 'err');
   }
@@ -312,9 +398,9 @@
   }
   function redrawAll() {
     var S = state.sheet, keys = [], seen = {};
-    S.items.forEach(function (x) { var k = (x.src === 'flash' ? 'f:' : 'm:') + x.id; if (!seen[k]) { seen[k] = 1; keys.push(k); } });
+    S.items.forEach(function (x) { var k = AUTO.keyOf(S.level, x.src, x.id); if (!seen[k]) { seen[k] = 1; keys.push(k); } });
     var seed = Math.floor(Math.random() * 2000000000) + 1;
-    var items = AUTO.draw(keys, S.items.length, seed, cat).map(function (x) { x.o = {}; return x; });
+    var items = sortByChapter(AUTO.draw(keys, S.items.length, seed, cat).map(function (x) { x.o = {}; return x; }), S.level);
     if (!items.length) return; S.items = items; S.seed = seed; save(); renderSheet();
   }
 
@@ -456,10 +542,15 @@
     bindS('sBw', 'bw', function (e) { return e.checked; }, 'change'); bindS('sExpl', 'expl', function (e) { return e.checked; }, 'change');
     bindS('sContent', 'content', function (e) { return e.value; }, 'change');
     $('sGap').addEventListener('input', function () { state.sheet.gap = clampN(this.value, 0, 30, 5); $('sGapOut').textContent = state.sheet.gap + ' mm'; renderList(); schedulePreview(); });
-    $('sScore').addEventListener('change', function () { state.sheet.score = this.checked; $('sTotal').disabled = !this.checked; schedulePreview(); });
+    $('sScore').addEventListener('change', function () { state.sheet.score = this.checked; syncScoreUi(); renderList(); schedulePreview(); });
+    $('sScoreMode').addEventListener('change', function () { state.sheet.scoreMode = this.value === 'custom' ? 'custom' : 'equal'; syncScoreUi(); renderList(); schedulePreview(); });
+    $('sShowPts').addEventListener('change', function () { state.sheet.showPts = this.checked; schedulePreview(); });
+    $('sHeads').addEventListener('change', function () { state.sheet.heads = this.checked; schedulePreview(); });
+    $('sCons').addEventListener('change', function () { state.sheet.cons = this.checked; schedulePreview(); });
+    $('sWork').addEventListener('change', function () { state.sheet.work = this.value; schedulePreview(); });
+    $('sIntro').addEventListener('input', function () { state.sheet.intro = this.value.slice(0, 300); schedulePreview(); });
+    $('qlist').addEventListener('input', function (e) { var t = e.target; if (!t.classList || !t.classList.contains('ptin')) return; var it = state.sheet.items[+t.dataset.i]; if (!it) return; it.pts = clampPts(t.value); $('sTotal').value = totalPts(state.sheet); schedulePreview(); });
     $('sTotal').addEventListener('input', function () { var v = Math.round(+this.value); if (isFinite(v) && v >= 1) { state.sheet.total = Math.min(1000, v); schedulePreview(); } });
-    $('eGapAuto').addEventListener('change', function () { $('eGap').disabled = this.checked; });
-    $('eGap').addEventListener('input', function () { $('eGapOut').textContent = this.value + ' mm'; });
     $('sMode').addEventListener('change', function () { state.sheet.mode = this.value === 'qcm' ? 'qcm' : 'auto'; save(); renderList(); schedulePreview(); });
     $('qlist').addEventListener('click', function (e) {
       var b = e.target.closest('button[data-a]'); if (!b) return; var i = +b.closest('li').dataset.i, a = b.dataset.a;
@@ -479,16 +570,23 @@
     $('importBtn').addEventListener('click', function () { $('importFile').click(); });
     $('importFile').addEventListener('change', function () { if (this.files && this.files[0]) importJson(this.files[0]); this.value = ''; });
     $('clearBtn').addEventListener('click', clearAll); $('clearBtn2').addEventListener('click', clearAll);
-    $('eSave').addEventListener('click', saveEdit); $('eCancel').addEventListener('click', function () { closeModal('mEdit'); }); $('eReset').addEventListener('click', resetEdit);
-    Array.prototype.forEach.call(document.querySelectorAll('.modal'), function (m) { m.addEventListener('click', function (e) { if (e.target === m) m.classList.remove('on'); }); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') Array.prototype.forEach.call(document.querySelectorAll('.modal.on'), function (m) { m.classList.remove('on'); }); });
+    $('eSave').addEventListener('click', saveEdit); $('eCancel').addEventListener('click', cancelEdit); $('eReset').addEventListener('click', resetEdit);
+    ['eQ', 'eA', 'eE'].forEach(function (id) { $(id).addEventListener('input', liveEdit); });
+    $('eFig').addEventListener('change', liveEdit);
+    $('eGapAuto').addEventListener('change', function () { $('eGap').disabled = this.checked; liveEdit(); });
+    $('eGap').addEventListener('input', function () { $('eGapOut').textContent = this.value + ' mm'; liveEdit(); });
+    $('eWorkAuto').addEventListener('change', function () { $('eWork').disabled = this.checked; liveEdit(); });
+    $('eWork').addEventListener('input', function () { $('eWorkOut').textContent = this.value + ' mm'; liveEdit(); });
+    $('ePts').addEventListener('input', liveEdit);
+    Array.prototype.forEach.call(document.querySelectorAll('.modal'), function (m) { m.addEventListener('click', function (e) { if (e.target === m) { if (m.id === 'mEdit') cancelEdit(); else m.classList.remove('on'); } }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') Array.prototype.forEach.call(document.querySelectorAll('.modal.on'), function (m) { if (m.id === 'mEdit') cancelEdit(); else m.classList.remove('on'); }); });
     var rs = null; window.addEventListener('resize', function () { clearTimeout(rs); rs = setTimeout(function () { if (state.view === 'sheet') renderPreview(); }, 250); });
     $('storeInfo').textContent = store.persistent ? 'Les réglages et la feuille en cours sont enregistrés dans ce navigateur, sur cet appareil uniquement.' : 'Le stockage du navigateur est indisponible : rien ne sera conservé après fermeture de la page.';
   }
 
   /* ───────── démarrage ───────── */
   function start() {
-    try { AUTO.init({ FE: window.FLASH_ENGINE, MC: window.MCVG.MCVG || window.MCVG, katex: window.katex }); } catch (e) { document.body.innerHTML = '<p style="padding:1rem">Erreur de chargement des questions.</p>'; return; }
+    try { AUTO.init({ FE: window.FLASH_ENGINE, MC: window.MCVG.MCVG || window.MCVG, katex: window.katex, AM: window.MCA || {} }); } catch (e) { document.body.innerHTML = '<p style="padding:1rem">Erreur de chargement des questions.</p>'; return; }
     cat = AUTO.buildCatalogue(); state = loadState();
     var h = (location.hash || '').replace('#', ''); if (VIEWS.indexOf(h) >= 0) state.view = h;
     if (state.view === 'sheet' && !state.sheet.items.length) state.view = 'compose';

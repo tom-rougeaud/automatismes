@@ -283,8 +283,8 @@
 .page .pf{flex:none;display:flex;justify-content:space-between;gap:4mm;margin-top:2mm;padding-top:1.5mm;border-top:1px solid var(--line);font-size:.68em;font-weight:700;color:#7B8594}
 
 /* question */
-.page .qb{display:grid;grid-template-columns:7.2mm 1fr;gap:3mm;break-inside:avoid;page-break-inside:avoid;margin:0 0 5mm;padding:0}
-.page .qn{width:7.2mm;height:7.2mm;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:.85em;display:flex;align-items:center;justify-content:center;margin-top:.4mm}
+.page .qb{display:grid;grid-template-columns:5.2mm 1fr;gap:3mm;break-inside:avoid;page-break-inside:avoid;margin:0 0 5mm;padding:0}
+.page .qn{width:5.2mm;height:5.2mm;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:.68em;display:flex;align-items:center;justify-content:center;margin-top:.5mm}
 .page.bw .qn{background:#fff;color:var(--ink);border:1.4px solid var(--ink)}
 .page .qc{min-width:0}
 .page .qt{font-weight:700;overflow-wrap:anywhere}
@@ -298,6 +298,25 @@
 .page.bw .figtab th{background:#eee;color:var(--ink)}
 .page .figcode{margin:.5mm auto;background:#F1F4F9;color:#1E2A3A;border:1px solid var(--line);border-radius:2.5mm;padding:2mm 3mm;font:700 .9em/1.5 "Courier New",ui-monospace,monospace;white-space:pre;overflow:hidden}
 .page.bw .figsvg{filter:grayscale(1) contrast(1.15)}
+
+/* structure : chapitre, thème, consigne, aide, calculs */
+.page .qw{break-inside:avoid;page-break-inside:avoid}
+.page .chh{display:flex;align-items:baseline;gap:2.4mm;margin:1mm 0 3mm;padding:1.2mm 3mm;border-left:2.2mm solid var(--acc);background:var(--accl);color:var(--accd);font-weight:900;font-size:.95em;border-radius:0 1.6mm 1.6mm 0;break-after:avoid;page-break-after:avoid}
+.page .chh span{font-size:.66em;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#5C6779}
+.page.bw .chh{background:#fff;border:1.2px solid var(--ink);border-left-width:2.2mm;color:var(--ink)}
+.page .qh{display:flex;justify-content:space-between;align-items:baseline;gap:3mm;margin-bottom:.6mm;min-height:3mm}
+.page .qk{font-size:.66em;letter-spacing:.05em;text-transform:uppercase;font-weight:800;color:#6B7686}
+.page .pts{flex:none;font-size:.78em;font-weight:900;color:var(--accd)}
+.page.bw .pts{color:var(--ink)}
+.page .cr .pts{margin-left:1.6mm;font-size:.8em}
+.page .qcn{font-weight:800;color:var(--accd);font-size:.95em;margin-bottom:.6mm}
+.page.bw .qcn{color:var(--ink)}
+.page .ins{font-size:.78em;font-style:italic;font-weight:600;color:#6B7686;margin-top:1.6mm}
+.page .wk{position:relative;margin-top:2.4mm;border:1.2px dashed var(--line);border-radius:1.6mm;background:repeating-linear-gradient(to bottom,transparent 0,transparent 7.2mm,#e4e8ef 7.2mm,#e4e8ef calc(7.2mm + .3mm))}
+.page .wk span{position:absolute;top:.6mm;left:1.6mm;font-size:.62em;letter-spacing:.05em;text-transform:uppercase;font-weight:800;color:#9aa4b3}
+.page .ph .intro{margin-top:3.4mm;padding:1.6mm 3mm;border:1.2px solid var(--line);border-radius:1.8mm;font-size:.88em;font-weight:700;color:var(--ink)}
+.page.mini{width:100%;height:auto;padding:3mm 4mm 2mm;display:block;overflow:visible;font-size:var(--sz,11pt);border:1px solid var(--line);border-radius:6px}
+.page.mini .sep{margin:2mm 0;font-size:.66em;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#9aa4b3;border-top:1px dashed var(--line);padding-top:1.4mm}
 
 /* zones de réponse */
 .page .al{display:flex;align-items:flex-end;gap:2mm;margin-top:2.4mm;font-weight:800;font-size:.9em}
@@ -328,8 +347,8 @@
 .page .orr i{display:inline-block;width:8.5mm;height:6.4mm;border:1.2px solid var(--ink);border-radius:1.4mm}
 
 /* corrigé */
-.page .cr{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.8mm;display:grid;grid-template-columns:6.4mm 1fr;gap:2.4mm;font-size:.95em}
-.page .cr .qn{width:6.4mm;height:6.4mm;font-size:.8em}
+.page .cr{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.8mm;display:grid;grid-template-columns:5mm 1fr;gap:2.4mm;font-size:.95em}
+.page .cr .qn{width:5mm;height:5mm;font-size:.66em}
 .page .cr .ca{font-weight:800}
 .page .cr .ca .lt{margin-right:1.2mm}
 .page .cr .qs{font-weight:600;color:#5C6779;font-size:.88em;margin-top:.4mm}
@@ -342,6 +361,7 @@
 :root{--violet:#2B4C7E;--violet-d:#1F3A63;--violet-l:#EAF0F8;--rouge:#A8483F;--orange:#B7791F;--vert:#2F7D5B;--bleu:#3A6EA5;--rose:#7A4B8A;
   --ink:#1E2A3A;--mut:#5C6779;--bg:#F4F6F9;--card:#fff;--line:#D9DFE8;--r:18px;--f:"Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--f);font-weight:700;color:var(--ink);background:var(--bg);line-height:1.45;font-size:16px}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -419,6 +439,12 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
 /* fenêtres */
 .modal{position:fixed;inset:0;background:rgba(30,42,58,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:1rem}
 .modal.on{display:flex}
+.modal.side{background:transparent;pointer-events:none;justify-content:flex-start;align-items:stretch;padding:.8rem}
+.modal.side .box{pointer-events:auto;width:min(27rem,38vw);max-width:none;max-height:none;box-shadow:0 12px 40px rgba(30,42,58,.35);border:2px solid var(--line)}
+.eprev{max-height:16rem;overflow:auto;background:#fff;border-radius:10px}
+.eprevbox{background:var(--violet-l);border-radius:12px;padding:.5rem}
+.ptl{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:800;margin-right:auto}
+.ptin{width:4.2rem;border:2px solid var(--line);border-radius:8px;padding:.15rem .3rem}
 .modal .box{background:#fff;border-radius:22px;max-width:44rem;width:100%;max-height:92vh;overflow:auto;padding:1.2rem 1.3rem}
 .toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:.6rem 1.2rem;font-weight:800;z-index:80;max-width:92vw;display:none;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .toast.on{display:block}.toast.err{background:var(--rouge)}.toast.ok{background:var(--vert)}
@@ -441,6 +467,8 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
   #printRoot .page:last-child{break-after:auto;page-break-after:auto}
   .page.bw,.page{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+#mEdit .box>.ctrl>.row:last-child{position:sticky;bottom:-1.3rem;background:#fff;padding:.7rem 0 .2rem;margin-top:.2rem;border-top:2px solid var(--line);z-index:2}
+.modal.side .eprev{max-height:11rem}
 
 </style>
 </head>
@@ -472,7 +500,7 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
     <div class="card c1">
       <h2>1 · Niveau</h2>
       <div class="chips" id="levels" role="group" aria-label="Niveau"></div>
-      <p class="hint" style="margin:.6rem 0 0">Version pilote : la 2de professionnelle est prête. Les autres niveaux arrivent ensuite.</p>
+      <p class="hint" style="margin:.6rem 0 0">Choisis le niveau, puis les chapitres. Les questions sont rangées par chapitre sur la feuille.</p>
     </div>
     <div class="card c2">
       <h2>2 · Chapitres et notions</h2>
@@ -513,12 +541,18 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
               <label class="fld">Colonnes<select id="sCols"><option value="1">1 colonne</option><option value="2">2 colonnes</option></select></label>
               <label class="fld">Zone de réponse<select id="sMode"><option value="auto">Libre pour les calculs</option><option value="qcm">QCM partout</option></select></label>
             </div>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sHeads"> Titre de chapitre avant chaque groupe de questions</label>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sCons"> Thème, consigne et phrase d’aide pour chaque question</label>
+            <label class="fld">Consigne générale (facultatif)<input type="text" id="sIntro" maxlength="300" placeholder="Ex. Sans calculatrice. Écris seulement le résultat."></label>
+            <label class="fld">Place pour les calculs<select id="sWork"><option value="auto">Automatique (selon la question)</option><option value="none">Aucune</option><option value="small">Petite (1 cm)</option><option value="medium">Moyenne (2 cm)</option><option value="large">Grande (3,5 cm)</option></select></label>
             <label class="fld">Espace entre les questions : <b id="sGapOut">5 mm</b><input type="range" id="sGap" min="0" max="30" step="1" value="5"></label>
             <p class="hint" style="margin:0">Réglage général. Chaque question peut avoir son propre espace (boutons ⇕ de la liste ou ✎).</p>
             <div class="row" style="gap:.9rem">
               <label class="row" style="gap:.4rem"><input type="checkbox" id="sScore"> Encart de notation</label>
               <label class="row" style="gap:.4rem">Notée sur <input type="number" id="sTotal" min="1" max="1000" step="1" value="20" style="width:5rem;border:2px solid var(--line);border-radius:12px;padding:.35rem .5rem"></label>
             </div>
+            <label class="fld">Barème<select id="sScoreMode"><option value="equal">Identique pour toutes les questions</option><option value="custom">Différencié : je choisis les points de chaque question</option></select></label>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sShowPts"> Afficher les points à côté de chaque question</label>
             <div class="row" style="gap:.9rem">
               <label class="row" style="gap:.4rem"><input type="checkbox" id="sNom"> Nom, prénom</label>
               <label class="row" style="gap:.4rem"><input type="checkbox" id="sClasse"> Classe</label>
@@ -570,7 +604,7 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
       <p>Formules : KaTeX. Police : Nunito.<br>
       Licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC BY-NC 4.0</a> : utilisation, adaptation et partage libres, sans usage commercial, en citant l’auteur.</p>
       <p>Conçu par <b>Tom Rougeaud</b>, professeur de mathématiques-sciences (académie de Dijon). Suggestions et signalements : <a href="https://tom-rougeaud.github.io/casier/">casier de ressources</a> · <a href="https://linkedin.com/in/tomrougeaud">LinkedIn</a>.</p>
-      <p class="hint">Version v1 (pilote 2de pro).</p>
+      <p class="hint">Version v2.</p>
     </div>
   </section>
 
@@ -603,6 +637,10 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
       <label class="fld">Réponse (corrigé)<textarea id="eA" rows="2"></textarea></label>
       <label class="fld">Explication (corrigé)<textarea id="eE" rows="3"></textarea></label>
       <label class="row" style="gap:.5rem" id="eFigRow"><input type="checkbox" id="eFig"> Masquer la figure</label>
+      <div class="eprevbox"><div class="hint" style="margin:0 0 .3rem;font-weight:800">Aperçu sur la feuille</div><div id="ePrev" class="eprev"></div></div>
+      <label class="fld" id="ePtsRow">Points de cette question<input type="number" id="ePts" min="0" max="100" step="0.25" value="1" style="width:6rem"></label>
+      <label class="row" style="gap:.5rem"><input type="checkbox" id="eWorkAuto"> Place pour les calculs automatique</label>
+      <label class="fld">Place pour les calculs : <b id="eWorkOut">0 mm</b><input type="range" id="eWork" min="0" max="80" step="1" value="0"></label>
       <label class="row" style="gap:.5rem"><input type="checkbox" id="eGapAuto"> Même espace que le réglage général</label>
       <label class="fld">Espace sous cette question : <b id="eGapOut">5 mm</b><input type="range" id="eGap" min="0" max="40" step="1" value="5"></label>
       <p class="hint" style="margin:0">Formules entre <span class="kbd">$…$</span>. Balises permises : &lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;. Les choix d’un QCM ne se modifient pas ici : utilise ↻ pour une autre question.</p>
@@ -2461,6 +2499,333 @@ return {BANK:BANK,NIVEAUX:NIVEAUX,ITEM_BY_ID:ITEM_BY_ID,makeQuestion:makeQuestio
   root.MCVG = { G, rng, make, check, parse, rnd, fr, eur, pct, sg, cm, frac };
 })(typeof module !== 'undefined' ? module.exports : window);
 </script>
+<script>window.MCA={a3:(function(){var module={exports:{}};/* Maths et MCV · 1re — outils numériques communs (nombres à la française, tirage reproductible, lecture d’une réponse).
+   Chaque générateur reçoit un tirage R et renvoie un item :
+   { q: énoncé HTML, a: réponse affichée, v: valeur numérique attendue (ou null), tol: tolérance,
+     choices: [..] et ok: indice (pour un QCM) }.
+   Les réponses sont toujours calculées, jamais écrites à la main. */
+(function (root) {
+  'use strict';
+  /* ---------- nombres à la française ---------- */
+  const NB = ' ', NBS = ' ';
+  function rnd(x, d = 2) { const s = Math.sign(x) || 1, a = Math.abs(x); return s * Number(Math.round(Number(a.toFixed(10) + 'e' + d)) + 'e-' + d); }
+  function fr(x, d = null) {
+    let v = d == null ? rnd(x, 6) : rnd(x, d);
+    let s = d == null ? String(v) : Math.abs(v).toFixed(d);
+    if (d == null && /e/.test(s)) s = v.toFixed(6).replace(/0+$/, '');
+    let [i, f] = s.replace('-', '').split('.');
+    i = i.replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+    return (v < 0 ? '−' : '') + i + (f ? ',' + f : '');
+  }
+  const eur = (x, d = 2) => fr(x, d) + NBS + '€';
+  const pct = (x, d = null) => fr(x, d) + NBS + '%';
+  const sg = t => (t > 0 ? '+' + NBS : t < 0 ? '−' + NBS : '') + pct(Math.abs(t));
+  const cm = x => fr(rnd(x, 6));
+  const frac = (n, d) => `<span class="fr"><span class="fn">${n}</span><span class="fd">${d}</span></span>`;
+  const TOL = d => 0.5 * Math.pow(10, -d) + 1e-9;
+
+  /* ---------- tirage reproductible ---------- */
+  function rng(seed) {
+    let a = seed >>> 0;
+    const R = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    R.int = (lo, hi) => lo + Math.floor(R() * (hi - lo + 1));
+    R.pick = arr => arr[Math.floor(R() * arr.length)];
+    R.shuffle = arr => { const b = arr.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+    R.sign = () => (R() < .5 ? -1 : 1);
+    return R;
+  }
+  const qcm = (q, good, bads, R, a) => { let ch = R.shuffle([good, ...bads]); if (ch.length === 2 && ch.includes('oui') && ch.includes('non')) ch = ['oui', 'non']; return { q, choices: ch, ok: ch.indexOf(good), a: a || good, v: null }; };
+  const num = (q, v, d, a) => ({ q, v, tol: TOL(d), a });
+
+  const G = {};
+  /* ---------- vérification d’une réponse saisie ---------- */
+  function parse(s) {
+    if (s == null) return NaN;
+    let t = String(s).trim().replace(/[\s  ]/g, '').replace(/[€%°]|cm³|cm²|m²|m³|cm|mois|kg|L$|m$/gi, '').replace('−', '-').replace(',', '.');
+    if (/^[-+]?\d*\.?\d+\/\d+$/.test(t)) { const [a, b] = t.split('/'); return +a / +b; }
+    return t === '' ? NaN : Number(t);
+  }
+  const check = (it, s) => { const x = parse(s); return Number.isFinite(x) && Math.abs(x - it.v) <= (it.tol == null ? 1e-6 : it.tol); };
+  const make = (id, seed) => { const g = G[id]; if (!g) throw new Error('générateur inconnu : ' + id); return g(rng(seed)); };
+
+  root.MCVG = { G, rng, make, check, parse, rnd, fr, eur, pct, sg, cm, frac };
+})(typeof module !== 'undefined' ? module.exports : window);
+
+var gm=module.exports;module={exports:{}};var require=function(){return gm;};/* 3ème Série Pro — zones « ⚡ Automatismes » : 5 questions flash par chapitre, sans calculatrice, comme la partie 1 du brevet.
+   Les questions suivent la liste indicative des automatismes du DNB (Eduscol) : nombres et calculs, grandeurs et mesures,
+   données et probabilités, proportionnalité, géométrie, algorithmique. Tirage fixe dans le manuel, nouveau tirage dans l’appli.
+   Une question = { t, v, tol, a, x } (réponse numérique) ou { t, choices, ok, a, x } (choix). */
+(function (root) {
+  'use strict';
+  const MC = typeof module !== 'undefined' ? require('./gens.js').MCVG : root.MCVG;
+  const { fr, rnd, rng } = MC;
+  const pick = (R, a) => a[Math.floor(R() * a.length)], int = (R, lo, hi) => lo + Math.floor(R() * (hi - lo + 1));
+  const Q = (t, v, a, d = 2, x) => ({ t, v, tol: .5 * Math.pow(10, -d) + 1e-9, a: a || fr(rnd(v, d)), ...(x ? { x } : {}) });
+  const C = (t, choices, ok, a, x) => ({ t, choices, ok, a: a || choices[ok], ...(x ? { x } : {}) });
+  const rot = (R, arr) => { const o = int(R, 0, arr.length - 1); return [...arr.slice(o), ...arr.slice(0, o)]; };
+  const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹', sup = n => String(n).replace('-', '⁻').split('').map(c => SUP['0123456789'.indexOf(c)] || c).join('');
+
+  /* ---------- nombres et calculs ---------- */
+  const divis = R => { const d = pick(R, [3, 9, 5, 2]), good = pick(R, { 3: [123, 141, 201, 318], 9: [117, 243, 315, 702], 5: [135, 260, 445, 905], 2: [126, 318, 504, 770] }[d]), bad = pick(R, { 3: [125, 143, 205, 316], 9: [118, 245, 316, 703], 5: [136, 262, 447, 908], 2: [125, 317, 503, 771] }[d]); let bad2 = bad + 2; while (bad2 % d === 0 || bad2 === good) bad2++;
+    const ch = rot(R, [String(good), String(bad), String(bad2)]); return C(`Lequel de ces nombres est divisible par ${d} ?`, ch, ch.indexOf(String(good)), String(good), d === 3 || d === 9 ? `somme des chiffres de ${good} : ${String(good).split('').join(' + ')} = ${String(good).split('').reduce((a, c) => a + +c, 0)}, dans la table de ${d}` : `${good} se termine par ${good % 10}`); };
+  const carre = R => { const n = int(R, 4, 12); return Q(`Calcule ${n}².`, n * n, null, 2, `${n} × ${n} = ${n * n}`); };
+  const fracDec = R => { const [n, d, v] = pick(R, [[1, 4, .25], [3, 4, .75], [1, 2, .5], [1, 5, .2], [2, 5, .4], [3, 10, .3], [7, 10, .7], [1, 8, .125]]); return Q(`Écris ${n}/${d} sous forme décimale.`, v, fr(v), 3, `${n} ÷ ${d} = ${fr(v)}`); };
+  const pctOf = R => { const [p, x] = pick(R, [[10, 80], [25, 60], [50, 46], [20, 45], [75, 40], [10, 250], [5, 60], [30, 70]]); return Q(`Calcule ${p} % de ${x}.`, p * x / 100, null, 2, `${x} × ${p} ÷ 100 = ${fr(p * x / 100)}`); };
+  const fracQ = R => { const [n, d, x] = pick(R, [[2, 3, 15], [3, 4, 20], [2, 5, 35], [3, 5, 40], [5, 6, 18], [3, 8, 24]]); return Q(`Calcule ${n}/${d} de ${x}.`, n * x / d, null, 2, `${x} ÷ ${d} × ${n} = ${x / d} × ${n} = ${n * x / d}`); };
+  const prio = R => { const a = int(R, 2, 9), b = int(R, 2, 6), c = int(R, 2, 5); return Q(`Calcule ${a} + ${b} × ${c}.`, a + b * c, null, 2, `la multiplication d’abord : ${a} + ${b * c} = ${a + b * c}`); };
+  const puis10 = R => { const k = int(R, 0, 2); if (k === 0) { const n = int(R, 3, 6); return Q(`Écris 10${sup(n)} en écriture décimale.`, 10 ** n, fr(10 ** n), 2, `un 1 suivi de ${n} zéros : ${fr(10 ** n)}`); } if (k === 1) { const n = int(R, 1, 3); return Q(`Écris 10${sup(-n)} en écriture décimale.`, 10 ** -n, fr(10 ** -n), 4, `1 ÷ 10${sup(n)} = ${fr(10 ** -n)}`); } const a = pick(R, [2, 3, 5]), b = pick(R, [3, 4, 2]); return Q(`Calcule 10${sup(a)} × 10${sup(b)} sous la forme 10 puissance n : n = ?`, a + b, null, 2, `on additionne les exposants : ${a} + ${b} = ${a + b}`); };
+  const sci = R => { const [m, e] = pick(R, [[3.2, 3], [4.5, 2], [6, 4], [1.5, 3], [7.8, 2], [2.05, 3]]); return Q(`Écris ${fr(m)} × 10${sup(e)} en écriture décimale.`, rnd(m * 10 ** e, 6), fr(rnd(m * 10 ** e, 6)), 2, `on décale la virgule de ${e} rangs vers la droite : ${fr(rnd(m * 10 ** e, 6))}`); };
+  const oppose = R => { const a = int(R, 3, 9), b = int(R, 10, 15); return Q(`Calcule ${a} − ${b}.`, a - b, null, 2, `${a} − ${b} = − (${b} − ${a}) = ${fr(a - b)}`); };
+  const simp = R => { const [n, d, k] = pick(R, [[3, 5, 5], [2, 3, 6], [3, 4, 4], [4, 5, 3], [5, 7, 2], [2, 9, 4]]); const N = n * k, D = d * k, ch = rot(R, [`${n}/${d}`, `${N - 1}/${D - 1}`, `${n + 1}/${d + 1}`]); return C(`Quelle est la fraction irréductible égale à ${N}/${D} ?`, ch, ch.indexOf(`${n}/${d}`), `${n}/${d}`, `on divise le numérateur et le dénominateur par ${k} : ${N} ÷ ${k} = ${n} et ${D} ÷ ${k} = ${d}`); };
+  /* ---------- calcul littéral et algorithmique ---------- */
+  const subst = R => { const a = int(R, 2, 5), b = int(R, 1, 9), x = int(R, 2, 6); return Q(`Calcule 3x + ${b} pour x = ${x}.`.replace('3x', `${a}x`), a * x + b, null, 2, `${a} × ${x} + ${b} = ${a * x} + ${b} = ${a * x + b}`); };
+  const equa = R => { const a = int(R, 2, 5), x = int(R, 2, 9), b = int(R, 1, 9); return Q(`Résous ${a}x + ${b} = ${a * x + b}.`, x, null, 2, `${a}x = ${a * x + b} − ${b} = ${a * x}, donc x = ${a * x} ÷ ${a} = ${x}`); };
+  const progC = R => { const n = int(R, 2, 8), m = pick(R, [2, 3, 4]), p = int(R, 1, 9); return Q(`Programme : choisir un nombre, le multiplier par ${m}, ajouter ${p}. Résultat pour ${n} ?`, n * m + p, null, 2, `${n} × ${m} = ${n * m}, puis ${n * m} + ${p} = ${n * m + p}`); };
+  const deplac = R => { const a = int(R, 2, 5), b = int(R, 1, 4); return Q(`Un lutin part de x = 0. « Répéter ${a} fois : avancer de ${b} » puis « reculer de 1 ». Position finale x = ?`, a * b - 1, null, 2, `${a} × ${b} = ${a * b}, puis ${a * b} − 1 = ${a * b - 1}`); };
+  /* ---------- grandeurs et mesures ---------- */
+  const conv = R => { const k = int(R, 0, 3); if (k === 0) { const m = pick(R, [72, 90, 135, 150, 105]); return Q(`Convertis ${m} minutes en heures (écriture décimale).`, m / 60, fr(m / 60), 2, `${m} min = ${Math.floor(m / 60)} h ${m % 60} min = ${fr(m / 60)} h`); } if (k === 1) { const h = pick(R, [1.5, 2.5, .75, 1.25]); return Q(`Convertis ${fr(h)} h en minutes.`, h * 60, null, 2, `${fr(h)} × 60 = ${h * 60} min`); } if (k === 2) { const l = pick(R, [1.5, 2, .5, .25]); return Q(`Combien de cm³ dans ${fr(l)} L ?`, l * 1000, fr(l * 1000), 2, `1 L = 1 000 cm³ : ${fr(l)} × 1 000 = ${fr(l * 1000)} cm³`); } const c = pick(R, [3.5, 12, .8, 150]); return Q(`Convertis ${fr(c)} m en cm.`, c * 100, fr(c * 100), 2, `${fr(c)} × 100 = ${fr(c * 100)} cm`); };
+  const angle = R => { const a = int(R, 3, 8) * 10, b = int(R, 2, 6) * 10 + 5; return Q(`Dans un triangle, deux angles mesurent ${a}° et ${b}°. Le troisième mesure ?`, 180 - a - b, null, 2, `180 − ${a} − ${b} = ${180 - a - b}°`); };
+  const aire = R => { const k = int(R, 0, 1); if (k) { const L = int(R, 3, 9), l = int(R, 2, 6); return Q(`Aire d’un rectangle de ${L} cm sur ${l} cm, en cm² ?`, L * l, null, 2, `${L} × ${l} = ${L * l} cm²`); } const b = int(R, 3, 8) * 2, h = int(R, 2, 7); return Q(`Aire d’un triangle de base ${b} cm et de hauteur ${h} cm, en cm² ?`, b * h / 2, null, 2, `${b} × ${h} ÷ 2 = ${b * h / 2} cm²`); };
+  const vitesse = R => { const [d, t] = pick(R, [[150, 2], [90, 1.5], [240, 3], [60, .5], [45, .75]]); return Q(`Un train parcourt ${d} km en ${fr(t)} h. Sa vitesse moyenne, en km/h ?`, d / t, null, 2, `${d} ÷ ${fr(t)} = ${fr(d / t)} km/h`); };
+  const volume = R => { const a = int(R, 2, 5), b = int(R, 2, 4), c = int(R, 2, 5); return Q(`Volume d’un pavé de ${a} cm × ${b} cm × ${c} cm, en cm³ ?`, a * b * c, null, 2, `${a} × ${b} × ${c} = ${a * b * c} cm³`); };
+  const solide = R => { const s = pick(R, [['cylindre', 'deux disques et une face courbe'], ['cône', 'un disque et un sommet'], ['pyramide', 'une base polygonale et un sommet'], ['boule', 'une seule surface courbe, sans arête']]); const ch = rot(R, ['cylindre', 'cône', 'pyramide', 'boule']); return C(`Quel solide a ${s[1]} ?`, ch, ch.indexOf(s[0]), s[0]); };
+  const pyth = R => { const [a, b, c] = pick(R, [[3, 4, 5], [6, 8, 10], [5, 12, 13], [9, 12, 15]]); return Q(`Triangle rectangle de côtés de l’angle droit ${a} cm et ${b} cm. Hypoténuse, en cm ?`, c, null, 2, `${a}² + ${b}² = ${a * a} + ${b * b} = ${c * c} et √${c * c} = ${c} cm`); };
+  const racine = R => { const n = int(R, 4, 12); return Q(`Calcule √${n * n}.`, n, null, 2, `${n} × ${n} = ${n * n}, donc √${n * n} = ${n}`); };
+  /* ---------- données, probabilités, proportionnalité ---------- */
+  const moy = R => { const a = int(R, 8, 14), b = a + pick(R, [2, 4]); let c = b + pick(R, [2, 3, 4]); while ((a + b + c) % 3) c++; return Q(`Moyenne de ${a}, ${b} et ${c} ?`, (a + b + c) / 3, fr(rnd((a + b + c) / 3, 2)), 2, `(${a} + ${b} + ${c}) ÷ 3 = ${a + b + c} ÷ 3 = ${fr(rnd((a + b + c) / 3, 2))}`); };
+  const med = R => { const v = Array.from({ length: 5 }, () => int(R, 2, 20)), s = v.slice().sort((x, y) => x - y); return Q(`Médiane de la série ${v.join(' ; ')} ?`, s[2], null, 2, `rangée : ${s.join(' ; ')} ; la 3e valeur est ${s[2]}`); };
+  const freq = R => { const [k, n] = pick(R, [[12, 48], [9, 36], [15, 60], [6, 30], [8, 40]]); return Q(`${k} élèves sur ${n} : fréquence en % ?`, k / n * 100, null, 2, `${k} ÷ ${n} = ${fr(k / n)}, soit ${fr(k / n * 100)} %`); };
+  const proba = R => { const k = int(R, 0, 1); if (k) { const f = pick(R, [6, 8, 10, 12, 20]), c = int(R, 1, 3); return Q(`On lance un dé équilibré à ${f} faces numérotées de 1 à ${f}. Probabilité d’obtenir un nombre ≤ ${c} ? (fraction ou décimal)`, c / f, `${c}/${f}`, 3, `${c} issues favorables sur ${f} : ${c}/${f}`); } const r = int(R, 2, 5), b = int(R, 3, 7); return Q(`Un sac contient ${r} billes rouges et ${b} bleues. Probabilité de tirer une rouge ? (fraction ou décimal)`, r / (r + b), `${r}/${r + b}`, 3, `${r} rouges sur ${r + b} billes : ${r}/${r + b}`); };
+  const qprop = R => { const [a, b, c] = pick(R, [[3, 12, 5], [4, 10, 6], [5, 15, 7], [2, 7, 6], [6, 9, 10]]); return Q(`${a} places de cinéma coûtent ${b} €. Combien coûtent ${c} places ?`, b / a * c, null, 2, `1 place : ${b} ÷ ${a} = ${fr(b / a)} € ; ${c} places : ${fr(b / a)} × ${c} = ${fr(b / a * c)} €`); };
+  const echelle = R => { const [e, d] = pick(R, [[100, 3], [1000, 5], [50, 4], [200, 2.5]]); return Q(`Sur un plan à l’échelle 1/${e}, un mur mesure ${fr(d)} cm. Longueur réelle, en cm ?`, e * d, fr(e * d), 2, `${fr(d)} × ${e} = ${fr(e * d)} cm`); };
+
+  const A = {
+    c1: [divis, carre, fracDec, pctOf, conv],
+    c2: [puis10, sci, fracQ, prio, med],
+    c3: [subst, equa, progC, oppose, angle],
+    c4: [qprop, pctOf, vitesse, conv, fracDec],
+    c5: [subst, equa, qprop, moy, pctOf],
+    c6: [moy, med, freq, pctOf, conv],
+    c7: [proba, freq, fracDec, simp, moy],
+    c8: [carre, racine, pyth, angle, aire],
+    c9: [echelle, qprop, aire, conv, fracQ],
+    c10: [volume, conv, angle, deplac, solide]
+  };
+  /* les 5 du chapitre, puis (au-delà de 5) d’autres automatismes du brevet, tous différents */
+  const POOL = [divis, carre, fracDec, pctOf, fracQ, prio, puis10, oppose, simp, subst, equa, progC, conv, angle, aire, vitesse, volume, pyth, racine, moy, med, freq, proba, qprop, echelle, solide];
+  const gen = (cid, seed, n = 5) => { const R = rng(seed), own = A[cid], q = own.map(f => f(R));
+    if (n > own.length) { const rest = POOL.filter(f => !own.includes(f)); for (let i = rest.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [rest[i], rest[j]] = [rest[j], rest[i]]; } rest.slice(0, n - own.length).forEach(f => q.push(f(R))); }
+    return q; };
+  const API = { A, gen };
+  if (typeof module !== 'undefined') module.exports = API; else root.MCVA = API;
+})(typeof module !== 'undefined' ? module.exports : window);
+
+return module.exports;})(),a1:(function(){var module={exports:{}};/* Maths et MCV · 1re — outils numériques communs (nombres à la française, tirage reproductible, lecture d’une réponse).
+   Chaque générateur reçoit un tirage R et renvoie un item :
+   { q: énoncé HTML, a: réponse affichée, v: valeur numérique attendue (ou null), tol: tolérance,
+     choices: [..] et ok: indice (pour un QCM) }.
+   Les réponses sont toujours calculées, jamais écrites à la main. */
+(function (root) {
+  'use strict';
+  /* ---------- nombres à la française ---------- */
+  const NB = ' ', NBS = ' ';
+  function rnd(x, d = 2) { const s = Math.sign(x) || 1, a = Math.abs(x); return s * Number(Math.round(Number(a.toFixed(10) + 'e' + d)) + 'e-' + d); }
+  function fr(x, d = null) {
+    let v = d == null ? rnd(x, 6) : rnd(x, d);
+    let s = d == null ? String(v) : Math.abs(v).toFixed(d);
+    if (d == null && /e/.test(s)) s = v.toFixed(6).replace(/0+$/, '');
+    let [i, f] = s.replace('-', '').split('.');
+    i = i.replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+    return (v < 0 ? '−' : '') + i + (f ? ',' + f : '');
+  }
+  const eur = (x, d = 2) => fr(x, d) + NBS + '€';
+  const pct = (x, d = null) => fr(x, d) + NBS + '%';
+  const sg = t => (t > 0 ? '+' + NBS : t < 0 ? '−' + NBS : '') + pct(Math.abs(t));
+  const cm = x => fr(rnd(x, 6));
+  const frac = (n, d) => `<span class="fr"><span class="fn">${n}</span><span class="fd">${d}</span></span>`;
+  const TOL = d => 0.5 * Math.pow(10, -d) + 1e-9;
+
+  /* ---------- tirage reproductible ---------- */
+  function rng(seed) {
+    let a = seed >>> 0;
+    const R = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    R.int = (lo, hi) => lo + Math.floor(R() * (hi - lo + 1));
+    R.pick = arr => arr[Math.floor(R() * arr.length)];
+    R.shuffle = arr => { const b = arr.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+    R.sign = () => (R() < .5 ? -1 : 1);
+    return R;
+  }
+  const qcm = (q, good, bads, R, a) => { let ch = R.shuffle([good, ...bads]); if (ch.length === 2 && ch.includes('oui') && ch.includes('non')) ch = ['oui', 'non']; return { q, choices: ch, ok: ch.indexOf(good), a: a || good, v: null }; };
+  const num = (q, v, d, a) => ({ q, v, tol: TOL(d), a });
+
+  const G = {};
+  /* ---------- vérification d’une réponse saisie ---------- */
+  function parse(s) {
+    if (s == null) return NaN;
+    let t = String(s).trim().replace(/[\s  ]/g, '').replace(/[€%°]|cm³|cm²|m²|m³|cm|mois|kg|L$|m$/gi, '').replace('−', '-').replace(',', '.');
+    if (/^[-+]?\d*\.?\d+\/\d+$/.test(t)) { const [a, b] = t.split('/'); return +a / +b; }
+    return t === '' ? NaN : Number(t);
+  }
+  const check = (it, s) => { const x = parse(s); return Number.isFinite(x) && Math.abs(x - it.v) <= (it.tol == null ? 1e-6 : it.tol); };
+  const make = (id, seed) => { const g = G[id]; if (!g) throw new Error('générateur inconnu : ' + id); return g(rng(seed)); };
+
+  root.MCVG = { G, rng, make, check, parse, rnd, fr, eur, pct, sg, cm, frac };
+})(typeof module !== 'undefined' ? module.exports : window);
+
+var gm=module.exports;module={exports:{}};var require=function(){return gm;};/* 1re — zones « ⚡ Automatismes » : 5 questions flash par chapitre, sans calculatrice.
+   Elles réactivent les prérequis de 2de du chapitre ; la dernière porte toujours sur un intérêt simple ou une valeur acquise
+   (automatismes spécifiques des spécialités sans physique-chimie). Tirage fixe dans le manuel, nouveau tirage dans l’appli. */
+(function (root) {
+  'use strict';
+  const MC = typeof module !== 'undefined' ? require('./gens.js').MCVG : root.MCVG;
+  const { fr, rnd, rng } = MC;
+  const pick = (R, a) => a[Math.floor(R() * a.length)], int = (R, lo, hi) => lo + Math.floor(R() * (hi - lo + 1));
+  const Q = (t, v, a, d = 2, x) => ({ t, v, tol: .5 * Math.pow(10, -d) + 1e-9, a: a || fr(rnd(v, d)), ...(x ? { x } : {}) });
+  const par = n => n < 0 ? `(− ${fr(-n)})` : fr(n);
+  const eur = x => fr(rnd(x, 2), Number.isInteger(rnd(x, 2)) ? 0 : 2) + ' €';
+  /* question d’intérêt simple ou de valeur acquise (spirale) */
+  const interet = R => {
+    const C = pick(R, [1000, 2000, 500, 4000]), t = pick(R, [2, 3, 5]), k = int(R, 0, 3);
+    if (k === 0) return Q(`${fr(C)} € placés à ${t} % pendant 1 an : intérêts ?`, C * t / 100, eur(C * t / 100), 2, `${fr(C)} × ${t} ÷ 100 = ${eur(C * t / 100)}`);
+    if (k === 1) return Q(`${fr(C)} € placés à ${t} % pendant 1 an : valeur acquise ?`, C * (1 + t / 100), eur(C * (1 + t / 100)), 2, `${fr(C)} + ${fr(C)} × ${t} ÷ 100 = ${fr(C)} + ${eur(C * t / 100)} = ${eur(C * (1 + t / 100))}`);
+    if (k === 2) return Q(`${fr(C)} € placés à ${t} % pendant 6 mois : intérêts ?`, C * t / 200, eur(C * t / 200), 2, `6 mois = la moitié d’un an : ${fr(C)} × ${t} ÷ 100 ÷ 2 = ${eur(C * t / 200)}`);
+    return Q(`Intérêts de ${fr(C)} € à ${t} % pendant 2 ans ?`, C * t / 50, eur(C * t / 50), 2, `${fr(C)} × ${t} ÷ 100 × 2 = ${eur(C * t / 100)} × 2 = ${eur(C * t / 50)}`);
+  };
+  const A = {
+    c1: R => { const p = pick(R, [2, 3, 4, 5, 8]), m = pick(R, [3, 6, 9]), cf = pick(R, [300, 600, 900]), cv = pick(R, [2, 4, 5]), q = pick(R, [50, 100]), pc = pick(R, [10, 20, 25]), x = pick(R, [40, 80, 120]);
+      return [Q(`Écris ${p} % en écriture décimale.`, p / 100, fr(p / 100), 2, `${p} % = ${p} ÷ 100 = ${fr(p / 100)}`), Q(`${m} mois, c’est combien d’années ?`, m / 12, fr(m / 12), 2, `${m} ÷ 12 = ${fr(m / 12)} an`), Q(`Calcule ${cf} + ${cv} × ${q}.`, cf + cv * q, null, 2, `on multiplie d’abord : ${cf} + ${cv * q} = ${cf + cv * q}`), Q(`Calcule ${pc} % de ${x} €.`, pc * x / 100, eur(pc * x / 100), 2, `${x} × ${pc} ÷ 100 = ${eur(pc * x / 100)}`), interet(R)]; },
+    c2: R => { const a = pick(R, [2, 3, 5]), b = pick(R, [1, 4, 6]), x = int(R, 2, 6), a2 = pick(R, [2, 4]), s = int(R, 3, 7), lo = int(R, 1, 4), hi = lo + int(R, 2, 4);
+      return [Q(`f(x) = ${a}x + ${b}. Calcule f(${x}).`, a * x + b, null, 2, `f(${x}) = ${a} × ${x} + ${b} = ${a * x} + ${b} = ${a * x + b}`), Q(`Résous ${a2}x + 6 = ${a2 * s + 6}.`, s, null, 2, `${a2}x = ${a2 * s + 6} − 6 = ${a2 * s}, donc x = ${a2 * s} ÷ ${a2} = ${s}`), Q(`Combien de nombres entiers dans l’intervalle [${lo} ; ${hi}] ?`, hi - lo + 1, null, 2, `${Array.from({ length: hi - lo + 1 }, (_, i) => lo + i).join(', ')} : ${hi} − ${lo} + 1 = ${hi - lo + 1}`), Q(`f(x) = ${a}x + ${b}. Quel est l’antécédent de ${a * s + b} ?`, s, null, 2, `${a}x + ${b} = ${a * s + b} donne ${a}x = ${a * s}, donc x = ${s}`), interet(R)]; },
+    c3: R => { const n = pick(R, [2, 3, 4, 5]), c = pick(R, [1, 4, 9]), x2 = int(R, 1, 6);
+      return [Q(`Calcule (− ${n})².`, n * n, null, 2, `(− ${n}) × (− ${n}) = ${n * n}`), Q(`Calcule − ${n}².`, -n * n, null, 2, `le carré porte sur ${n} seulement : − (${n} × ${n}) = − ${n * n}`), Q(`f(x) = x² − ${c}. Calcule f(0).`, -c, null, 2, `f(0) = 0² − ${c} = − ${c}`), Q(`Résous x − ${x2} = 0.`, x2, null, 2, `x = 0 + ${x2} = ${x2}`), interet(R)]; },
+    c4: R => { const x1 = int(R, 0, 2), y1 = int(R, 1, 4), m = pick(R, [2, 3, -1, -2]), x0 = int(R, 2, 4), b = pick(R, [8, 10, 12]), d = pick(R, [2, 4, 5]);
+      return [Q(`Une droite passe par (${x1} ; ${y1}) et (${x1 + 2} ; ${fr(y1 + 2 * m)}). Quelle est sa pente ?`, m, null, 2, `pente = (${fr(y1 + 2 * m)} − ${y1}) ÷ (${x1 + 2} − ${x1}) = ${fr(2 * m)} ÷ 2 = ${fr(m)}`), Q(`Calcule − 2 × ${x0} + ${b}.`, -2 * x0 + b, null, 2, `− ${2 * x0} + ${b} = ${fr(b - 2 * x0)}`), Q(`Résous − 2x + ${b} = 0.`, b / 2, null, 2, `− 2x = − ${b}, donc x = ${b} ÷ 2 = ${fr(b / 2)}`), Q(`Calcule 1 ÷ ${d}.`, 1 / d, fr(1 / d), 2, `1 ÷ ${d} = ${fr(1 / d)}`), interet(R)]; },
+    c5: R => { const u0 = pick(R, [100, 120, 150]), r = pick(R, [5, 10, 15]), n = int(R, 3, 6), N = pick(R, [5, 10]), t = pick(R, [10, 20]);
+      return [Q(`f(n) = ${u0} + ${r}n. Calcule f(${n}).`, u0 + r * n, null, 2, `${u0} + ${r} × ${n} = ${u0} + ${r * n} = ${u0 + r * n}`), Q(`Calcule 1 + 2 + 3 + … + ${N}.`, N * (N + 1) / 2, null, 2, `${N} × (1 + ${N}) ÷ 2 = ${N} × ${N + 1} ÷ 2 = ${N * (N + 1) / 2}`), Q(`Une hausse de ${t} % multiplie par combien ?`, 1 + t / 100, fr(1 + t / 100), 2, `1 + ${t} ÷ 100 = ${fr(1 + t / 100)}`), Q(`Calcule ${u0 + r * 2} − ${u0 + r}.`, r, null, 2, `${u0 + r * 2} − ${u0 + r} = ${r}`), interet(R)]; },
+    c6: R => { const a = int(R, 10, 20), b = a + pick(R, [2, 4, 6]), c = b + pick(R, [2, 4, 6]), m = pick(R, [2, 3]), p = pick(R, [1, 5]), x = int(R, 2, 5), v = pick(R, [3.247, 5.682, 1.135]);
+      return [Q(`Moyenne de ${a}, ${b} et ${c} ?`, (a + b + c) / 3, fr(rnd((a + b + c) / 3, 2)), 2, `(${a} + ${b} + ${c}) ÷ 3 = ${a + b + c} ÷ 3 = ${fr(rnd((a + b + c) / 3, 2))}`), Q(`y = ${m}x + ${p}. Calcule y pour x = ${x}.`, m * x + p, null, 2, `y = ${m} × ${x} + ${p} = ${m * x} + ${p} = ${m * x + p}`), Q(`y = ${m}x + ${p}. Pour quel x a-t-on y = ${m * (x + 1) + p} ?`, x + 1, null, 2, `${m}x = ${m * (x + 1) + p} − ${p} = ${m * (x + 1)}, donc x = ${m * (x + 1)} ÷ ${m} = ${x + 1}`), Q(`Arrondis ${fr(v)} au centième.`, rnd(v, 2), fr(rnd(v, 2)), 2, `chiffre des millièmes : ${String(v).slice(-1)}, ${+String(v).slice(-1) >= 5 ? 'on arrondit au-dessus' : 'on garde les centièmes'} : ${fr(rnd(v, 2))}`), interet(R)]; },
+    c7: R => { const k = pick(R, [5, 10, 15, 20]), n = pick(R, [50, 100]), p = pick(R, [.35, .4, .65]), pc = pick(R, [25, 75, 5]);
+      return [Q(`Écris ${k} ÷ ${n} en décimal.`, k / n, fr(k / n), 2, `${k} ÷ ${n} = ${fr(k / n)}`), Q(`Calcule 1 − ${fr(p)}.`, rnd(1 - p, 2), fr(rnd(1 - p, 2)), 2, `1 − ${fr(p)} = ${fr(rnd(1 - p, 2))}`), Q(`Écris ${pc} % en décimal.`, pc / 100, fr(pc / 100), 2, `${pc} ÷ 100 = ${fr(pc / 100)}`), Q(`Calcule 0,4 + 0,3 − 0,1.`, .6, '0,6', 2, '0,7 − 0,1 = 0,6'), interet(R)]; },
+    c8: R => { const c = pick(R, [2, 3, 4, 5]), L = pick(R, [1.5, 2.5, 3]), r = pick(R, [1, 2, 3]), d = pick(R, [6, 8, 10]);
+      return [Q(`Volume d’un cube de ${c} cm de côté (cm³) ?`, c * c * c, null, 2, `${c} × ${c} × ${c} = ${c * c * c} cm³`), Q(`${fr(L)} L, c’est combien de cm³ ?`, L * 1000, fr(L * 1000), 2, `1 L = 1 000 cm³ : ${fr(L)} × 1 000 = ${fr(L * 1000)} cm³`), Q(`Diamètre ${d} cm : quel est le rayon ?`, d / 2, null, 2, `${d} ÷ 2 = ${d / 2} cm`), Q(`Avec π ≈ 3, aire d’un disque de rayon ${r} cm ?`, 3 * r * r, null, 2, `π × r² ≈ 3 × ${r}² = 3 × ${r * r} = ${3 * r * r} cm²`), interet(R)]; }
+  };
+  const gen = (cid, seed) => A[cid](rng(seed));
+  const API = { A, gen };
+  if (typeof module !== 'undefined') module.exports = API; else root.MCVA = API;
+})(typeof module !== 'undefined' ? module.exports : window);
+
+return module.exports;})(),aT:(function(){var module={exports:{}};/* Maths et MCV · 1re — outils numériques communs (nombres à la française, tirage reproductible, lecture d’une réponse).
+   Chaque générateur reçoit un tirage R et renvoie un item :
+   { q: énoncé HTML, a: réponse affichée, v: valeur numérique attendue (ou null), tol: tolérance,
+     choices: [..] et ok: indice (pour un QCM) }.
+   Les réponses sont toujours calculées, jamais écrites à la main. */
+(function (root) {
+  'use strict';
+  /* ---------- nombres à la française ---------- */
+  const NB = ' ', NBS = ' ';
+  function rnd(x, d = 2) { const s = Math.sign(x) || 1, a = Math.abs(x); return s * Number(Math.round(Number(a.toFixed(10) + 'e' + d)) + 'e-' + d); }
+  function fr(x, d = null) {
+    let v = d == null ? rnd(x, 6) : rnd(x, d);
+    let s = d == null ? String(v) : Math.abs(v).toFixed(d);
+    if (d == null && /e/.test(s)) s = v.toFixed(6).replace(/0+$/, '');
+    let [i, f] = s.replace('-', '').split('.');
+    i = i.replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+    return (v < 0 ? '−' : '') + i + (f ? ',' + f : '');
+  }
+  const eur = (x, d = 2) => fr(x, d) + NBS + '€';
+  const pct = (x, d = null) => fr(x, d) + NBS + '%';
+  const sg = t => (t > 0 ? '+' + NBS : t < 0 ? '−' + NBS : '') + pct(Math.abs(t));
+  const cm = x => fr(rnd(x, 6));
+  const frac = (n, d) => `<span class="fr"><span class="fn">${n}</span><span class="fd">${d}</span></span>`;
+  const TOL = d => 0.5 * Math.pow(10, -d) + 1e-9;
+
+  /* ---------- tirage reproductible ---------- */
+  function rng(seed) {
+    let a = seed >>> 0;
+    const R = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    R.int = (lo, hi) => lo + Math.floor(R() * (hi - lo + 1));
+    R.pick = arr => arr[Math.floor(R() * arr.length)];
+    R.shuffle = arr => { const b = arr.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(R() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+    R.sign = () => (R() < .5 ? -1 : 1);
+    return R;
+  }
+  const qcm = (q, good, bads, R, a) => { let ch = R.shuffle([good, ...bads]); if (ch.length === 2 && ch.includes('oui') && ch.includes('non')) ch = ['oui', 'non']; return { q, choices: ch, ok: ch.indexOf(good), a: a || good, v: null }; };
+  const num = (q, v, d, a) => ({ q, v, tol: TOL(d), a });
+
+  const G = {};
+  /* ---------- vérification d’une réponse saisie ---------- */
+  function parse(s) {
+    if (s == null) return NaN;
+    let t = String(s).trim().replace(/[\s  ]/g, '').replace(/[€%°]|cm³|cm²|m²|m³|cm|mois|kg|L$|m$/gi, '').replace('−', '-').replace(',', '.');
+    if (/^[-+]?\d*\.?\d+\/\d+$/.test(t)) { const [a, b] = t.split('/'); return +a / +b; }
+    return t === '' ? NaN : Number(t);
+  }
+  const check = (it, s) => { const x = parse(s); return Number.isFinite(x) && Math.abs(x - it.v) <= (it.tol == null ? 1e-6 : it.tol); };
+  const make = (id, seed) => { const g = G[id]; if (!g) throw new Error('générateur inconnu : ' + id); return g(rng(seed)); };
+
+  root.MCVG = { G, rng, make, check, parse, rnd, fr, eur, pct, sg, cm, frac };
+})(typeof module !== 'undefined' ? module.exports : window);
+
+var gm=module.exports;module={exports:{}};var require=function(){return gm;};/* Terminale — zones « ⚡ Automatismes » : 5 questions flash par chapitre, sans calculatrice.
+   Chaque série mêle les automatismes du programme de terminale (probabilités, suite arithmétique, second degré, dérivée)
+   et les prérequis du chapitre ; la dernière question porte toujours sur un intérêt simple ou une valeur acquise
+   (automatismes spécifiques des spécialités sans physique-chimie). Tirage fixe dans le manuel, nouveau tirage dans l’appli.
+   Une question = { t, v, tol, a } (réponse numérique) ou { t, choices, ok, a } (choix). */
+(function (root) {
+  'use strict';
+  const MC = typeof module !== 'undefined' ? require('./gens.js').MCVG : root.MCVG;
+  const { fr, rnd, rng } = MC;
+  const pick = (R, a) => a[Math.floor(R() * a.length)], int = (R, lo, hi) => lo + Math.floor(R() * (hi - lo + 1));
+  const Q = (t, v, a, d = 2, x) => ({ t, v, tol: .5 * Math.pow(10, -d) + 1e-9, a: a || fr(rnd(v, d)), ...(x ? { x } : {}) });
+  const C = (t, choices, ok, a, x) => ({ t, choices, ok, a: a || choices[ok], ...(x ? { x } : {}) });
+  const eur = x => fr(rnd(x, 2), Number.isInteger(rnd(x, 2)) ? 0 : 2) + ' €';
+  const sg = n => n < 0 ? '− ' + fr(-n) : fr(n);
+  const mon = (a, s) => a === 1 ? s : a === -1 ? '−' + s : fr(a) + s;           // 3x², −x…
+  const poly = cs => { let o = ''; cs.forEach(([a, s]) => { if (!a) return; const m = mon(Math.abs(a), s) || fr(Math.abs(a)); o += o ? (a < 0 ? ' − ' : ' + ') + m : (a < 0 ? '−' : '') + m; }); return o || '0'; };
+  /* intérêt simple ou valeur acquise (spirale 2de-1re) */
+  const interet = R => {
+    const c = pick(R, [1000, 2000, 500, 4000, 1500]), t = pick(R, [2, 3, 4, 5]), k = int(R, 0, 4);
+    if (k === 0) return Q(`${fr(c)} € placés à ${t} % pendant 1 an, en intérêts simples : intérêts ?`, c * t / 100, eur(c * t / 100), 2, `${fr(c)} × ${t} ÷ 100 = ${eur(c * t / 100)}`);
+    if (k === 1) return Q(`${fr(c)} € placés à ${t} % pendant 1 an : valeur acquise ?`, c * (1 + t / 100), eur(c * (1 + t / 100)), 2, `${fr(c)} + ${fr(c)} × ${t} ÷ 100 = ${fr(c)} + ${eur(c * t / 100)} = ${eur(c * (1 + t / 100))}`);
+    if (k === 2) return Q(`${fr(c)} € placés à ${t} % pendant 6 mois, en intérêts simples : intérêts ?`, c * t / 200, eur(c * t / 200), 2, `6 mois = la moitié d’un an : ${fr(c)} × ${t} ÷ 100 ÷ 2 = ${eur(c * t / 200)}`);
+    if (k === 3) return Q(`Intérêts simples de ${fr(c)} € à ${t} % pendant 3 ans ?`, c * t * 3 / 100, eur(c * t * 3 / 100), 2, `${fr(c)} × ${t} ÷ 100 × 3 = ${eur(c * t / 100)} × 3 = ${eur(c * t * 3 / 100)}`);
+    return Q(`${fr(c)} € à ${t} % pendant 2 ans, en intérêts simples : valeur acquise ?`, c * (1 + 2 * t / 100), eur(c * (1 + 2 * t / 100)), 2, `intérêts : ${fr(c)} × ${t} ÷ 100 × 2 = ${eur(c * t / 50)} ; ${fr(c)} + ${eur(c * t / 50)} = ${eur(c * (1 + 2 * t / 100))}`);
+  };
+  /* ---------- automatismes de terminale ---------- */
+  const contraire = R => { const p = pick(R, [.15, .2, .35, .4, .62, .07]); return Q(`P(A) = ${fr(p)}. Calcule P(Ā), la probabilité de l’évènement contraire.`, 1 - p, fr(rnd(1 - p, 2)), 2, `P(Ā) = 1 − ${fr(p)} = ${fr(rnd(1 - p, 2))}`); };
+  const incompat = R => { const a = pick(R, [.2, .25, .3, .15]), b = pick(R, [.1, .35, .4, .45]); return Q(`A et B sont incompatibles. P(A) = ${fr(a)} et P(B) = ${fr(b)}. Calcule P(A ∪ B).`, a + b, fr(rnd(a + b, 2)), 2, `incompatibles : P(A ∪ B) = ${fr(a)} + ${fr(b)} = ${fr(rnd(a + b, 2))}`); };
+  const reunion = R => { const a = pick(R, [.5, .4, .6]), b = pick(R, [.3, .35, .25]), i = pick(R, [.1, .15, .2]); return Q(`P(A) = ${fr(a)}, P(B) = ${fr(b)} et P(A ∩ B) = ${fr(i)}. Calcule P(A ∪ B).`, a + b - i, fr(rnd(a + b - i, 2)), 2, `P(A ∪ B) = ${fr(a)} + ${fr(b)} − ${fr(i)} = ${fr(rnd(a + b - i, 2))}`); };
+  const inter = R => { const n = pick(R, [200, 100, 400]), k = pick(R, [20, 30, 50, 60]), e = n * k / 100; return Q(`Sur ${n} clients, ${e} ont acheté en ligne <b>et</b> en magasin. Probabilité qu’un client pris au hasard ait fait les deux ?`, k / 100, fr(k / 100), 2, `${e} ÷ ${n} = ${fr(k / 100)}`); };
+  const croise = R => { const [a, b] = pick(R, [[30, 20], [45, 15], [60, 40], [24, 16], [35, 15], [18, 12]]), tot = a + b; return Q(`Une enquête : ${a} clients fidèles et ${b} clients nouveaux ont répondu. Fréquence des clients fidèles, en % ?`, a / tot * 100, fr(rnd(a / tot * 100, 1)) + ' %', 1, `${a} ÷ (${a} + ${b}) = ${a} ÷ ${tot} = ${fr(rnd(a / tot, 3))}, soit ${fr(rnd(a / tot * 100, 1))} %`); };
+  const condi = R => { const nA = pick(R, [40, 50, 80]), k = pick(R, [10, 20, 30]), nAB = nA * k / 100 * 2; return Q(`${nA} clients ont la carte de fidélité ; parmi eux, ${nAB} ont acheté une promotion. P<sub>carte</sub>(promotion) = ?`, nAB / nA, fr(nAB / nA), 2, `${nAB} ÷ ${nA} = ${fr(nAB / nA)}`); };
+  const arith = R => { const u0 = pick(R, [12, 20, 50, 120]), r = pick(R, [3, 5, -2, 15]), n = pick(R, [10, 20, 8]); return Q(`(uₙ) est arithmétique : u₀ = ${u0}, raison ${sg(r)}. Calcule u${String(n).split('').map(d => '₀₁₂₃₄₅₆₇₈₉'[d]).join('')}.`, u0 + n * r, null, 2, `u₀ + n × r = ${u0} + ${n} × ${r < 0 ? '(' + sg(r) + ')' : fr(r)} = ${fr(u0 + n * r)}`); };
+  const nbsol = R => { const up = R() < .5, yS = pick(R, [-4, -1, 0, 2, 3]), xS = pick(R, [-1, 1, 2]); const n = yS === 0 ? 1 : (up === (yS < 0)) ? 2 : 0;
+    return C(`Une parabole est tournée vers le ${up ? 'haut' : 'bas'} ; son sommet est (${sg(xS)} ; ${sg(yS)}). Nombre de solutions de f(x) = 0 ?`, ['0', '1', '2'], n, undefined, yS === 0 ? 'le sommet est sur l’axe des abscisses : 1 solution' : `tournée vers le ${up ? 'haut' : 'bas'}, sommet ${yS < 0 ? 'sous' : 'au-dessus de'} l’axe des abscisses : ${n === 2 ? 'la courbe coupe l’axe deux fois, 2 solutions' : 'la courbe ne coupe pas l’axe, 0 solution'}`); };
+  const fact = R => { const a = pick(R, [2, -1, 3, -2]), x1 = pick(R, [1, 2, 4]), x2 = pick(R, [-3, -1, 5]); const f = (p, q) => `${a === -1 ? '−' : fr(a)}(x ${p < 0 ? '+ ' + fr(-p) : '− ' + fr(p)})(x ${q < 0 ? '+ ' + fr(-q) : '− ' + fr(q)})`;
+    const good = f(x1, x2), bad1 = f(-x1, -x2), bad2 = `(x ${x1 < 0 ? '+' : '−'} ${fr(Math.abs(x1))})(x ${x2 < 0 ? '+' : '−'} ${fr(Math.abs(x2))})`; const ch = [good, bad1, bad2], o = int(R, 0, 2), rot = [...ch.slice(o), ...ch.slice(0, o)];
+    return C(`Polynôme de degré 2 : coefficient de x² égal à ${sg(a)}, racines ${sg(x1)} et ${sg(x2)}. Sa forme factorisée ?`, rot, rot.indexOf(good), undefined, `a(x − x₁)(x − x₂) avec a = ${sg(a)}, x₁ = ${sg(x1)}, x₂ = ${sg(x2)} : ${good}`); };
+  const deriv = R => { const a = pick(R, [2, 3, -1, 5]), b = pick(R, [-4, 6, 1, -3]), c = pick(R, [7, -2, 10]), x = int(R, 1, 3); return Q(`f(x) = ${poly([[a, 'x²'], [b, 'x'], [c, '']])}. Calcule f′(${x}).`, 2 * a * x + b, null, 2, `f′(x) = ${poly([[2 * a, 'x'], [b, '']])} ; f′(${x}) = ${fr(2 * a)} × ${x} ${b < 0 ? '− ' + fr(-b) : '+ ' + fr(b)} = ${fr(2 * a * x + b)}`); };
+  /* ---------- prérequis des chapitres ---------- */
+  const coef = R => { const t = pick(R, [3, 5, 12, 20, 1.7, 2.5]), up = R() < .7; return Q(`Une ${up ? 'hausse' : 'baisse'} de ${fr(t)} % revient à multiplier par…`, up ? 1 + t / 100 : 1 - t / 100, fr(up ? 1 + t / 100 : 1 - t / 100), 4, `1 ${up ? '+' : '−'} ${fr(t)} ÷ 100 = ${fr(up ? 1 + t / 100 : 1 - t / 100)}`); };
+  const puis = R => { const k = int(R, 0, 3); if (k === 0) { const n = int(R, 3, 6); return Q(`Calcule 2${'⁰¹²³⁴⁵⁶'[n]}.`, 2 ** n, null, 2, `${Array(n).fill('2').join(' × ')} = ${2 ** n}`); } if (k === 1) { const q = pick(R, [1.1, 1.2, 0.9]); return Q(`Calcule ${fr(q)}².`, q * q, fr(rnd(q * q, 2)), 2, `${fr(q)} × ${fr(q)} = ${fr(rnd(q * q, 2))}`); } if (k === 2) { const n = int(R, 2, 4); return Q(`Calcule 10${'⁰¹²³⁴'[n]}.`, 10 ** n, null, 2, `un 1 suivi de ${n} zéros : ${fr(10 ** n)}`); } const n = int(R, 1, 3); return Q(`Calcule 10⁻${'⁰¹²³'[n]} en écriture décimale.`, 10 ** -n, fr(10 ** -n), 4, `10⁻${'⁰¹²³'[n]} = 1 ÷ 10${'⁰¹²³'[n]} = ${fr(10 ** -n)}`); };
+  const cube = R => { const x = pick(R, [-3, -2, 2, 3, 0.5]); return Q(`Calcule (${sg(x)})³.`, x ** 3, fr(x ** 3), 3, `(${sg(x)}) × (${sg(x)}) × (${sg(x)}) = ${fr(x ** 3)}`); };
+  const moy = R => { const a = int(R, 10, 20), b = a + pick(R, [2, 4, 6]), c = b + pick(R, [2, 4, 6]); return Q(`Moyenne de ${a}, ${b} et ${c} ?`, (a + b + c) / 3, fr(rnd((a + b + c) / 3, 2)), 2, `(${a} + ${b} + ${c}) ÷ 3 = ${a + b + c} ÷ 3 = ${fr(rnd((a + b + c) / 3, 2))}`); };
+  const affine = R => { const m = pick(R, [2, 3, 1.5]), p = pick(R, [4, 10, 20]), x = int(R, 2, 6); return Q(`y = ${fr(m)}x + ${p}. Calcule y pour x = ${x}.`, m * x + p, null, 2, `y = ${fr(m)} × ${x} + ${p} = ${fr(m * x)} + ${p} = ${fr(m * x + p)}`); };
+  const A = {
+    c1: R => [coef(R), arith(R), puis(R), contraire(R), interet(R)],
+    c2: R => [coef(R), puis(R), arith(R), incompat(R), interet(R)],
+    c3: R => [cube(R), deriv(R), nbsol(R), fact(R), interet(R)],
+    c4: R => [puis(R), coef(R), deriv(R), inter(R), interet(R)],
+    c5: R => [moy(R), affine(R), croise(R), nbsol(R), interet(R)],
+    c6: R => [contraire(R), incompat(R), reunion(R), condi(R), interet(R)],
+    c7: R => [puis(R), deriv(R), fact(R), arith(R), interet(R)]
+  };
+  const gen = (cid, seed) => A[cid](rng(seed));
+  const API = { A, gen };
+  if (typeof module !== 'undefined') module.exports = API; else root.MCVA = API;
+})(typeof module !== 'undefined' ? module.exports : window);
+
+return module.exports;})()};</script>
 <script>/* Automatismes · feuilles imprimables — cœur : catalogue unifié, normalisation des questions, tirage.
    Fonctionne dans la page et sous Node (tests). Licence CC BY-NC 4.0 — Tom Rougeaud.
    Banques de questions de l’auteur (moteur et générateurs inchangés). */
@@ -2521,25 +2886,45 @@ var AUTO = (function () {
     return h.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
   }
 
-  /* ───────── catalogue unifié 2de pro ───────── */
-  var CHAPS_2DE = [
-    { id: 'c1', num: 1, slug: 'prix-marges-tva', titre: '1 · Prix, marges et TVA (pourcentages, évolutions)' },
-    { id: 'c2', num: 2, slug: 'statistique', titre: '2 · Statistique' },
-    { id: 'c3', num: 3, slug: 'premier-degre', titre: '3 · Premier degré (équations, inéquations, calcul littéral)' },
-    { id: 'c4', num: 4, slug: 'factures-interets', titre: '4 · Factures, réductions, intérêts' },
-    { id: 'c5', num: 5, slug: 'fonctions', titre: '5 · Fonctions' },
-    { id: 'c6', num: 6, slug: 'probabilites', titre: '6 · Probabilités' },
-    { id: 'c7', num: 7, slug: 'geometrie', titre: '7 · Géométrie, grandeurs et mesures' },
-    { id: 'c8', num: 8, slug: 'croisement-variables', titre: '8 · Croisement de deux variables' },
-    { id: 'metiers', num: 9, slug: 'problemes-metiers', titre: 'Problèmes des métiers (plusieurs étapes)' },
-    { id: 'algo', num: 10, slug: 'algorithmique-tableur', titre: 'Algorithmique et tableur' }
-  ];
-  /* chapitres de Flash Maths → chapitres unifiés */
-  var FLASH_CHAP = {
-    'Proportionnalité et pourcentages': 'c1', 'Statistiques': 'c2',
-    'Équations et calcul littéral': 'c3', 'Fonctions affines et linéaires': 'c5', 'Grandeurs, mesures et volumes': 'c7',
-    'Géométrie et trigonométrie': 'c7', 'Problèmes des métiers (plusieurs étapes)': 'metiers', 'Algorithmique et tableur': 'algo'
+  /* ───────── niveaux et chapitres ───────── */
+  var FC = {  /* correspondance des chapitres de la banque → chapitres de l’appli */
+    nb: 'Calcul mental et automatismes', prop: 'Proportionnalité et pourcentages', stat: 'Statistiques', equa: 'Équations et calcul littéral',
+    fonc: 'Fonctions affines et linéaires', gran: 'Grandeurs, mesures et volumes', geo: 'Géométrie et trigonométrie', metiers: 'Problèmes des métiers (plusieurs étapes)', algo: 'Algorithmique et tableur'
   };
+  function T(id, titre, slg) { return { id: id, titre: titre, slug: slg || slug(titre.replace(/ \(.*$/, '')) }; }
+  var COMMUN = { nb: T('nb', 'Nombres et calculs', 'nombres-calculs'), metiers: T('metiers', 'Problèmes des métiers (plusieurs étapes)', 'problemes-metiers'), algo: T('algo', 'Algorithmique et tableur', 'algorithmique-tableur'),
+    geop: T('geop', 'Géométrie plane', 'geometrie-plane'), espace: T('espace', 'Géométrie dans l’espace', 'geometrie-espace') };
+  function numbered(arr) { return arr.map(function (t, i) { return T('c' + (i + 1), (i + 1) + ' · ' + t, slug(t.replace(/ \(.*$/, '').split(' : ')[0])); }); }
+  var LEVELS = [
+    { id: 'cap', label: 'CAP', court: 'CAP', niv: 'cap',
+      chaps: [COMMUN.nb, T('prop', 'Proportionnalité et pourcentages', 'proportionnalite-pourcentages'), T('stat', 'Statistiques', 'statistiques'), T('equa', 'Équations et calcul littéral', 'equations-calcul-litteral'),
+        T('fonc', 'Fonctions', 'fonctions'), T('gran', 'Grandeurs, mesures et volumes', 'grandeurs-mesures-volumes'), T('geo', 'Géométrie et trigonométrie', 'geometrie-trigonometrie'), COMMUN.metiers, COMMUN.algo],
+      fmap: {} },
+    { id: '3pm', label: '3ᵉ Prépa-Métiers', court: '3PM', niv: '3pm', auto: 'a3',
+      chaps: numbered(['Nombres entiers et arithmétique', 'Fractions, puissances de 10 et écriture scientifique', 'Calcul littéral et équations', 'Proportionnalité, pourcentages, grandeurs composées', 'Fonctions', 'Statistiques',
+        'Probabilités', 'Théorème de Pythagore et trigonométrie', 'Échelles, agrandissements, réductions et Thalès', 'Espace et transformations (volumes)']).concat([COMMUN.metiers, COMMUN.algo]),
+      fmap: { 'Calcul mental et automatismes': 'c2', 'Proportionnalité et pourcentages': 'c4', 'Grandeurs, mesures et volumes': 'c10', 'Géométrie et trigonométrie': 'c8', 'Statistiques': 'c6', 'Équations et calcul littéral': 'c3',
+        'Fonctions affines et linéaires': 'c5', 'Problèmes des métiers (plusieurs étapes)': 'metiers', 'Algorithmique et tableur': 'algo' } },
+    { id: '2de', label: '2de Bac Pro', court: '2de pro', niv: '2nde', mcv: true,
+      chaps: [COMMUN.nb, T('c1', '1 · Prix, marges et TVA (pourcentages, évolutions)', 'prix-marges-tva'), T('c2', '2 · Statistiques', 'statistiques'), T('c3', '3 · Premier degré (équations, inéquations, calcul littéral)', 'premier-degre'),
+        T('c4', '4 · Factures, réductions, intérêts', 'factures-interets'), T('c5', '5 · Fonctions', 'fonctions'), T('c6', '6 · Probabilités', 'probabilites'), T('c7', '7 · Géométrie, grandeurs et mesures', 'geometrie'),
+        T('c8', '8 · Croisement de deux variables', 'croisement-variables'), COMMUN.metiers, COMMUN.algo],
+      fmap: { 'Calcul mental et automatismes': 'nb', 'Proportionnalité et pourcentages': 'c1', 'Statistiques': 'c2', 'Équations et calcul littéral': 'c3', 'Fonctions affines et linéaires': 'c5', 'Grandeurs, mesures et volumes': 'c7',
+        'Géométrie et trigonométrie': 'c7', 'Problèmes des métiers (plusieurs étapes)': 'metiers', 'Algorithmique et tableur': 'algo' } },
+    { id: '1re', label: '1ʳᵉ pro', court: '1re pro', niv: '1re', auto: 'a1',
+      chaps: numbered(['Calculs commerciaux et financiers', 'Résolution graphique', 'Fonctions du second degré', 'Dérivation', 'Suites numériques', 'Statistique à deux variables', 'Probabilités', 'Géométrie dans l’espace']).concat([COMMUN.geop, COMMUN.metiers]),
+      fmap: { 'Évolutions et calcul économique': 'c1', 'Proportionnalité et pourcentages': 'c1', 'Statistiques et probabilités': 'c6', 'Statistiques': 'c6', 'Fonctions numériques': 'c2', 'Fonctions affines et linéaires': 'c2', 'Équations et calcul littéral': 'c3',
+        'Géométrie plane': 'geop', 'Géométrie et trigonométrie': 'geop', 'Grandeurs, mesures et volumes': 'c8', 'Problèmes des métiers (plusieurs étapes)': 'metiers' } },
+    { id: 'tle', label: 'Tle pro', court: 'Tle pro', niv: 'term', auto: 'aT',
+      chaps: numbered(['Suites numériques', 'Calculs commerciaux et financiers', 'Fonctions polynômes de degré 3', 'Fonctions exponentielles et logarithme décimal', 'Statistique à deux variables', 'Probabilités', 'Exponentielle de base e et logarithme népérien']).concat([COMMUN.espace]),
+      fmap: { 'Suites numériques': 'c1', 'Dérivation et optimisation': 'c3', 'Fonctions numériques': 'c4', 'Statistiques et probabilités': 'c6', 'Probabilités': 'c6', 'Géométrie dans l’espace': 'espace', 'Grandeurs, mesures et volumes': 'espace' } }
+  ];
+  (function () { var f = {}; Object.keys(FC).forEach(function (k) { f[FC[k]] = k; }); LEVELS[0].fmap = f; })();
+  function levelDef(id) { return LEVELS.filter(function (l) { return l.id === id; })[0] || null; }
+  function chapDef(levelId, chapId) { var l = levelDef(levelId); if (!l) return null; return l.chaps.filter(function (c) { return c.id === chapId; })[0] || null; }
+  function isLevel(id) { return !!levelDef(id); }
+  function isChap(levelId, chapId) { return !!chapDef(levelId, chapId); }
+
   /* générateurs Maths et MCV 2de : chapitre + intitulé */
   var MCV = {
     pctOf: ['c1', 'Pourcentage d’une quantité'], prop: ['c1', 'Calculer un pourcentage (part sur total)'], ecrit: ['c1', 'Passer de % à décimal et inversement'],
@@ -2568,20 +2953,74 @@ var AUTO = (function () {
     tcParmi: ['c8', 'Lire « parmi les… »'], tcCompare: ['c8', 'Comparer deux taux']
   };
 
+  /* consignes : une phrase qui donne le contexte des questions très courtes (générateurs de calcul rapide) */
+  var CONS = {
+    pctOf: 'Calcule le pourcentage d’une quantité.', prop: 'Exprime cette part en pourcentage (« a sur b »).', ecrit: 'Complète : passe de l’écriture décimale à l’écriture en pourcentage (ou l’inverse).',
+    cmOf: 'Donne le coefficient multiplicateur (CM) associé à cette évolution.', evolOf: 'Donne l’évolution en pourcentage associée à ce coefficient multiplicateur (hausse ou baisse).',
+    apply: 'Calcule la nouvelle valeur après cette hausse ou cette baisse.', taux: 'Calcule le taux d’évolution entre la valeur de départ et la valeur d’arrivée.',
+    succ: 'Deux évolutions se suivent. Calcule le taux d’évolution global.', depart: 'Retrouve la valeur de départ, avant l’évolution.',
+    ht2ttc: 'Calcule le prix TTC à partir du prix HT.', ttc2ht: 'Calcule le prix HT à partir du prix TTC.', tva6: 'Calcule le montant de la TVA contenue dans ce prix TTC.',
+    marge: 'Calcule le taux demandé, en pourcentage.', og1: 'Sans calculatrice, donne un ordre de grandeur du prix après la remise.',
+    moy: 'Calcule la moyenne de cette série.', moyP: 'Calcule la moyenne pondérée de cette série.', med: 'Détermine la médiane de cette série (range d’abord les valeurs).',
+    etendue: 'Calcule l’étendue de cette série.', q1: 'Détermine le premier quartile de cette série.', q3: 'Détermine le troisième quartile de cette série.', eiq: 'Calcule l’écart interquartile de cette série.',
+    freq: 'Calcule la fréquence, en pourcentage.', angle: 'Dans un diagramme circulaire, calcule l’angle du secteur qui correspond à cette fréquence.',
+    sigma: 'Avec la calculatrice, détermine l’écart type de cette série.', mode: 'Détermine le mode (la valeur la plus fréquente) de cette série.',
+    eq1: 'Résous l’équation.', eq2: 'Résous l’équation.', eq3: 'Résous l’équation.', ineq: 'Résous l’inéquation.', trad: 'Traduis ce problème par une équation, puis résous-la.',
+    estSol: 'Teste si ce nombre est solution de l’équation (remplace x par ce nombre).', ivl: 'Écris cet encadrement sous la forme d’un intervalle.',
+    remise: 'Calcule le prix net après la remise.', remises2: 'Calcule le net commercial après les deux remises successives.', factTTC: 'Calcule le total TTC de cette facture.',
+    intA: 'Calcule les intérêts simples produits (durée en années).', intM: 'Calcule les intérêts simples produits (durée en mois).', intJ: 'Calcule les intérêts simples produits (durée en jours).',
+    valAc: 'Calcule la valeur acquise (capital + intérêts).', tauxI: 'Calcule le taux d’intérêt annuel.', dureeI: 'Calcule la durée du placement, en mois.',
+    imAff: 'Calcule l’image de ce nombre par la fonction.', imCar: 'Calcule l’image de ce nombre par la fonction.', antAff: 'Détermine l’antécédent de ce nombre par la fonction.',
+    coefDir: 'Calcule le coefficient directeur (la pente) de la droite.', ordOr: 'Détermine l’ordonnée à l’origine de la droite (équation y = ax + b).',
+    lin: 'Dans cette situation de proportionnalité, calcule le coefficient demandé.', sens: 'Indique le sens de variation de cette fonction affine (croissante ou décroissante).',
+    appart: 'Ce point appartient-il à la droite ? Remplace x et y dans l’équation.',
+    proba: 'Dans une situation d’équiprobabilité, calcule la probabilité de l’événement.', probaFr: 'Calcule la probabilité de l’événement.', contraire: 'Calcule la probabilité de l’événement contraire.',
+    freqObs: 'Calcule la fréquence observée.', denomb: 'Dénombre les possibilités (principe multiplicatif).', de2: 'On lance deux dés à six faces. Dénombre les issues demandées.',
+    pytH: 'Dans un triangle rectangle, calcule l’hypoténuse (théorème de Pythagore).', pytC: 'Dans un triangle rectangle, calcule le côté manquant (théorème de Pythagore).',
+    pytD: 'Dans un triangle rectangle, calcule l’hypoténuse (valeur approchée, théorème de Pythagore).', recip: 'Avec la réciproque du théorème de Pythagore : ce triangle est-il rectangle ?',
+    thales: 'Avec le théorème de Thalès, calcule la longueur demandée.', aireR: 'Calcule l’aire de cette figure.', aireD: 'Calcule l’aire de ce disque.',
+    volP: 'Calcule le volume de ce solide (attention aux unités).', volC: 'Calcule le volume de ce cylindre.', agr: 'Cette figure est agrandie (ou réduite). Calcule la nouvelle aire.', conv: 'Convertis.',
+    tcMarg: 'Dans un tableau croisé d’effectifs, donne l’effectif marginal demandé.', tcCase: 'Complète le tableau croisé : retrouve l’effectif de la case demandée.',
+    tcPct: 'Retrouve l’effectif à partir du pourcentage.', tcFreq: 'Calcule la fréquence de cette case par rapport à l’effectif total.', tcCond: 'Calcule la fréquence conditionnelle demandée.',
+    tcSum: 'Dans un tableau de fréquences, complète la case manquante (le total fait 100 %).', tcParmi: 'Lis bien « parmi les… » : par quel effectif faut-il diviser ?', tcCompare: 'Compare les deux taux pour choisir le meilleur.'
+  };
+
+  /* ───────── catalogue unifié (5 niveaux) ───────── */
+  var AM = {};  /* modules d’automatismes des manuels : a3 (3ᵉ), a1 (1re), aT (Tle) */
+  function autoSample(mod, cid, k) { try { var q = mod.gen(cid, 3)[k]; return q ? plain(q.t).slice(0, 78) : ''; } catch (e) { return ''; } }
   function buildCatalogue() {
-    var chaps = {}; var out = CHAPS_2DE.map(function (c) { var o = { id: c.id, num: c.num, slug: c.slug, titre: c.titre, items: [] }; chaps[c.id] = o; return o; });
-    FE.BANK.forEach(function (it) {
-      if (it.niv.indexOf('2nde') < 0) return;
-      var cid = FLASH_CHAP[it.chap]; if (!cid) return;
-      chaps[cid].items.push({ key: 'f:' + it.id, src: 'flash', id: it.id, titre: it.titre, d: it.d || 1, cours: !!it.cours, chap: cid });
+    var levels = LEVELS.map(function (L) {
+      var chaps = {}, out = L.chaps.map(function (c) { var o = { id: c.id, slug: c.slug, titre: c.titre, items: [] }; chaps[c.id] = o; return o; });
+      FE.BANK.forEach(function (it) {
+        if (it.niv.indexOf(L.niv) < 0) return;
+        var cid = L.fmap[it.chap];
+        if (!cid || !chaps[cid]) return;
+        chaps[cid].items.push({ key: 'f:' + L.id + ':' + it.id, src: 'flash', id: it.id, titre: it.titre, d: it.d || 1, cours: !!it.cours, chap: cid, level: L.id });
+      });
+      if (L.mcv) Object.keys(MC.G).forEach(function (id) {
+        var m = MCV[id]; if (!m || !chaps[m[0]]) return;
+        chaps[m[0]].items.push({ key: 'm:' + L.id + ':' + id, src: 'mcv', id: id, titre: m[1], d: 1, cours: false, chap: m[0], level: L.id });
+      });
+      if (L.auto && AM[L.auto]) Object.keys(AM[L.auto].A).forEach(function (cid) {
+        if (!chaps[cid]) return;
+        var n = 0; try { n = AM[L.auto].gen(cid, 1).length; } catch (e) { n = 0; }
+        for (var k = 0; k < n; k++) {
+          var id = L.auto + ':' + cid + ':' + k;
+          chaps[cid].items.push({ key: 'a:' + L.id + ':' + id, src: 'auto', id: id, titre: autoSample(AM[L.auto], cid, k) || ('Question ' + (k + 1)), d: 1, cours: false, chap: cid, level: L.id });
+        }
+      });
+      return { id: L.id, label: L.label, court: L.court, chapters: out.filter(function (c) { return c.items.length; }) };
     });
-    Object.keys(MC.G).forEach(function (id) {
-      var m = MCV[id]; if (!m) return;
-      chaps[m[0]].items.push({ key: 'm:' + id, src: 'mcv', id: id, titre: m[1], d: 1, cours: false, chap: m[0] });
-    });
-    return { levels: [{ id: '2de', label: '2de Bac Pro', court: '2de pro', chapters: out.filter(function (c) { return c.items.length; }) }] };
+    return { levels: levels };
   }
+  function keyOf(levelId, src, id) { return (src === 'flash' ? 'f:' : src === 'mcv' ? 'm:' : 'a:') + levelId + ':' + id; }
   function itemByKey(cat, key) { var r = null; cat.levels.forEach(function (l) { l.chapters.forEach(function (c) { c.items.forEach(function (it) { if (it.key === key) r = it; }); }); }); return r; }
+  /* chapitre d’une question dans un niveau : { id, titre, rang } */
+  function chapterOf(cat, levelId, src, id) {
+    var k = keyOf(levelId, src, id), res = null;
+    cat.levels.forEach(function (l) { l.chapters.forEach(function (c, i) { c.items.forEach(function (it) { if (it.key === k) res = { id: c.id, titre: c.titre, rang: i }; }); }); });
+    return res;
+  }
 
   /* ───────── fabrication d’une question normalisée ───────── */
   var LETTERS = 'ABCDEFGH';
@@ -2617,18 +3056,32 @@ var AUTO = (function () {
     N.ansIsHtml = true;
     return N;
   }
-  function makeQuestion(src, id, seed) { try { return src === 'flash' ? makeFlash(id, seed) : makeMcv(id, seed); } catch (e) { return null; } }
+  function makeAuto(id, seed) {
+    var p = String(id).split(':'), mod = AM[p[0]]; if (!mod) return null;
+    var q = mod.gen(p[1], seed >>> 0)[+p[2]]; if (!q) return null;
+    var N = { src: 'auto', id: id, seed: seed, titre: '', d: 1, unit: '', qRaw: q.t, explRaw: q.x || '', figHtml: '', rawIsHtml: false, tags: true, ansRaw: String(q.a), numeric: false };
+    if (q.choices) { N.type = 'qcm'; N.choices = q.choices.slice(); N.ans = q.ok; N.ansRaw = String(q.choices[q.ok]); }
+    else { N.type = 'libre'; N.numeric = true; }
+    return N;
+  }
+  function makeQuestion(src, id, seed) {
+    try {
+      var N = src === 'flash' ? makeFlash(id, seed) : src === 'mcv' ? makeMcv(id, seed) : src === 'auto' ? makeAuto(id, seed) : null;
+      if (N && src === 'mcv' && CONS[id]) N.cons = CONS[id];
+      return N;
+    } catch (e) { return null; }
+  }
 
   /* rendu final d’une question (avec modifications éventuelles) → champs HTML prêts pour la page */
   function view(N, over, mode) {
     over = over || {};
-    var V = { type: N.type, titre: N.titre, src: N.src, id: N.id };
+    var V = { type: N.type, titre: N.titre, src: N.src, id: N.id, cons: N.cons || '' };
     var qEditable = N.rawIsHtml ? htmlToEdit(N.qRaw) : String(N.qRaw);
     V.qEdit = over.q !== undefined ? over.q : qEditable;
-    V.qHtml = over.q !== undefined ? rtUser(over.q) : (N.rawIsHtml ? N.qRaw : rt(N.qRaw));
+    V.qHtml = over.q !== undefined ? rtUser(over.q) : (N.rawIsHtml ? N.qRaw : N.tags ? rtUser(N.qRaw) : rt(N.qRaw));
     var aEdit = N.ansIsHtml ? htmlToEdit(N.mcvA ? N.mcvA : N.ansRaw) : String(N.ansRaw);
     V.aEdit = over.a !== undefined ? over.a : aEdit;
-    V.aHtml = over.a !== undefined ? rtUser(over.a) : (N.ansIsHtml ? (N.mcvA ? N.mcvA : N.ansRaw) : rt(N.ansRaw));
+    V.aHtml = over.a !== undefined ? rtUser(over.a) : (N.ansIsHtml ? (N.mcvA ? N.mcvA : N.ansRaw) : N.tags ? rtUser(N.ansRaw) : rt(N.ansRaw));
     V.eEdit = over.e !== undefined ? over.e : String(N.explRaw || '');
     V.eHtml = N.explRaw || over.e !== undefined ? rtUser(V.eEdit) : '';
     V.figHtml = over.nofig ? '' : N.figHtml;
@@ -2637,7 +3090,7 @@ var AUTO = (function () {
     var t = N.type;
     if (t === 'qcm' && mode !== 'qcm' && N.numeric) t = 'libre';
     V.type = t;
-    if (t === 'qcm' || t === 'qx') V.choices = (N.choices || []).map(function (c) { return N.rawIsHtml ? c : rt(c); });
+    if (t === 'qcm' || t === 'qx') V.choices = (N.choices || []).map(function (c) { return N.rawIsHtml ? c : N.tags ? rtUser(c) : rt(c); });
     if (t === 'assoc') { V.L = N.L.map(rt); V.R = N.R.map(rt); }
     if (t === 'ordre') { V.D = N.D.map(rt); V.how = N.how; }
     if (t === 'qx') V.choices = (N.choices || []).map(function (c) { return rt(c); });
@@ -2673,18 +3126,19 @@ var AUTO = (function () {
   function signature(N) { return plain(N.rawIsHtml ? N.qRaw : rt(N.qRaw)) + '|' + (N.figHtml ? N.figHtml.length : 0); }
 
   /* nom de fichier : niveau_chapitres_nombre-questions */
-  function fileName(level, chapIds, n, suffix) {
-    var names = chapIds.map(function (id) { var c = CHAPS_2DE.filter(function (x) { return x.id === id; })[0]; return c ? c.slug : (slug(id) || 'chapitre'); });
+  function fileName(levelId, chapIds, n, suffix) {
+    var L = levelDef(levelId) || LEVELS[2], lv = slug(L.court);
+    var names = chapIds.map(function (id) { var c = chapDef(L.id, id); return c ? c.slug : (slug(id) || 'chapitre'); });
     var chap = names.length === 0 ? 'sans-chapitre' : names.length <= 3 ? names.join('+') : names.length + '-chapitres';
-    return level + '_' + chap + '_' + n + '-question' + (n > 1 ? 's' : '') + (suffix || '') + '.pdf';
+    return lv + '_' + chap + '_' + n + '-question' + (n > 1 ? 's' : '') + (suffix || '') + '.pdf';
   }
 
   return {
-    init: function (o) { FE = o.FE; MC = o.MC; KX = o.katex || null; RT = {}; },
+    init: function (o) { FE = o.FE; MC = o.MC; KX = o.katex || null; RT = {}; AM = o.AM || {}; },
     setKatex: function (k) { KX = k; RT = {}; },
     esc: esc, rt: rt, rtUser: rtUser, plain: plain, plainSrc: plainSrc, slug: slug, mulberry32: mulberry32, shuffle: shuffle,
     buildCatalogue: buildCatalogue, itemByKey: itemByKey, makeQuestion: makeQuestion, view: view, draw: draw, signature: signature,
-    fileName: fileName, htmlToEdit: htmlToEdit, CHAPS_2DE: CHAPS_2DE, LETTERS: LETTERS
+    fileName: fileName, htmlToEdit: htmlToEdit, LEVELS: LEVELS, levelDef: levelDef, chapDef: chapDef, isLevel: isLevel, isChap: isChap, keyOf: keyOf, chapterOf: chapterOf, LETTERS: LETTERS
   };
 })();
 </script>
@@ -2718,7 +3172,7 @@ var AUTO = (function () {
   /* ───────── état ───────── */
   var cat, state, toastT = null;
   function defSheet() {
-    return { title: 'Automatismes', subtitle: '', items: [], font: 'Nunito', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de', gap: 5, score: false, total: 20 };
+    return { title: 'Automatismes', subtitle: '', items: [], font: 'Nunito', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de', gap: 5, heads: true, cons: true, work: 'auto', intro: '', score: false, total: 20, scoreMode: 'equal', showPts: true };
   }
   function defState() { return { view: 'compose', level: '2de', sel: {}, n: 12, mode: 'auto', sheet: defSheet(), openChaps: {} }; }
   function loadState() {
@@ -2728,6 +3182,7 @@ var AUTO = (function () {
   }
   var saveT = null;
   function save() { clearTimeout(saveT); saveT = setTimeout(function () { try { store.set('state', JSON.stringify(state)); } catch (e) { } }, 250); }
+  function clampPts(v) { v = +v; return isFinite(v) ? Math.max(0, Math.min(100, Math.round(v * 4) / 4)) : 1; }
   function clampN(v, a, b, d) { v = +v; return isFinite(v) ? Math.max(a, Math.min(b, Math.round(v))) : d; }
   function sanitizeSheet(o) {
     if (!o || typeof o !== 'object') return null;
@@ -2737,12 +3192,16 @@ var AUTO = (function () {
     s.size = clampN(o.size, 8, 18, 11); s.cols = o.cols === 2 ? 2 : 1;
     s.nom = o.nom !== false; s.date = o.date !== false; s.classe = o.classe !== false; s.bw = !!o.bw; s.expl = o.expl !== false;
     s.content = ['feuille', 'both', 'corrige'].indexOf(o.content) >= 0 ? o.content : 'feuille';
+    s.level = AUTO.isLevel(o.level) ? o.level : '2de';
     s.gap = clampN(o.gap, 0, 30, 5); s.score = !!o.score; s.total = clampN(o.total, 1, 1000, 20);
+    s.heads = o.heads !== false; s.cons = o.cons !== false; s.showPts = o.showPts !== false;
+    s.work = ['none', 'auto', 'small', 'medium', 'large'].indexOf(o.work) >= 0 ? o.work : 'auto';
+    s.scoreMode = o.scoreMode === 'custom' ? 'custom' : 'equal'; s.intro = String(o.intro || '').slice(0, 300);
     s.mode = o.mode === 'qcm' ? 'qcm' : 'auto'; s.seed = clampN(o.seed, 1, 2147483646, 1);
-    s.chapIds = Array.isArray(o.chapIds) ? o.chapIds.filter(function (x) { return AUTO.CHAPS_2DE.some(function (c) { return c.id === x; }); }).slice(0, 20) : [];
+    s.chapIds = Array.isArray(o.chapIds) ? o.chapIds.filter(function (x) { return AUTO.isChap(s.level, x); }).slice(0, 20) : [];
     s.items = [];
     (Array.isArray(o.items) ? o.items : []).slice(0, 100).forEach(function (it) {
-      if (!it || (it.src !== 'flash' && it.src !== 'mcv') || typeof it.id !== 'string' || !AUTO.itemByKey(cat, (it.src === 'flash' ? 'f:' : 'm:') + it.id)) return;
+      if (!it || ['flash', 'mcv', 'auto'].indexOf(it.src) < 0 || typeof it.id !== 'string' || !AUTO.itemByKey(cat, AUTO.keyOf(s.level, it.src, it.id))) return;
       var seed = clampN(it.seed, 0, 4294967295, 1), over = {};
       if (it.o && typeof it.o === 'object') {
         if (typeof it.o.q === 'string') over.q = it.o.q.slice(0, 1500);
@@ -2752,6 +3211,8 @@ var AUTO = (function () {
       }
       var row = { src: it.src, id: it.id, seed: seed, o: over };
       if (it.gap !== undefined && it.gap !== null && isFinite(+it.gap)) row.gap = clampN(it.gap, 0, 40, 5);
+      if (it.work !== undefined && it.work !== null && isFinite(+it.work)) row.work = clampN(it.work, 0, 80, 0);
+      if (it.pts !== undefined && it.pts !== null && isFinite(+it.pts)) row.pts = clampPts(it.pts);
       s.items.push(row);
     });
     return s;
@@ -2823,8 +3284,9 @@ var AUTO = (function () {
     $('mode').value = state.mode;
     updateCompose();
     var ch = $('levels'); ch.innerHTML = '';
-    [['2de', '2de pro', true], ['cap', 'CAP', false], ['3pm', '3ᵉ Prépa-Métiers', false], ['1re', '1ʳᵉ pro', false], ['tle', 'Tle pro', false]].forEach(function (L) {
-      var b = el('button', 'chip', esc(L[1]) + (L[2] ? '' : ' · bientôt')); b.type = 'button'; b.setAttribute('aria-pressed', L[0] === state.level ? 'true' : 'false'); if (!L[2]) b.disabled = true;
+    cat.levels.forEach(function (L) {
+      var b = el('button', 'chip', esc(L.label)); b.type = 'button'; b.setAttribute('aria-pressed', L.id === state.level ? 'true' : 'false');
+      b.addEventListener('click', function () { if (state.level === L.id) return; state.level = L.id; save(); renderCompose(); });
       ch.appendChild(b);
     });
   }
@@ -2841,12 +3303,19 @@ var AUTO = (function () {
     var chapIds = [], lv = levelInfo(state.level);
     lv.chapters.forEach(function (c) { if (c.items.some(function (it) { return keys.indexOf(it.key) >= 0; })) chapIds.push(c.id); });
     var old = state.sheet;
-    state.sheet = sanitizeSheet({ title: old.title, subtitle: old.subtitle, font: old.font, size: old.size, cols: old.cols, nom: old.nom, date: old.date, classe: old.classe, bw: old.bw, content: old.content, expl: old.expl, mode: state.mode, seed: seed, chapIds: chapIds, items: items });
+    items = sortByChapter(items, state.level);
+    state.sheet = sanitizeSheet({ level: state.level, heads: old.heads, cons: old.cons, work: old.work, intro: old.intro, gap: old.gap, score: old.score, total: old.total, scoreMode: old.scoreMode, showPts: old.showPts, title: old.title, subtitle: old.subtitle, font: old.font, size: old.size, cols: old.cols, nom: old.nom, date: old.date, classe: old.classe, bw: old.bw, content: old.content, expl: old.expl, mode: state.mode, seed: seed, chapIds: chapIds, items: items });
     state.sheet.chapIds = chapIds;
     if (!state.sheet.title || state.sheet.title === 'Automatismes') state.sheet.title = chapIds.length === 1 ? shortTitle(chapIds[0]) : 'Automatismes';
     save(); go('sheet');
   }
-  function shortTitle(id) { var c = AUTO.CHAPS_2DE.filter(function (x) { return x.id === id; })[0]; return c ? c.titre.replace(/^\d+ · /, '').replace(/ \(.*$/, '') : 'Automatismes'; }
+  function shortChap(t) { return String(t).replace(/^\d+ · /, '').replace(/ \(.*$/, ''); }
+  function shortTitle(id) { var c = AUTO.chapDef(state.level, id); return c ? shortChap(c.titre) : 'Automatismes'; }
+  function sortByChapter(items, level) {
+    var a = items.map(function (it, k) { var c = AUTO.chapterOf(cat, level, it.src, it.id); return { it: it, k: k, r: c ? c.rang : 999 }; });
+    a.sort(function (x, y) { return x.r - y.r || x.k - y.k; });
+    return a.map(function (x) { return x.it; });
+  }
 
   /* ───────── mise en page de la feuille (pages A4) ───────── */
   var LT = AUTO.LETTERS;
@@ -2870,17 +3339,51 @@ var AUTO = (function () {
     }
     return '';
   }
-  function qBlock(v, i, gap) {
-    return '<article class="qb t-' + v.type + '" style="margin-bottom:' + gap + 'mm"><div class="qn">' + (i + 1) + '</div><div class="qc"><div class="qt">' + v.qHtml + '</div>' + (v.figHtml ? '<div class="fig">' + v.figHtml + '</div>' : '') + answerArea(v) + '</div></article>';
+  function ptsLabel(p) { var r = Math.round(p * 100) / 100; return String(r).replace('.', ',') + (r > 1 ? ' pts' : ' pt'); }
+  function totalPts(S) {
+    if (S.scoreMode !== 'custom') return S.total;
+    var t = 0; S.items.forEach(function (it) { t += it.pts !== undefined ? it.pts : 1; }); return Math.round(t * 100) / 100;
+  }
+  function autoWork(v, chapId, mode) {
+    if (mode === 'none') return 0; if (mode === 'small') return 10; if (mode === 'medium') return 20; if (mode === 'large') return 35;
+    if (v.type === 'libre') { if (v.est) return 0; var w = v.d >= 3 ? 22 : v.d === 2 ? 14 : 9; return chapId === 'metiers' ? Math.max(w, 24) : w; }
+    return v.type === 'qx' ? 10 : 0;
+  }
+  /* réglages d’une question sur la feuille : espace, zone de calcul, points, consigne */
+  function qOpts(S, it, v) {
+    var c = AUTO.chapterOf(cat, S.level, it.src, it.id), n = S.items.length;
+    var pts = S.score && S.showPts ? (S.scoreMode === 'custom' ? (it.pts !== undefined ? it.pts : 1) : S.total / Math.max(1, n)) : null;
+    return { gap: it.gap !== undefined ? it.gap : S.gap, work: it.work !== undefined ? it.work : autoWork(v, c ? c.id : '', S.work), pts: pts, cons: S.cons, chap: c };
+  }
+  function insText(v) {
+    if (v.type === 'qcm') return 'Une seule bonne réponse : coche-la.';
+    if (v.type === 'vf') return 'Coche la bonne case.';
+    if (v.type === 'qx') return 'Coche l’étape qui contient l’erreur.';
+    if (v.type === 'assoc') return 'Écris la lettre qui correspond à chaque numéro.';
+    if (v.type === 'ordre') return 'Écris les lettres dans le bon ordre.';
+    if (v.type === 'libre' && v.est) return 'Estime : une valeur proche suffit.';
+    return '';
+  }
+  function qBlock(v, i, o) {
+    var kick = o.cons && v.titre ? v.titre : '', pts = o.pts !== null && o.pts !== undefined ? '(' + ptsLabel(o.pts) + ')' : '';
+    var qh = kick || pts ? '<div class="qh"><span class="qk">' + esc(kick) + '</span>' + (pts ? '<span class="pts">' + pts + '</span>' : '') + '</div>' : '';
+    var ins = o.cons ? insText(v) : '';
+    return '<article class="qb t-' + v.type + '" data-i="' + i + '" style="margin-bottom:' + o.gap + 'mm"><div class="qn">' + (i + 1) + '</div><div class="qc">' + qh +
+      (o.cons && v.cons ? '<div class="qcn">' + esc(v.cons) + '</div>' : '') + '<div class="qt">' + v.qHtml + '</div>' + (v.figHtml ? '<div class="fig">' + v.figHtml + '</div>' : '') +
+      (ins ? '<div class="ins">' + ins + '</div>' : '') + answerArea(v) + (o.work > 0 ? '<div class="wk" style="height:' + o.work + 'mm"><span>Calculs</span></div>' : '') + '</div></article>';
+  }
+  function chapHead(S, c, prev) {
+    if (!S.heads || !c || (prev && prev.id === c.id)) return '';
+    return '<div class="chh"><span>Chapitre</span>' + esc(shortChap(c.titre)) + '</div>';
   }
   function corrAnswer(v) {
     if (v.type === 'qcm') return '<span class="lt">' + LT[v.ansIdx] + '.</span>' + v.choices[v.ansIdx];
     if (v.type === 'qx') return v.aHtml;
     return v.aHtml;
   }
-  function corrBlock(v, i, expl) {
+  function corrBlock(v, i, expl, pts) {
     var qs = AUTO.plainSrc(v.qEdit); if (qs.length > 90) qs = qs.slice(0, 88) + '…';
-    return '<article class="cr"><div class="qn">' + (i + 1) + '</div><div><div class="ca">' + corrAnswer(v) + '</div><div class="qs">' + esc(qs) + '</div>' + (expl && v.eHtml ? '<span class="ex">' + v.eHtml + '</span>' : '') + '</div></article>';
+    return '<article class="cr"><div class="qn">' + (i + 1) + '</div><div><div class="ca">' + corrAnswer(v) + (pts !== null && pts !== undefined ? ' <span class="pts">(' + ptsLabel(pts) + ')</span>' : '') + '</div><div class="qs">' + esc(qs) + '</div>' + (expl && v.eHtml ? '<span class="ex">' + v.eHtml + '</span>' : '') + '</div></article>';
   }
   function newPage(S, first, label) {
     var p = el('div', 'page' + (S.bw ? ' bw' : '') + (S.cols === 2 ? ' cols2' : ''));
@@ -2891,8 +3394,8 @@ var AUTO = (function () {
       var fields = '';
       if (label !== 'corrige' && (S.nom || S.date || S.classe)) fields = '<div class="fields">' + (S.nom ? '<span>Nom, prénom : <i></i></span>' : '') + (S.classe ? '<span>Classe : <i></i></span>' : '') + (S.date ? '<span>Date : <i></i></span>' : '') + '</div>';
       var sc = '';
-      if (label !== 'corrige' && S.score) { var pp = S.total / Math.max(1, n); sc = '<div class="score"><div class="sl">Note</div><div class="sv"><i></i><span>/ ' + S.total + '</span></div><div class="sp">' + String(Math.round(pp * 100) / 100).replace('.', ',') + ' pt par question</div></div>'; }
-      head = '<div class="ph first"><div class="band"><div class="bar"></div><div class="bt"><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div>' + sc + '</div>' + fields + '</div>';
+      if (label !== 'corrige' && S.score) { var pp = S.total / Math.max(1, n); sc = '<div class="score"><div class="sl">Note</div><div class="sv"><i></i><span>/ ' + String(totalPts(S)).replace('.', ',') + '</span></div>' + (S.scoreMode === 'custom' ? '<div class="sp">barème par question</div>' : '<div class="sp">' + String(Math.round(pp * 100) / 100).replace('.', ',') + ' pt par question</div>') + '</div>'; }
+      head = '<div class="ph first"><div class="band"><div class="bar"></div><div class="bt"><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div>' + sc + '</div>' + fields + (label !== 'corrige' && S.intro ? '<div class="intro">' + AUTO.rtUser(S.intro) + '</div>' : '') + '</div>';
     } else head = '<div class="ph slim"><span>' + AUTO.rtUser(tt) + '</span><span>' + levelInfo(S.level).court + '</span></div>';
     p.innerHTML = head + '<div class="pb"></div><div class="pf"><span>Automatismes · Tom Rougeaud · CC BY-NC 4.0</span><span class="pn"></span></div>';
     return p;
@@ -2911,15 +3414,21 @@ var AUTO = (function () {
   /* construit toutes les pages d’une feuille (tableau d’éléments .page, chez #measure) */
   function buildPages(S, content) {
     $('measure').innerHTML = '';
-    var pages = [], views = [], gaps = [];
-    S.items.forEach(function (it) { var v = qView(it, S.mode); if (v) { views.push(v); gaps.push(it.gap !== undefined ? it.gap : S.gap); } });
-    if (content !== 'corrige') paginate(S, views.map(function (v, i) { return qBlock(v, i, gaps[i]); }), 'sujet', pages);
-    if (content !== 'feuille') paginate(S, views.map(function (v, i) { return corrBlock(v, i, S.expl); }), 'corrige', pages);
+    var pages = [], blocks = [], cblocks = [], prev = null;
+    S.items.forEach(function (it, k) {
+      var v = qView(it, S.mode); if (!v) return;
+      var o = qOpts(S, it, v), h = chapHead(S, o.chap, prev), i = blocks.length; prev = o.chap || prev;
+      var wrap = function (x) { return h ? '<div class="qw">' + h + x + '</div>' : x; };
+      blocks.push(wrap(qBlock(v, i, o)));
+      cblocks.push(wrap(corrBlock(v, i, S.expl, S.score && S.showPts ? (S.scoreMode === 'custom' ? (it.pts !== undefined ? it.pts : 1) : S.total / Math.max(1, S.items.length)) : null)));
+    });
+    if (content !== 'corrige') paginate(S, blocks, 'sujet', pages);
+    if (content !== 'feuille') paginate(S, cblocks, 'corrige', pages);
     var code = S.seed.toString(36).toUpperCase();
     pages.forEach(function (p, i) { p.querySelector('.pn').textContent = 'Feuille ' + code + ' · page ' + (i + 1) + ' / ' + pages.length; });
     return pages;
   }
-  function currentName(suffix) { return AUTO.fileName(levelInfo(state.sheet.level).court.replace(/\s+/g, '-'), state.sheet.chapIds, state.sheet.items.length, suffix); }
+  function currentName(suffix) { return AUTO.fileName(state.sheet.level, state.sheet.chapIds, state.sheet.items.length, suffix); }
   function contentSuffix(c) { return c === 'corrige' ? '_corrige' : c === 'both' ? '_avec-corrige' : ''; }
 
   /* ───────── écran « Ma feuille » ───────── */
@@ -2927,10 +3436,16 @@ var AUTO = (function () {
   function renderSheet() {
     var S = state.sheet;
     $('sTitle').value = S.title; $('sSub').value = S.subtitle; $('sFont').value = S.font; $('sSize').value = S.size; $('sSizeOut').textContent = S.size + ' pt';
-    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw; $('sGap').value = S.gap; $('sGapOut').textContent = S.gap + ' mm'; $('sScore').checked = S.score; $('sTotal').value = S.total; $('sTotal').disabled = !S.score;
+    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw; $('sGap').value = S.gap; $('sGapOut').textContent = S.gap + ' mm'; $('sScore').checked = S.score; $('sTotal').value = S.total; $('sScoreMode').value = S.scoreMode; $('sShowPts').checked = S.showPts; syncScoreUi();
+    $('sHeads').checked = S.heads; $('sCons').checked = S.cons; $('sWork').value = S.work; $('sIntro').value = S.intro;
     $('sContent').value = S.content; $('sExpl').checked = S.expl; $('sMode').value = S.mode;
     $('fileInfo').textContent = currentName(contentSuffix(S.content));
     renderList(); renderPreview();
+  }
+  function syncScoreUi() {
+    var S = state.sheet; $('sScoreMode').disabled = !S.score; $('sShowPts').disabled = !S.score;
+    $('sTotal').disabled = !S.score || S.scoreMode === 'custom';
+    $('sTotal').value = S.scoreMode === 'custom' ? totalPts(S) : S.total;
   }
   function renderList() {
     var S = state.sheet, ul = $('qlist'); ul.innerHTML = '';
@@ -2939,7 +3454,7 @@ var AUTO = (function () {
       var li = el('li', 'qcard'); li.draggable = true; li.dataset.i = i;
       var txt = AUTO.plainSrc(v.qEdit); if (txt.length > 120) txt = txt.slice(0, 118) + '…';
       li.innerHTML = '<div class="num" title="Glisser pour déplacer">' + (i + 1) + '</div><div class="tx"><b>' + esc(v.titre) + (it.o && Object.keys(it.o).length ? ' · modifiée' : '') + ' · espace ' + (it.gap !== undefined ? it.gap : S.gap) + ' mm' + (it.gap !== undefined ? ' (perso)' : '') + '</b><span>' + esc(txt) + '</span></div>' +
-        '<div class="acts"><button class="ib" data-a="up" title="Monter" aria-label="Monter la question ' + (i + 1) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-a="down" title="Descendre" aria-label="Descendre la question ' + (i + 1) + '"' + (i === S.items.length - 1 ? ' disabled' : '') + '>↓</button>' +
+        '<div class="acts">' + (S.score && S.scoreMode === 'custom' ? '<label class="ptl" title="Points de cette question">Points <input type="number" class="ptin" min="0" max="100" step="0.25" value="' + (it.pts !== undefined ? it.pts : 1) + '" data-i="' + i + '" aria-label="Points de la question ' + (i + 1) + '"></label>' : '') + '<button class="ib" data-a="up" title="Monter" aria-label="Monter la question ' + (i + 1) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-a="down" title="Descendre" aria-label="Descendre la question ' + (i + 1) + '"' + (i === S.items.length - 1 ? ' disabled' : '') + '>↓</button>' +
         '<button class="ib" data-a="gapm" title="Réduire l’espace sous cette question" aria-label="Réduire l’espace sous la question ' + (i + 1) + '">⇕−</button><button class="ib" data-a="gapp" title="Augmenter l’espace sous cette question" aria-label="Augmenter l’espace sous la question ' + (i + 1) + '">⇕+</button>' +
         '<button class="ib" data-a="edit" title="Modifier" aria-label="Modifier la question ' + (i + 1) + '">✎</button><button class="ib" data-a="redo" title="Autre question de la même notion" aria-label="Retirer la question ' + (i + 1) + '">↻</button><button class="ib" data-a="del" title="Supprimer" aria-label="Supprimer la question ' + (i + 1) + '">🗑</button></div>';
       ul.appendChild(li);
@@ -2964,30 +3479,55 @@ var AUTO = (function () {
   }
   function move(i, j) { var a = state.sheet.items; if (j < 0 || j >= a.length) return; var t = a.splice(i, 1)[0]; a.splice(j, 0, t); save(); renderList(); renderPreview(); }
 
-  /* édition d’une question */
-  var editIdx = -1;
+  /* édition d’une question : l’aperçu de la feuille se met à jour pendant la frappe */
+  var editIdx = -1, editBackup = null, liveT = null;
   function openEdit(i) {
-    var it = state.sheet.items[i], v = qView(it, state.sheet.mode); if (!v) return; editIdx = i;
+    var S = state.sheet, it = S.items[i], v = qView(it, S.mode); if (!v) return; editIdx = i; editBackup = JSON.stringify(it);
     $('eQ').value = v.qEdit; $('eA').value = v.aEdit; $('eE').value = v.eEdit; $('eFig').checked = !!(it.o && it.o.nofig); $('eFigRow').hidden = !v.hasFig;
-    var gv = it.gap !== undefined ? it.gap : state.sheet.gap; $('eGapAuto').checked = it.gap === undefined; $('eGap').value = gv; $('eGap').disabled = it.gap === undefined; $('eGapOut').textContent = gv + ' mm';
-    $('eNum').textContent = String(i + 1); openModal('mEdit'); setTimeout(function () { $('eQ').focus(); }, 30);
+    var o = qOpts(S, it, v);
+    $('eGapAuto').checked = it.gap === undefined; $('eGap').value = o.gap; $('eGap').disabled = it.gap === undefined; $('eGapOut').textContent = o.gap + ' mm';
+    $('eWorkAuto').checked = it.work === undefined; $('eWork').value = o.work; $('eWork').disabled = it.work === undefined; $('eWorkOut').textContent = o.work + ' mm';
+    $('ePtsRow').hidden = !(S.score && S.scoreMode === 'custom'); $('ePts').value = it.pts !== undefined ? it.pts : 1;
+    $('eNum').textContent = String(i + 1);
+    $('mEdit').classList.toggle('side', window.innerWidth >= 1100);
+    updateEPrev(); openModal('mEdit'); setTimeout(function () { $('eQ').focus(); }, 30);
   }
-  function saveEdit() {
-    var it = state.sheet.items[editIdx]; if (!it) { closeModal('mEdit'); return; }
-    var N = AUTO.makeQuestion(it.src, it.id, it.seed), base = AUTO.view(N, null, state.sheet.mode), o = {};
+  function readEdit() {
+    var S = state.sheet, it = S.items[editIdx]; if (!it) return null;
+    var N = AUTO.makeQuestion(it.src, it.id, it.seed), base = AUTO.view(N, null, S.mode), o = {};
     var q = $('eQ').value.slice(0, 1500), a = $('eA').value.slice(0, 600), e = $('eE').value.slice(0, 1500);
     if (q !== base.qEdit) o.q = q; if (a !== base.aEdit) o.a = a; if (e !== base.eEdit) o.e = e; if ($('eFig').checked) o.nofig = true;
+    it.o = o;
     if ($('eGapAuto').checked) delete it.gap; else it.gap = clampN($('eGap').value, 0, 40, 5);
-    it.o = o; save(); closeModal('mEdit'); renderList(); renderPreview();
+    if ($('eWorkAuto').checked) delete it.work; else it.work = clampN($('eWork').value, 0, 80, 0);
+    if (S.score && S.scoreMode === 'custom') it.pts = clampPts($('ePts').value);
+    return it;
   }
-  function resetEdit() { var it = state.sheet.items[editIdx]; if (it) it.o = {}; save(); closeModal('mEdit'); renderList(); renderPreview(); }
+  function updateEPrev() {
+    var S = state.sheet, it = S.items[editIdx], host = $('ePrev'); if (!it || !host) return;
+    var v = qView(it, S.mode); if (!v) return; var o = qOpts(S, it, v);
+    var p = el('div', 'page mini' + (S.bw ? ' bw' : '') + (S.cols === 2 ? ' cols2' : '')); p.style.cssText = '--sf:' + fontCss(S.font) + ';--sz:' + S.size + 'pt';
+    p.innerHTML = qBlock(v, editIdx, o) + '<div class="sep">Corrigé</div>' + corrBlock(v, editIdx, true, o.pts);
+    host.innerHTML = ''; host.appendChild(p);
+  }
+  function liveEdit() {
+    if (!readEdit()) return; updateEPrev(); clearTimeout(liveT);
+    liveT = setTimeout(function () { renderList(); renderPreview(); setTimeout(function () { var q = document.querySelector('#pages article.qb[data-i="' + editIdx + '"]'); if (q && $('mEdit').classList.contains('side') && q.scrollIntoView) { try { q.scrollIntoView({ block: 'nearest' }); } catch (x) { } } }, 80); }, 300);
+  }
+  function saveEdit() { clearTimeout(liveT); readEdit(); editIdx = -1; editBackup = null; save(); closeModal('mEdit'); renderList(); renderPreview(); }
+  function cancelEdit() {
+    clearTimeout(liveT);
+    if (editIdx >= 0 && editBackup) { try { state.sheet.items[editIdx] = JSON.parse(editBackup); } catch (e) { } }
+    editIdx = -1; editBackup = null; closeModal('mEdit'); renderList(); renderPreview();
+  }
+  function resetEdit() { clearTimeout(liveT); var it = state.sheet.items[editIdx]; if (it) it.o = {}; editIdx = -1; editBackup = null; save(); closeModal('mEdit'); renderList(); renderPreview(); }
 
   function redo(i) {
     var S = state.sheet, it = S.items[i], used = {};
     S.items.forEach(function (x, k) { if (k !== i) { var N = AUTO.makeQuestion(x.src, x.id, x.seed); if (N) used[AUTO.signature(N)] = 1; } });
     for (var k = 1; k < 40; k++) {
       var seed = (it.seed + k * 104729 + Math.floor(Math.random() * 1e6)) >>> 0, N2 = AUTO.makeQuestion(it.src, it.id, seed);
-      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; if (it.gap !== undefined) S.items[i].gap = it.gap; save(); renderList(); renderPreview(); return; }
+      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; ['gap', 'work', 'pts'].forEach(function (k) { if (it[k] !== undefined) S.items[i][k] = it[k]; }); save(); renderList(); renderPreview(); return; }
     }
     toast('Cette notion n’a pas d’autre question différente.', 'err');
   }
@@ -3002,9 +3542,9 @@ var AUTO = (function () {
   }
   function redrawAll() {
     var S = state.sheet, keys = [], seen = {};
-    S.items.forEach(function (x) { var k = (x.src === 'flash' ? 'f:' : 'm:') + x.id; if (!seen[k]) { seen[k] = 1; keys.push(k); } });
+    S.items.forEach(function (x) { var k = AUTO.keyOf(S.level, x.src, x.id); if (!seen[k]) { seen[k] = 1; keys.push(k); } });
     var seed = Math.floor(Math.random() * 2000000000) + 1;
-    var items = AUTO.draw(keys, S.items.length, seed, cat).map(function (x) { x.o = {}; return x; });
+    var items = sortByChapter(AUTO.draw(keys, S.items.length, seed, cat).map(function (x) { x.o = {}; return x; }), S.level);
     if (!items.length) return; S.items = items; S.seed = seed; save(); renderSheet();
   }
 
@@ -3146,10 +3686,15 @@ var AUTO = (function () {
     bindS('sBw', 'bw', function (e) { return e.checked; }, 'change'); bindS('sExpl', 'expl', function (e) { return e.checked; }, 'change');
     bindS('sContent', 'content', function (e) { return e.value; }, 'change');
     $('sGap').addEventListener('input', function () { state.sheet.gap = clampN(this.value, 0, 30, 5); $('sGapOut').textContent = state.sheet.gap + ' mm'; renderList(); schedulePreview(); });
-    $('sScore').addEventListener('change', function () { state.sheet.score = this.checked; $('sTotal').disabled = !this.checked; schedulePreview(); });
+    $('sScore').addEventListener('change', function () { state.sheet.score = this.checked; syncScoreUi(); renderList(); schedulePreview(); });
+    $('sScoreMode').addEventListener('change', function () { state.sheet.scoreMode = this.value === 'custom' ? 'custom' : 'equal'; syncScoreUi(); renderList(); schedulePreview(); });
+    $('sShowPts').addEventListener('change', function () { state.sheet.showPts = this.checked; schedulePreview(); });
+    $('sHeads').addEventListener('change', function () { state.sheet.heads = this.checked; schedulePreview(); });
+    $('sCons').addEventListener('change', function () { state.sheet.cons = this.checked; schedulePreview(); });
+    $('sWork').addEventListener('change', function () { state.sheet.work = this.value; schedulePreview(); });
+    $('sIntro').addEventListener('input', function () { state.sheet.intro = this.value.slice(0, 300); schedulePreview(); });
+    $('qlist').addEventListener('input', function (e) { var t = e.target; if (!t.classList || !t.classList.contains('ptin')) return; var it = state.sheet.items[+t.dataset.i]; if (!it) return; it.pts = clampPts(t.value); $('sTotal').value = totalPts(state.sheet); schedulePreview(); });
     $('sTotal').addEventListener('input', function () { var v = Math.round(+this.value); if (isFinite(v) && v >= 1) { state.sheet.total = Math.min(1000, v); schedulePreview(); } });
-    $('eGapAuto').addEventListener('change', function () { $('eGap').disabled = this.checked; });
-    $('eGap').addEventListener('input', function () { $('eGapOut').textContent = this.value + ' mm'; });
     $('sMode').addEventListener('change', function () { state.sheet.mode = this.value === 'qcm' ? 'qcm' : 'auto'; save(); renderList(); schedulePreview(); });
     $('qlist').addEventListener('click', function (e) {
       var b = e.target.closest('button[data-a]'); if (!b) return; var i = +b.closest('li').dataset.i, a = b.dataset.a;
@@ -3169,16 +3714,23 @@ var AUTO = (function () {
     $('importBtn').addEventListener('click', function () { $('importFile').click(); });
     $('importFile').addEventListener('change', function () { if (this.files && this.files[0]) importJson(this.files[0]); this.value = ''; });
     $('clearBtn').addEventListener('click', clearAll); $('clearBtn2').addEventListener('click', clearAll);
-    $('eSave').addEventListener('click', saveEdit); $('eCancel').addEventListener('click', function () { closeModal('mEdit'); }); $('eReset').addEventListener('click', resetEdit);
-    Array.prototype.forEach.call(document.querySelectorAll('.modal'), function (m) { m.addEventListener('click', function (e) { if (e.target === m) m.classList.remove('on'); }); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') Array.prototype.forEach.call(document.querySelectorAll('.modal.on'), function (m) { m.classList.remove('on'); }); });
+    $('eSave').addEventListener('click', saveEdit); $('eCancel').addEventListener('click', cancelEdit); $('eReset').addEventListener('click', resetEdit);
+    ['eQ', 'eA', 'eE'].forEach(function (id) { $(id).addEventListener('input', liveEdit); });
+    $('eFig').addEventListener('change', liveEdit);
+    $('eGapAuto').addEventListener('change', function () { $('eGap').disabled = this.checked; liveEdit(); });
+    $('eGap').addEventListener('input', function () { $('eGapOut').textContent = this.value + ' mm'; liveEdit(); });
+    $('eWorkAuto').addEventListener('change', function () { $('eWork').disabled = this.checked; liveEdit(); });
+    $('eWork').addEventListener('input', function () { $('eWorkOut').textContent = this.value + ' mm'; liveEdit(); });
+    $('ePts').addEventListener('input', liveEdit);
+    Array.prototype.forEach.call(document.querySelectorAll('.modal'), function (m) { m.addEventListener('click', function (e) { if (e.target === m) { if (m.id === 'mEdit') cancelEdit(); else m.classList.remove('on'); } }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') Array.prototype.forEach.call(document.querySelectorAll('.modal.on'), function (m) { if (m.id === 'mEdit') cancelEdit(); else m.classList.remove('on'); }); });
     var rs = null; window.addEventListener('resize', function () { clearTimeout(rs); rs = setTimeout(function () { if (state.view === 'sheet') renderPreview(); }, 250); });
     $('storeInfo').textContent = store.persistent ? 'Les réglages et la feuille en cours sont enregistrés dans ce navigateur, sur cet appareil uniquement.' : 'Le stockage du navigateur est indisponible : rien ne sera conservé après fermeture de la page.';
   }
 
   /* ───────── démarrage ───────── */
   function start() {
-    try { AUTO.init({ FE: window.FLASH_ENGINE, MC: window.MCVG.MCVG || window.MCVG, katex: window.katex }); } catch (e) { document.body.innerHTML = '<p style="padding:1rem">Erreur de chargement des questions.</p>'; return; }
+    try { AUTO.init({ FE: window.FLASH_ENGINE, MC: window.MCVG.MCVG || window.MCVG, katex: window.katex, AM: window.MCA || {} }); } catch (e) { document.body.innerHTML = '<p style="padding:1rem">Erreur de chargement des questions.</p>'; return; }
     cat = AUTO.buildCatalogue(); state = loadState();
     var h = (location.hash || '').replace('#', ''); if (VIEWS.indexOf(h) >= 0) state.view = h;
     if (state.view === 'sheet' && !state.sheet.items.length) state.view = 'compose';

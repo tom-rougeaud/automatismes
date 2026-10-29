@@ -49,7 +49,7 @@
     <div class="card c1">
       <h2>1 · Niveau</h2>
       <div class="chips" id="levels" role="group" aria-label="Niveau"></div>
-      <p class="hint" style="margin:.6rem 0 0">Version pilote : la 2de professionnelle est prête. Les autres niveaux arrivent ensuite.</p>
+      <p class="hint" style="margin:.6rem 0 0">Choisis le niveau, puis les chapitres. Les questions sont rangées par chapitre sur la feuille.</p>
     </div>
     <div class="card c2">
       <h2>2 · Chapitres et notions</h2>
@@ -90,12 +90,18 @@
               <label class="fld">Colonnes<select id="sCols"><option value="1">1 colonne</option><option value="2">2 colonnes</option></select></label>
               <label class="fld">Zone de réponse<select id="sMode"><option value="auto">Libre pour les calculs</option><option value="qcm">QCM partout</option></select></label>
             </div>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sHeads"> Titre de chapitre avant chaque groupe de questions</label>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sCons"> Thème, consigne et phrase d’aide pour chaque question</label>
+            <label class="fld">Consigne générale (facultatif)<input type="text" id="sIntro" maxlength="300" placeholder="Ex. Sans calculatrice. Écris seulement le résultat."></label>
+            <label class="fld">Place pour les calculs<select id="sWork"><option value="auto">Automatique (selon la question)</option><option value="none">Aucune</option><option value="small">Petite (1 cm)</option><option value="medium">Moyenne (2 cm)</option><option value="large">Grande (3,5 cm)</option></select></label>
             <label class="fld">Espace entre les questions : <b id="sGapOut">5 mm</b><input type="range" id="sGap" min="0" max="30" step="1" value="5"></label>
             <p class="hint" style="margin:0">Réglage général. Chaque question peut avoir son propre espace (boutons ⇕ de la liste ou ✎).</p>
             <div class="row" style="gap:.9rem">
               <label class="row" style="gap:.4rem"><input type="checkbox" id="sScore"> Encart de notation</label>
               <label class="row" style="gap:.4rem">Notée sur <input type="number" id="sTotal" min="1" max="1000" step="1" value="20" style="width:5rem;border:2px solid var(--line);border-radius:12px;padding:.35rem .5rem"></label>
             </div>
+            <label class="fld">Barème<select id="sScoreMode"><option value="equal">Identique pour toutes les questions</option><option value="custom">Différencié : je choisis les points de chaque question</option></select></label>
+            <label class="row" style="gap:.5rem"><input type="checkbox" id="sShowPts"> Afficher les points à côté de chaque question</label>
             <div class="row" style="gap:.9rem">
               <label class="row" style="gap:.4rem"><input type="checkbox" id="sNom"> Nom, prénom</label>
               <label class="row" style="gap:.4rem"><input type="checkbox" id="sClasse"> Classe</label>
@@ -147,7 +153,7 @@
       <p>Formules : KaTeX. Police : Nunito.<br>
       Licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC BY-NC 4.0</a> : utilisation, adaptation et partage libres, sans usage commercial, en citant l’auteur.</p>
       <p>Conçu par <b>Tom Rougeaud</b>, professeur de mathématiques-sciences (académie de Dijon). Suggestions et signalements : <a href="https://tom-rougeaud.github.io/casier/">casier de ressources</a> · <a href="https://linkedin.com/in/tomrougeaud">LinkedIn</a>.</p>
-      <p class="hint">Version v1 (pilote 2de pro).</p>
+      <p class="hint">Version v2.</p>
     </div>
   </section>
 
@@ -180,6 +186,10 @@
       <label class="fld">Réponse (corrigé)<textarea id="eA" rows="2"></textarea></label>
       <label class="fld">Explication (corrigé)<textarea id="eE" rows="3"></textarea></label>
       <label class="row" style="gap:.5rem" id="eFigRow"><input type="checkbox" id="eFig"> Masquer la figure</label>
+      <div class="eprevbox"><div class="hint" style="margin:0 0 .3rem;font-weight:800">Aperçu sur la feuille</div><div id="ePrev" class="eprev"></div></div>
+      <label class="fld" id="ePtsRow">Points de cette question<input type="number" id="ePts" min="0" max="100" step="0.25" value="1" style="width:6rem"></label>
+      <label class="row" style="gap:.5rem"><input type="checkbox" id="eWorkAuto"> Place pour les calculs automatique</label>
+      <label class="fld">Place pour les calculs : <b id="eWorkOut">0 mm</b><input type="range" id="eWork" min="0" max="80" step="1" value="0"></label>
       <label class="row" style="gap:.5rem"><input type="checkbox" id="eGapAuto"> Même espace que le réglage général</label>
       <label class="fld">Espace sous cette question : <b id="eGapOut">5 mm</b><input type="range" id="eGap" min="0" max="40" step="1" value="5"></label>
       <p class="hint" style="margin:0">Formules entre <span class="kbd">$…$</span>. Balises permises : &lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;. Les choix d’un QCM ne se modifient pas ici : utilise ↻ pour une autre question.</p>
@@ -195,6 +205,7 @@
 <script>/*{{KATEX}}*/</script>
 <script>var FLASH_ENGINE=(function(){/*{{FLASHENGINE}}*/})();</script>
 <script>/*{{MCVGENS}}*/</script>
+<script>/*{{MCAMODS}}*/</script>
 <script>/*{{CORE}}*/</script>
 <script>/*{{APP}}*/</script>
 </body>

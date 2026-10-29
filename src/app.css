@@ -2,6 +2,7 @@
 :root{--violet:#2B4C7E;--violet-d:#1F3A63;--violet-l:#EAF0F8;--rouge:#A8483F;--orange:#B7791F;--vert:#2F7D5B;--bleu:#3A6EA5;--rose:#7A4B8A;
   --ink:#1E2A3A;--mut:#5C6779;--bg:#F4F6F9;--card:#fff;--line:#D9DFE8;--r:18px;--f:"Nunito","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--f);font-weight:700;color:var(--ink);background:var(--bg);line-height:1.45;font-size:16px}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -79,6 +80,12 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
 /* fenêtres */
 .modal{position:fixed;inset:0;background:rgba(30,42,58,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:1rem}
 .modal.on{display:flex}
+.modal.side{background:transparent;pointer-events:none;justify-content:flex-start;align-items:stretch;padding:.8rem}
+.modal.side .box{pointer-events:auto;width:min(27rem,38vw);max-width:none;max-height:none;box-shadow:0 12px 40px rgba(30,42,58,.35);border:2px solid var(--line)}
+.eprev{max-height:16rem;overflow:auto;background:#fff;border-radius:10px}
+.eprevbox{background:var(--violet-l);border-radius:12px;padding:.5rem}
+.ptl{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:800;margin-right:auto}
+.ptin{width:4.2rem;border:2px solid var(--line);border-radius:8px;padding:.15rem .3rem}
 .modal .box{background:#fff;border-radius:22px;max-width:44rem;width:100%;max-height:92vh;overflow:auto;padding:1.2rem 1.3rem}
 .toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:.6rem 1.2rem;font-weight:800;z-index:80;max-width:92vw;display:none;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .toast.on{display:block}.toast.err{background:var(--rouge)}.toast.ok{background:var(--vert)}
@@ -101,3 +108,5 @@ details.chap .cnt{font-size:.78rem;background:var(--violet-l);color:var(--violet
   #printRoot .page:last-child{break-after:auto;page-break-after:auto}
   .page.bw,.page{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+#mEdit .box>.ctrl>.row:last-child{position:sticky;bottom:-1.3rem;background:#fff;padding:.7rem 0 .2rem;margin-top:.2rem;border-top:2px solid var(--line);z-index:2}
+.modal.side .eprev{max-height:11rem}

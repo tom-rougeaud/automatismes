@@ -23,8 +23,8 @@
 .page .pf{flex:none;display:flex;justify-content:space-between;gap:4mm;margin-top:2mm;padding-top:1.5mm;border-top:1px solid var(--line);font-size:.68em;font-weight:700;color:#7B8594}
 
 /* question */
-.page .qb{display:grid;grid-template-columns:7.2mm 1fr;gap:3mm;break-inside:avoid;page-break-inside:avoid;margin:0 0 5mm;padding:0}
-.page .qn{width:7.2mm;height:7.2mm;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:.85em;display:flex;align-items:center;justify-content:center;margin-top:.4mm}
+.page .qb{display:grid;grid-template-columns:5.2mm 1fr;gap:3mm;break-inside:avoid;page-break-inside:avoid;margin:0 0 5mm;padding:0}
+.page .qn{width:5.2mm;height:5.2mm;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:.68em;display:flex;align-items:center;justify-content:center;margin-top:.5mm}
 .page.bw .qn{background:#fff;color:var(--ink);border:1.4px solid var(--ink)}
 .page .qc{min-width:0}
 .page .qt{font-weight:700;overflow-wrap:anywhere}
@@ -38,6 +38,25 @@
 .page.bw .figtab th{background:#eee;color:var(--ink)}
 .page .figcode{margin:.5mm auto;background:#F1F4F9;color:#1E2A3A;border:1px solid var(--line);border-radius:2.5mm;padding:2mm 3mm;font:700 .9em/1.5 "Courier New",ui-monospace,monospace;white-space:pre;overflow:hidden}
 .page.bw .figsvg{filter:grayscale(1) contrast(1.15)}
+
+/* structure : chapitre, thème, consigne, aide, calculs */
+.page .qw{break-inside:avoid;page-break-inside:avoid}
+.page .chh{display:flex;align-items:baseline;gap:2.4mm;margin:1mm 0 3mm;padding:1.2mm 3mm;border-left:2.2mm solid var(--acc);background:var(--accl);color:var(--accd);font-weight:900;font-size:.95em;border-radius:0 1.6mm 1.6mm 0;break-after:avoid;page-break-after:avoid}
+.page .chh span{font-size:.66em;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#5C6779}
+.page.bw .chh{background:#fff;border:1.2px solid var(--ink);border-left-width:2.2mm;color:var(--ink)}
+.page .qh{display:flex;justify-content:space-between;align-items:baseline;gap:3mm;margin-bottom:.6mm;min-height:3mm}
+.page .qk{font-size:.66em;letter-spacing:.05em;text-transform:uppercase;font-weight:800;color:#6B7686}
+.page .pts{flex:none;font-size:.78em;font-weight:900;color:var(--accd)}
+.page.bw .pts{color:var(--ink)}
+.page .cr .pts{margin-left:1.6mm;font-size:.8em}
+.page .qcn{font-weight:800;color:var(--accd);font-size:.95em;margin-bottom:.6mm}
+.page.bw .qcn{color:var(--ink)}
+.page .ins{font-size:.78em;font-style:italic;font-weight:600;color:#6B7686;margin-top:1.6mm}
+.page .wk{position:relative;margin-top:2.4mm;border:1.2px dashed var(--line);border-radius:1.6mm;background:repeating-linear-gradient(to bottom,transparent 0,transparent 7.2mm,#e4e8ef 7.2mm,#e4e8ef calc(7.2mm + .3mm))}
+.page .wk span{position:absolute;top:.6mm;left:1.6mm;font-size:.62em;letter-spacing:.05em;text-transform:uppercase;font-weight:800;color:#9aa4b3}
+.page .ph .intro{margin-top:3.4mm;padding:1.6mm 3mm;border:1.2px solid var(--line);border-radius:1.8mm;font-size:.88em;font-weight:700;color:var(--ink)}
+.page.mini{width:100%;height:auto;padding:3mm 4mm 2mm;display:block;overflow:visible;font-size:var(--sz,11pt);border:1px solid var(--line);border-radius:6px}
+.page.mini .sep{margin:2mm 0;font-size:.66em;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:#9aa4b3;border-top:1px dashed var(--line);padding-top:1.4mm}
 
 /* zones de réponse */
 .page .al{display:flex;align-items:flex-end;gap:2mm;margin-top:2.4mm;font-weight:800;font-size:.9em}
@@ -68,8 +87,8 @@
 .page .orr i{display:inline-block;width:8.5mm;height:6.4mm;border:1.2px solid var(--ink);border-radius:1.4mm}
 
 /* corrigé */
-.page .cr{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.8mm;display:grid;grid-template-columns:6.4mm 1fr;gap:2.4mm;font-size:.95em}
-.page .cr .qn{width:6.4mm;height:6.4mm;font-size:.8em}
+.page .cr{break-inside:avoid;page-break-inside:avoid;margin:0 0 2.8mm;display:grid;grid-template-columns:5mm 1fr;gap:2.4mm;font-size:.95em}
+.page .cr .qn{width:5mm;height:5mm;font-size:.66em}
 .page .cr .ca{font-weight:800}
 .page .cr .ca .lt{margin-right:1.2mm}
 .page .cr .qs{font-weight:600;color:#5C6779;font-size:.88em;margin-top:.4mm}

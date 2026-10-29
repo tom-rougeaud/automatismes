@@ -6,11 +6,11 @@ const AUTO = require(path.join(root, 'src/core.js'));
 const FE = require(path.join(root, 'sources/flash/load.js'))();
 const MC = require(path.join(root, 'sources/mcv2de/gens.js')).MCVG;
 const katex = require(path.join(root, 'src/vendor/katex.min.js'));
-AUTO.init({ FE, MC, katex });
+AUTO.init({ FE, MC, katex, AM: require(path.join(root, 'sources/auto-load.js'))() });
 const cat = AUTO.buildCatalogue();
 const N = +process.argv[2] || 200;
 let items = 0, fails = [], total = 0, types = {};
-cat.levels[0].chapters.forEach(ch => ch.items.forEach(it => {
+cat.levels.forEach(lv => lv.chapters.forEach(ch => ch.items.forEach(it => {
   items++;
   for (let s = 1; s <= N; s++) {
     const seed = s * 7919 + 13;
@@ -29,14 +29,15 @@ cat.levels[0].chapters.forEach(ch => ch.items.forEach(it => {
     else if (v.type === 'ordre' && !(v.D.length >= 3)) bad = 'ordre incomplet';
     if (bad) { fails.push(it.key + ' seed ' + seed + ' : ' + bad); break; }
   }
-}));
+})));
 console.log('notions testées :', items, '— tirages :', total, '— types :', JSON.stringify(types));
-console.log('chapitres :', cat.levels[0].chapters.map(c => c.id + '(' + c.items.length + ')').join(' '));
+cat.levels.forEach(l => console.log('niveau', l.id, ':', l.chapters.map(c => c.id + '(' + c.items.length + ')').join(' ')));
 // tirage global
-const keys = []; cat.levels[0].chapters.forEach(c => c.items.forEach(i => keys.push(i.key)));
+const keys = []; cat.levels[2].chapters.forEach(c => c.items.forEach(i => keys.push(i.key)));
 const d = AUTO.draw(keys, 40, 42, cat);
 console.log('tirage de 40 :', d.length, 'questions, doublons :', d.length - new Set(d.map(x => x.src + x.id + x.seed)).size);
-const fn = AUTO.fileName('2de-pro', ['c1', 'c3'], 12);
+const fn = AUTO.fileName('2de', ['c1', 'c3'], 12);
 console.log('nom de fichier :', fn);
 if (fails.length) { console.log('ÉCHECS (' + fails.length + ') :'); fails.slice(0, 30).forEach(f => console.log(' -', f)); process.exit(1); }
+const fn2 = AUTO.fileName('2de', ['c2'], 5); if (fn2 !== '2de-pro_statistiques_5-questions.pdf') { console.log('nom inattendu', fn2); process.exit(1); }
 console.log('OK');
