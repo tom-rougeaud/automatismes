@@ -30,11 +30,13 @@ for (const k of Object.keys(parts)) {
   if (!html.includes(tag)) throw new Error('marqueur absent : ' + k);
   html = html.split(tag).join(parts[k].split('$').join('$')); // pas de remplacement spécial
 }
+const STAMP = Date.now().toString(36); // anti-cache des icônes
+html = html.replace(/href="(favicon-48\.png|favicon\.ico|icon-180\.png|manifest\.webmanifest)"/g, 'href="$1?v=' + STAMP + '"');
 fs.writeFileSync(path.join(__dirname, 'index.html'), html);
 fs.writeFileSync(path.join(__dirname, 'manifest.webmanifest'), JSON.stringify({
   name: 'AUTOMATHS · automatismes de maths en lycée pro', short_name: 'AUTOMATHS', description: 'Feuilles d’automatismes A4 avec corrigé, par chapitre.',
   lang: 'fr', start_url: './index.html', scope: './', display: 'standalone', orientation: 'any', background_color: '#F4F6F9', theme_color: '#2B4C7E',
-  icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' }, { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }]
+  icons: [{ src: 'icon-192.png?v=' + STAMP, sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: 'icon-512.png?v=' + STAMP, sizes: '512x512', type: 'image/png', purpose: 'any' }, { src: 'icon-maskable-512.png?v=' + STAMP, sizes: '512x512', type: 'image/png', purpose: 'maskable' }]
 }, null, 2));
 fs.writeFileSync(path.join(__dirname, 'sw.js'), `/* Service worker : garde l’appli hors connexion. Aucune donnée n’est collectée. */
 const CACHE = 'automatismes-${VERSION}-' + ${JSON.stringify(Date.now().toString(36))};
@@ -43,7 +45,7 @@ self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c =>
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('automatismes-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(CACHE).then(x => x.put(e.request, c)).catch(() => {}); return r; }).catch(() => caches.match(e.request).then(m => m || caches.match('index.html'))));
+  e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(CACHE).then(x => x.put(e.request, c)).catch(() => {}); return r; }).catch(() => caches.match(e.request, { ignoreSearch: true }).then(m => m || caches.match('index.html'))));
 });
 `);
 console.log('index.html :', Math.round(html.length / 1024), 'Ko');
