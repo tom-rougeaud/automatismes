@@ -16,7 +16,7 @@ Les nombres sont tirés au hasard, les réponses sont calculées : chaque feuill
 
 ## Fonctions
 
-- **Questions** : les notions de 2nde de [Flash Maths](https://github.com/tom-rougeaud/flash) (85 notions, avec figures) et les automatismes de [Maths et MCV · 2de](https://github.com/tom-rougeaud/mcv) (74 générateurs), classés en 11 chapitres.
+- **Questions** : 159 notions de 2de pro (avec figures), classées en 10 chapitres par thème du programme. Pas de chapitre « automatismes » à part : toute la feuille est un exerciseur d’automatismes.
 - **Types de questions** : réponse libre, QCM, vrai/faux, association, mise en ordre, estimation, étape fausse à repérer.
 - **Édition** : glisser-déposer ou ↑ ↓, modifier l’énoncé, la réponse et l’explication (formules entre `$…$`), masquer une figure, autre question de la même notion, ajout, suppression.
 - **Présentation** : titre, sous-titre, police, taille, 1 ou 2 colonnes, champs Nom/Classe/Date, noir et blanc.
@@ -43,8 +43,8 @@ python3 tools/make-icons.py  # icônes
 | Dossier | Rôle |
 |---|---|
 | `src/` | cœur (`core.js`), interface (`app.js`, `app.css`), feuille A4 (`sheet.css`), gabarit, KaTeX et polices |
-| `sources/flash/` | moteur de questions de Flash Maths (inchangé) |
-| `sources/mcv2de/` | générateurs de Maths et MCV · 2de (inchangés) |
+| `sources/flash/` | moteur de questions (palette de figures sobre) |
+| `sources/mcv2de/` | générateurs de questions |
 | `tests/` | tests automatiques |
 
 ## Auteur et licence

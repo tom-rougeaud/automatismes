@@ -294,8 +294,8 @@ function QX(r,intro,steps,bad,expl,o){
    FIGURES (SVG produit ici, à partir de nombres et de courtes étiquettes échappées :
    aucune balise n’est transmise sur le réseau, seulement la description de la figure)
 ═══════════════════════════════════════════════════════════════ */
-var FIGC={v:"#5B4CF0",c:"#FF5A5F",s:"#F5A000",m:"#12B886",k:"#2D8CFF",ink:"#221E4F",g:"#E4E1F7",l:"#EEEBFF"};
-var FIG_PAL=["#5B4CF0","#FF5A5F","#F5A000","#12B886","#2D8CFF","#E64980"];
+var FIGC={v:"#2B4C7E",c:"#A8483F",s:"#B7791F",m:"#2F7D5B",k:"#3A6EA5",ink:"#1E2A3A",g:"#D9DFE8",l:"#EAF0F8"};
+var FIG_PAL=["#2B4C7E","#A8483F","#B7791F","#2F7D5B","#3A6EA5","#7A4B8A"];
 function xe(s){return String(s===undefined||s===null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").slice(0,40);}
 function fnum(v){return typeof v==="number"&&isFinite(v)?v:0;}
 function figT(x,y,s,o){o=o||{};return '<text x="'+rd(fnum(x),1)+'" y="'+rd(fnum(y),1)+'" font-size="'+(o.fs||15)+'" font-weight="'+(o.fw||800)+'" fill="'+(o.c||FIGC.ink)+'" text-anchor="'+(o.a||"middle")+'" dominant-baseline="middle"'+(o.rot?' transform="rotate('+o.rot+" "+rd(x,1)+" "+rd(y,1)+')"':"")+">"+xe(s)+"</text>";}
@@ -329,15 +329,15 @@ function figHtml(fig){
     }
     if(k==="pave"){
       var x=70,y=70,w=170,h=90,dx=46,dy=-36;
-      b+='<polygon points="'+x+","+y+" "+(x+dx)+","+(y+dy)+" "+(x+w+dx)+","+(y+dy)+" "+(x+w)+","+y+'" fill="#DCD7FF" stroke="'+FIGC.v+'" stroke-width="3"/>';
-      b+='<polygon points="'+(x+w)+","+y+" "+(x+w+dx)+","+(y+dy)+" "+(x+w+dx)+","+(y+h+dy)+" "+(x+w)+","+(y+h)+'" fill="#C9C2FF" stroke="'+FIGC.v+'" stroke-width="3"/>';
+      b+='<polygon points="'+x+","+y+" "+(x+dx)+","+(y+dy)+" "+(x+w+dx)+","+(y+dy)+" "+(x+w)+","+y+'" fill="#D3DCEA" stroke="'+FIGC.v+'" stroke-width="3"/>';
+      b+='<polygon points="'+(x+w)+","+y+" "+(x+w+dx)+","+(y+dy)+" "+(x+w+dx)+","+(y+h+dy)+" "+(x+w)+","+(y+h)+'" fill="#B9C6DA" stroke="'+FIGC.v+'" stroke-width="3"/>';
       b+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+FIGC.l+'" stroke="'+FIGC.v+'" stroke-width="3"/>';
       b+='<path d="M'+x+" "+(y+h)+"L"+(x+dx)+" "+(y+h+dy)+"L"+(x+w+dx)+" "+(y+h+dy)+"M"+(x+dx)+" "+(y+h+dy)+"V"+(y+dy)+'" fill="none" stroke="'+FIGC.v+'" stroke-width="2" stroke-dasharray="6 5" opacity=".6"/>';
       b+=figLab(x+w/2,y+h+20,fig.L)+figLab(x-28,y+h/2,fig.h)+figLab(x+w+dx/2+30,y+h+dy/2+28,fig.l);
       return svgWrap(330,196,b);
     }
     if(k==="cyl"){
-      b+='<path d="M95 50v110a70 20 0 0 0 140 0V50" fill="'+FIGC.l+'" stroke="'+FIGC.m+'" stroke-width="3"/><ellipse cx="165" cy="50" rx="70" ry="20" fill="#CDEFE4" stroke="'+FIGC.m+'" stroke-width="3"/>';
+      b+='<path d="M95 50v110a70 20 0 0 0 140 0V50" fill="'+FIGC.l+'" stroke="'+FIGC.m+'" stroke-width="3"/><ellipse cx="165" cy="50" rx="70" ry="20" fill="#CFE5DA" stroke="'+FIGC.m+'" stroke-width="3"/>';
       b+='<path d="M95 160a70 20 0 0 1 140 0" fill="none" stroke="'+FIGC.m+'" stroke-width="2" stroke-dasharray="6 5"/><line x1="165" y1="50" x2="235" y2="50" stroke="'+FIGC.c+'" stroke-width="3"/>';
       b+=figLab(200,30,fig.r,FIGC.c)+figLab(262,105,fig.h);
       return svgWrap(330,196,b);
@@ -427,11 +427,11 @@ function figHtml(fig){
    Les formules s’écrivent entre $…$ (rendu KaTeX).
 ═══════════════════════════════════════════════════════════════ */
 var NIVEAUX=[
-  {id:"3pm", label:"3ᵉ Prépa-Métiers", court:"3ᵉ PM", color:"#E8505B"},
-  {id:"cap", label:"CAP",              court:"CAP",   color:"#F28C28"},
-  {id:"2nde",label:"2nde Bac Pro",     court:"2nde",  color:"#2F80ED"},
-  {id:"1re", label:"1ʳᵉ Bac Pro",      court:"1ʳᵉ",   color:"#1FA67A"},
-  {id:"term",label:"Terminale Bac Pro",court:"Tle",   color:"#7C4DFF"}
+  {id:"3pm", label:"3ᵉ Prépa-Métiers", court:"3ᵉ PM", color:"#A8483F"},
+  {id:"cap", label:"CAP",              court:"CAP",   color:"#B7791F"},
+  {id:"2nde",label:"2nde Bac Pro",     court:"2nde",  color:"#3A6EA5"},
+  {id:"1re", label:"1ʳᵉ Bac Pro",      court:"1ʳᵉ",   color:"#2F7D5B"},
+  {id:"term",label:"Terminale Bac Pro",court:"Tle",   color:"#2B4C7E"}
 ];
 var BANK=[];
 function reg(id,niv,chap,titre,tags,d,gen,extra){var it={id:id,niv:niv,chap:chap,titre:titre,tags:tags,d:d,gen:gen};if(extra)for(var k in extra)it[k]=extra[k];BANK.push(it);}

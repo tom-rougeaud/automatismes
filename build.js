@@ -24,7 +24,7 @@ for (const k of Object.keys(parts)) {
 fs.writeFileSync(path.join(__dirname, 'index.html'), html);
 fs.writeFileSync(path.join(__dirname, 'manifest.webmanifest'), JSON.stringify({
   name: 'Automatismes · feuilles imprimables', short_name: 'Automatismes', description: 'Feuilles d’automatismes A4 avec corrigé, par chapitre.',
-  lang: 'fr', start_url: './index.html', scope: './', display: 'standalone', orientation: 'any', background_color: '#F7F5FF', theme_color: '#5B4CF0',
+  lang: 'fr', start_url: './index.html', scope: './', display: 'standalone', orientation: 'any', background_color: '#F4F6F9', theme_color: '#2B4C7E',
   icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' }, { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }]
 }, null, 2));
 fs.writeFileSync(path.join(__dirname, 'sw.js'), `/* Service worker : garde l’appli hors connexion. Aucune donnée n’est collectée. */

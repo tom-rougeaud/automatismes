@@ -18,7 +18,7 @@ with sync_playwright() as p:
     pg.goto(URL); pg.wait_for_selector('#chaps details')
     check(not [l for l in logs if l[0] in ('error', 'pageerror')], 'aucune erreur console au chargement ' + str([l for l in logs][:3]))
     n_chaps = pg.locator('#chaps details.chap').count()
-    check(n_chaps == 11, f'11 chapitres affichés ({n_chaps})')
+    check(n_chaps == 10, f'10 chapitres affichés ({n_chaps})')
     pg.screenshot(path=os.path.join(SHOTS, '1-composer.png'))
     # cocher chapitre 1 et 3
     for cid in ('c1', 'c3'):
@@ -50,6 +50,23 @@ with sync_playwright() as p:
     pg.click('#eSave'); pg.wait_for_timeout(600)
     check('Question modifiée' in pg.inner_text('#qlist li:nth-child(3) .tx span'), 'édition d’une question')
     check('modifiée' in pg.inner_text('#qlist li:nth-child(3) .tx b').lower(), 'marquage « modifiée »')
+    # espacement global + par question
+    def qb_margin(n):
+        return pg.evaluate("n=>parseFloat(getComputedStyle(document.querySelectorAll('#pages .page:first-child .qb')[n]).marginBottom)", n)
+    pg.evaluate("document.getElementById('sGap').value=20;document.getElementById('sGap').dispatchEvent(new Event('input'))"); pg.wait_for_timeout(500)
+    m20 = qb_margin(0); check(abs(m20 - 20*96/25.4) < 2, f'espacement global 20 mm ({m20:.1f}px)')
+    pg.click('#qlist li:nth-child(1) button[data-a=gapp]'); pg.wait_for_timeout(500)
+    check(abs(qb_margin(0) - 23*96/25.4) < 2 and abs(qb_margin(1) - 20*96/25.4) < 2, 'espacement propre à la question 1 (+3 mm) sans toucher la 2')
+    pg.click('#qlist li:nth-child(2) button[data-a=edit]'); pg.wait_for_selector('#mEdit.on')
+    pg.uncheck('#eGapAuto'); pg.evaluate("document.getElementById('eGap').value=2;document.getElementById('eGap').dispatchEvent(new Event('input'))"); pg.click('#eSave'); pg.wait_for_timeout(500)
+    check(abs(qb_margin(1) - 2*96/25.4) < 2, 'espacement perso depuis la fenêtre ✎ (2 mm)')
+    pg.evaluate("document.getElementById('sGap').value=5;document.getElementById('sGap').dispatchEvent(new Event('input'))"); pg.wait_for_timeout(400)
+    # encart de notation
+    check(pg.locator('#pages .score').count() == 0, 'pas d’encart par défaut')
+    pg.check('#sScore'); pg.fill('#sTotal', '10'); pg.wait_for_timeout(600)
+    check(pg.locator('#pages .score').count() == 1 and '/ 10' in pg.inner_text('#pages .score'), 'encart de notation sur 10 : ' + pg.inner_text('#pages .score').replace('\n',' '))
+    pg.screenshot(path=os.path.join(SHOTS, '2b-notation.png'), full_page=False)
+    pg.uncheck('#sScore'); pg.wait_for_timeout(300)
     # retirer + ajouter + supprimer
     pg.click('#addOne'); pg.wait_for_timeout(300)
     check(pg.locator('#qlist li').count() == 15, 'ajout d’une question (15)')

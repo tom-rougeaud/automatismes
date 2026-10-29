@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Automatismes · feuilles imprimables</title>
 <meta name="description" content="Générateur de feuilles d’automatismes A4 avec corrigé, par chapitre, pour la voie professionnelle. Aucune donnée collectée.">
-<meta name="theme-color" content="#5B4CF0">
+<meta name="theme-color" content="#2B4C7E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Automatismes">
 <link rel="manifest" href="manifest.webmanifest">
@@ -25,7 +25,7 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#compose" data-go="compose" aria-label="Automatismes, accueil">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#fff" fill-opacity=".22"/><rect x="14" y="8" width="36" height="48" rx="6" fill="#fff"/><rect x="20" y="16" width="16" height="4" rx="2" fill="#5B4CF0"/><rect x="20" y="25" width="24" height="3.5" rx="1.7" fill="#FFB020"/><rect x="20" y="33" width="24" height="3.5" rx="1.7" fill="#12B886"/><rect x="20" y="41" width="14" height="3.5" rx="1.7" fill="#E64980"/><path d="M47 30 40 44h5l-2 10 9-15h-5z" fill="#FF5A5F" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#fff" fill-opacity=".22"/><rect x="14" y="8" width="36" height="48" rx="6" fill="#fff"/><rect x="20" y="16" width="16" height="4" rx="2" fill="#2B4C7E"/><rect x="20" y="25" width="24" height="3.5" rx="1.7" fill="#B7791F"/><rect x="20" y="33" width="24" height="3.5" rx="1.7" fill="#2F7D5B"/><rect x="20" y="41" width="14" height="3.5" rx="1.7" fill="#7A4B8A"/><path d="M47 30 40 44h5l-2 10 9-15h-5z" fill="#A8483F" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
       <span><b>Automatismes</b><small>Feuilles imprimables avec corrigé</small></span>
     </a>
     <nav class="tabs" aria-label="Navigation">
@@ -60,7 +60,7 @@
         <button type="button" class="btn sm sec" id="surprise">🎲 Surprends-moi</button>
       </div>
       <div class="row" style="margin-bottom:.4rem"><span class="pill" id="selInfo">0 notion cochée</span>
-        <span class="hint"><span class="src f">Flash</span> questions de Flash Maths · <span class="src m">MCV</span> automatismes de Maths et MCV 2de · <span class="src c">cours</span> questions de cours</span></div>
+        </div>
       <div id="chaps"></div>
     </div>
     <div class="card c3">
@@ -69,9 +69,6 @@
         <label class="fld">Nombre de questions : <b id="nOut">12</b><input type="range" id="n" min="4" max="40" step="1" value="12"></label>
         <label class="fld">Forme des réponses
           <select id="mode"><option value="auto">Réponse libre pour les calculs, choix pour le reste</option><option value="qcm">Questions à choix (QCM) partout où c’est possible</option></select></label>
-        <fieldset style="border:0;padding:0;margin:0"><legend style="font-weight:800;font-size:.92rem;margin-bottom:.25rem">Sources des questions</legend>
-          <label class="row" style="gap:.5rem"><input type="checkbox" id="srcF" checked> Flash Maths</label>
-          <label class="row" style="gap:.5rem"><input type="checkbox" id="srcM" checked> Maths et MCV 2de</label></fieldset>
       </div>
       <div class="row" style="margin-top:1rem"><button type="button" class="btn" id="create">✨ Créer la feuille</button>
         <span class="hint">Tu pourras ensuite déplacer, modifier, remplacer ou ajouter des questions.</span></div>
@@ -92,6 +89,12 @@
               <label class="fld">Taille : <b id="sSizeOut">11 pt</b><input type="range" id="sSize" min="8" max="18" step="1" value="11"></label>
               <label class="fld">Colonnes<select id="sCols"><option value="1">1 colonne</option><option value="2">2 colonnes</option></select></label>
               <label class="fld">Zone de réponse<select id="sMode"><option value="auto">Libre pour les calculs</option><option value="qcm">QCM partout</option></select></label>
+            </div>
+            <label class="fld">Espace entre les questions : <b id="sGapOut">5 mm</b><input type="range" id="sGap" min="0" max="30" step="1" value="5"></label>
+            <p class="hint" style="margin:0">Réglage général. Chaque question peut avoir son propre espace (boutons ⇕ de la liste ou ✎).</p>
+            <div class="row" style="gap:.9rem">
+              <label class="row" style="gap:.4rem"><input type="checkbox" id="sScore"> Encart de notation</label>
+              <label class="row" style="gap:.4rem">Notée sur <input type="number" id="sTotal" min="1" max="1000" step="1" value="20" style="width:5rem;border:2px solid var(--line);border-radius:12px;padding:.35rem .5rem"></label>
             </div>
             <div class="row" style="gap:.9rem">
               <label class="row" style="gap:.4rem"><input type="checkbox" id="sNom"> Nom, prénom</label>
@@ -130,18 +133,18 @@
   <section id="v-about" class="page-view" hidden>
     <div class="card c1">
       <h2>À propos</h2>
-      <p><b>Automatismes</b> fabrique des feuilles d’automatismes au format A4, avec corrigé, à partir des questions de <b>Flash Maths</b> et des automatismes de <b>Maths et MCV</b>. Les nombres sont tirés au hasard et les réponses sont calculées par programme : chaque feuille est différente.</p>
+      <p><b>Automatismes</b> fabrique des feuilles d’automatismes au format A4, avec corrigé, à partir de banques de questions de mathématiques. Les nombres sont tirés au hasard et les réponses sont calculées par programme : chaque feuille est différente.</p>
       <h3>Comment faire</h3>
       <ol><li>Dans <b>Composer</b>, coche les chapitres ou les notions, choisis le nombre de questions.</li>
         <li>Clique sur <b>Créer la feuille</b>, puis déplace, modifie, remplace ou ajoute des questions.</li>
-        <li>Règle le titre, la police et la taille, puis <b>télécharge le PDF</b> ou <b>imprime</b>.</li></ol>
+        <li>Règle le titre, la police, la taille, l’espacement et l’encart de notation, puis <b>télécharge le PDF</b> ou <b>imprime</b>.</li></ol>
       <h3>Bon à savoir</h3>
       <ul><li>Le <b>PDF téléchargé</b> est fait de pages A4 en images nettes : le texte n’y est pas sélectionnable. Pour un PDF vectoriel, utilise <b>Imprimer</b> puis « Enregistrer au format PDF ».</li>
         <li>Le corrigé est disponible pour tout le monde, comme les réponses des autres applis du casier.</li>
         <li>Les formules s’écrivent entre <span class="kbd">$…$</span> dans l’éditeur (exemple : <span class="kbd">$\dfrac{3}{4}$</span>). Balises permises : <span class="kbd">&lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;</span>.</li>
         <li>« Exporter la feuille » garde la liste des questions et leur tirage : tu retrouves exactement la même feuille plus tard.</li></ul>
-      <h3>Sources et licence</h3>
-      <p>Questions de <b>Flash Maths</b> (tom-rougeaud/flash) et de <b>Maths et MCV · 2de</b> (tom-rougeaud/mcv). Formules : KaTeX. Police : Nunito.<br>
+      <h3>Licence</h3>
+      <p>Formules : KaTeX. Police : Nunito.<br>
       Licence <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.fr">CC BY-NC 4.0</a> : utilisation, adaptation et partage libres, sans usage commercial, en citant l’auteur.</p>
       <p>Conçu par <b>Tom Rougeaud</b>, professeur de mathématiques-sciences (académie de Dijon). Suggestions et signalements : <a href="https://tom-rougeaud.github.io/casier/">casier de ressources</a> · <a href="https://linkedin.com/in/tomrougeaud">LinkedIn</a>.</p>
       <p class="hint">Version v1 (pilote 2de pro).</p>
@@ -177,6 +180,8 @@
       <label class="fld">Réponse (corrigé)<textarea id="eA" rows="2"></textarea></label>
       <label class="fld">Explication (corrigé)<textarea id="eE" rows="3"></textarea></label>
       <label class="row" style="gap:.5rem" id="eFigRow"><input type="checkbox" id="eFig"> Masquer la figure</label>
+      <label class="row" style="gap:.5rem"><input type="checkbox" id="eGapAuto"> Même espace que le réglage général</label>
+      <label class="fld">Espace sous cette question : <b id="eGapOut">5 mm</b><input type="range" id="eGap" min="0" max="40" step="1" value="5"></label>
       <p class="hint" style="margin:0">Formules entre <span class="kbd">$…$</span>. Balises permises : &lt;sub&gt; &lt;sup&gt; &lt;b&gt; &lt;i&gt; &lt;br&gt;. Les choix d’un QCM ne se modifient pas ici : utilise ↻ pour une autre question.</p>
       <div class="row"><button type="button" class="btn ok" id="eSave">Enregistrer</button><button type="button" class="btn sec" id="eCancel">Annuler</button><button type="button" class="btn sm sec" id="eReset">Rétablir l’original</button></div>
     </div>

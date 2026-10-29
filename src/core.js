@@ -1,6 +1,6 @@
 /* Automatismes · feuilles imprimables — cœur : catalogue unifié, normalisation des questions, tirage.
    Fonctionne dans la page et sous Node (tests). Licence CC BY-NC 4.0 — Tom Rougeaud.
-   Sources des questions : Flash Maths (moteur inchangé) et Maths et MCV · 2de (générateurs inchangés). */
+   Banques de questions de l’auteur (moteur et générateurs inchangés). */
 var AUTO = (function () {
   'use strict';
   var FE = null, MC = null, KX = null;
@@ -60,7 +60,6 @@ var AUTO = (function () {
 
   /* ───────── catalogue unifié 2de pro ───────── */
   var CHAPS_2DE = [
-    { id: 'auto', num: 0, slug: 'automatismes', titre: 'Automatismes et calcul mental' },
     { id: 'c1', num: 1, slug: 'prix-marges-tva', titre: '1 · Prix, marges et TVA (pourcentages, évolutions)' },
     { id: 'c2', num: 2, slug: 'statistique', titre: '2 · Statistique' },
     { id: 'c3', num: 3, slug: 'premier-degre', titre: '3 · Premier degré (équations, inéquations, calcul littéral)' },
@@ -74,7 +73,7 @@ var AUTO = (function () {
   ];
   /* chapitres de Flash Maths → chapitres unifiés */
   var FLASH_CHAP = {
-    'Calcul mental et automatismes': 'auto', 'Proportionnalité et pourcentages': 'c1', 'Statistiques': 'c2',
+    'Proportionnalité et pourcentages': 'c1', 'Statistiques': 'c2',
     'Équations et calcul littéral': 'c3', 'Fonctions affines et linéaires': 'c5', 'Grandeurs, mesures et volumes': 'c7',
     'Géométrie et trigonométrie': 'c7', 'Problèmes des métiers (plusieurs étapes)': 'metiers', 'Algorithmique et tableur': 'algo'
   };

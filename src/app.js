@@ -28,9 +28,9 @@
   /* ───────── état ───────── */
   var cat, state, toastT = null;
   function defSheet() {
-    return { title: 'Automatismes', subtitle: '', items: [], font: 'Nunito', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de' };
+    return { title: 'Automatismes', subtitle: '', items: [], font: 'Nunito', size: 11, cols: 1, nom: true, date: true, classe: true, bw: false, content: 'feuille', expl: true, mode: 'auto', chapIds: [], seed: 1, level: '2de', gap: 5, score: false, total: 20 };
   }
-  function defState() { return { view: 'compose', level: '2de', sel: {}, n: 12, mode: 'auto', srcF: true, srcM: true, sheet: defSheet(), openChaps: {} }; }
+  function defState() { return { view: 'compose', level: '2de', sel: {}, n: 12, mode: 'auto', sheet: defSheet(), openChaps: {} }; }
   function loadState() {
     var s = defState();
     try { var raw = store.get('state'); if (raw) { var o = JSON.parse(raw); if (o && typeof o === 'object') { for (var k in s) if (o[k] !== undefined) s[k] = o[k]; s.sheet = sanitizeSheet(o.sheet) || defSheet(); } } } catch (e) { s = defState(); }
@@ -47,6 +47,7 @@
     s.size = clampN(o.size, 8, 18, 11); s.cols = o.cols === 2 ? 2 : 1;
     s.nom = o.nom !== false; s.date = o.date !== false; s.classe = o.classe !== false; s.bw = !!o.bw; s.expl = o.expl !== false;
     s.content = ['feuille', 'both', 'corrige'].indexOf(o.content) >= 0 ? o.content : 'feuille';
+    s.gap = clampN(o.gap, 0, 30, 5); s.score = !!o.score; s.total = clampN(o.total, 1, 1000, 20);
     s.mode = o.mode === 'qcm' ? 'qcm' : 'auto'; s.seed = clampN(o.seed, 1, 2147483646, 1);
     s.chapIds = Array.isArray(o.chapIds) ? o.chapIds.filter(function (x) { return AUTO.CHAPS_2DE.some(function (c) { return c.id === x; }); }).slice(0, 20) : [];
     s.items = [];
@@ -59,7 +60,9 @@
         if (typeof it.o.e === 'string') over.e = it.o.e.slice(0, 1500);
         if (it.o.nofig) over.nofig = true;
       }
-      s.items.push({ src: it.src, id: it.id, seed: seed, o: over });
+      var row = { src: it.src, id: it.id, seed: seed, o: over };
+      if (it.gap !== undefined && it.gap !== null && isFinite(+it.gap)) row.gap = clampN(it.gap, 0, 40, 5);
+      s.items.push(row);
     });
     return s;
   }
@@ -99,7 +102,7 @@
     levelInfo(state.level).chapters.forEach(function (c) { c.items.forEach(function (it) { if (state.sel[it.key] && srcOk(it)) out.push(it.key); }); });
     return out;
   }
-  function srcOk(it) { return it.src === 'flash' ? state.srcF : state.srcM; }
+  function srcOk() { return true; }
   function renderCompose() {
     var lv = levelInfo(state.level), q = ($('search').value || '').toLowerCase().trim();
     var host = $('chaps'); host.innerHTML = '';
@@ -120,14 +123,14 @@
         var l = el('label'); var i = el('input'); i.type = 'checkbox'; i.checked = !!state.sel[it.key];
         i.addEventListener('change', function () { state.sel[it.key] = i.checked; save(); updateCompose(); renderCompose(); });
         l.appendChild(i);
-        l.appendChild(el('span', '', esc(it.titre) + '<span class="src ' + (it.src === 'flash' ? 'f' : 'm') + '">' + (it.src === 'flash' ? 'Flash' : 'MCV') + '</span>' + (it.cours ? '<span class="src c">cours</span>' : '')));
+        l.appendChild(el('span', '', esc(it.titre)));
         box.appendChild(l);
       });
       d.appendChild(box); host.appendChild(d);
     });
     if (!host.children.length) host.innerHTML = '<p class="muted">Aucune notion ne correspond.</p>';
     $('n').value = state.n; $('nOut').textContent = state.n;
-    $('mode').value = state.mode; $('srcF').checked = state.srcF; $('srcM').checked = state.srcM;
+    $('mode').value = state.mode;
     updateCompose();
     var ch = $('levels'); ch.innerHTML = '';
     [['2de', '2de pro', true], ['cap', 'CAP', false], ['3pm', '3ᵉ Prépa-Métiers', false], ['1re', '1ʳᵉ pro', false], ['tle', 'Tle pro', false]].forEach(function (L) {
@@ -177,8 +180,8 @@
     }
     return '';
   }
-  function qBlock(v, i) {
-    return '<article class="qb t-' + v.type + '"><div class="qn">' + (i + 1) + '</div><div class="qc"><div class="qt">' + v.qHtml + '</div>' + (v.figHtml ? '<div class="fig">' + v.figHtml + '</div>' : '') + answerArea(v) + '</div></article>';
+  function qBlock(v, i, gap) {
+    return '<article class="qb t-' + v.type + '" style="margin-bottom:' + gap + 'mm"><div class="qn">' + (i + 1) + '</div><div class="qc"><div class="qt">' + v.qHtml + '</div>' + (v.figHtml ? '<div class="fig">' + v.figHtml + '</div>' : '') + answerArea(v) + '</div></article>';
   }
   function corrAnswer(v) {
     if (v.type === 'qcm') return '<span class="lt">' + LT[v.ansIdx] + '.</span>' + v.choices[v.ansIdx];
@@ -197,7 +200,9 @@
     if (first) {
       var fields = '';
       if (label !== 'corrige' && (S.nom || S.date || S.classe)) fields = '<div class="fields">' + (S.nom ? '<span>Nom, prénom : <i></i></span>' : '') + (S.classe ? '<span>Classe : <i></i></span>' : '') + (S.date ? '<span>Date : <i></i></span>' : '') + '</div>';
-      head = '<div class="ph first"><div class="band"><div class="bar"></div><div><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div></div>' + fields + '</div>';
+      var sc = '';
+      if (label !== 'corrige' && S.score) { var pp = S.total / Math.max(1, n); sc = '<div class="score"><div class="sl">Note</div><div class="sv"><i></i><span>/ ' + S.total + '</span></div><div class="sp">' + String(Math.round(pp * 100) / 100).replace('.', ',') + ' pt par question</div></div>'; }
+      head = '<div class="ph first"><div class="band"><div class="bar"></div><div class="bt"><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div>' + sc + '</div>' + fields + '</div>';
     } else head = '<div class="ph slim"><span>' + AUTO.rtUser(tt) + '</span><span>' + levelInfo(S.level).court + '</span></div>';
     p.innerHTML = head + '<div class="pb"></div><div class="pf"><span>Automatismes · Tom Rougeaud · CC BY-NC 4.0</span><span class="pn"></span></div>';
     return p;
@@ -216,9 +221,9 @@
   /* construit toutes les pages d’une feuille (tableau d’éléments .page, chez #measure) */
   function buildPages(S, content) {
     $('measure').innerHTML = '';
-    var pages = [], views = [];
-    S.items.forEach(function (it) { var v = qView(it, S.mode); if (v) views.push(v); });
-    if (content !== 'corrige') paginate(S, views.map(qBlock), 'sujet', pages);
+    var pages = [], views = [], gaps = [];
+    S.items.forEach(function (it) { var v = qView(it, S.mode); if (v) { views.push(v); gaps.push(it.gap !== undefined ? it.gap : S.gap); } });
+    if (content !== 'corrige') paginate(S, views.map(function (v, i) { return qBlock(v, i, gaps[i]); }), 'sujet', pages);
     if (content !== 'feuille') paginate(S, views.map(function (v, i) { return corrBlock(v, i, S.expl); }), 'corrige', pages);
     var code = S.seed.toString(36).toUpperCase();
     pages.forEach(function (p, i) { p.querySelector('.pn').textContent = 'Feuille ' + code + ' · page ' + (i + 1) + ' / ' + pages.length; });
@@ -232,7 +237,7 @@
   function renderSheet() {
     var S = state.sheet;
     $('sTitle').value = S.title; $('sSub').value = S.subtitle; $('sFont').value = S.font; $('sSize').value = S.size; $('sSizeOut').textContent = S.size + ' pt';
-    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw;
+    $('sCols').value = String(S.cols); $('sNom').checked = S.nom; $('sDate').checked = S.date; $('sClasse').checked = S.classe; $('sBw').checked = S.bw; $('sGap').value = S.gap; $('sGapOut').textContent = S.gap + ' mm'; $('sScore').checked = S.score; $('sTotal').value = S.total; $('sTotal').disabled = !S.score;
     $('sContent').value = S.content; $('sExpl').checked = S.expl; $('sMode').value = S.mode;
     $('fileInfo').textContent = currentName(contentSuffix(S.content));
     renderList(); renderPreview();
@@ -243,8 +248,9 @@
       var v = qView(it, S.mode); if (!v) return;
       var li = el('li', 'qcard'); li.draggable = true; li.dataset.i = i;
       var txt = AUTO.plainSrc(v.qEdit); if (txt.length > 120) txt = txt.slice(0, 118) + '…';
-      li.innerHTML = '<div class="num" title="Glisser pour déplacer">' + (i + 1) + '</div><div class="tx"><b>' + esc(v.titre) + (it.o && Object.keys(it.o).length ? ' · modifiée' : '') + '</b><span>' + esc(txt) + '</span></div>' +
+      li.innerHTML = '<div class="num" title="Glisser pour déplacer">' + (i + 1) + '</div><div class="tx"><b>' + esc(v.titre) + (it.o && Object.keys(it.o).length ? ' · modifiée' : '') + ' · espace ' + (it.gap !== undefined ? it.gap : S.gap) + ' mm' + (it.gap !== undefined ? ' (perso)' : '') + '</b><span>' + esc(txt) + '</span></div>' +
         '<div class="acts"><button class="ib" data-a="up" title="Monter" aria-label="Monter la question ' + (i + 1) + '"' + (i === 0 ? ' disabled' : '') + '>↑</button><button class="ib" data-a="down" title="Descendre" aria-label="Descendre la question ' + (i + 1) + '"' + (i === S.items.length - 1 ? ' disabled' : '') + '>↓</button>' +
+        '<button class="ib" data-a="gapm" title="Réduire l’espace sous cette question" aria-label="Réduire l’espace sous la question ' + (i + 1) + '">⇕−</button><button class="ib" data-a="gapp" title="Augmenter l’espace sous cette question" aria-label="Augmenter l’espace sous la question ' + (i + 1) + '">⇕+</button>' +
         '<button class="ib" data-a="edit" title="Modifier" aria-label="Modifier la question ' + (i + 1) + '">✎</button><button class="ib" data-a="redo" title="Autre question de la même notion" aria-label="Retirer la question ' + (i + 1) + '">↻</button><button class="ib" data-a="del" title="Supprimer" aria-label="Supprimer la question ' + (i + 1) + '">🗑</button></div>';
       ul.appendChild(li);
     });
@@ -273,6 +279,7 @@
   function openEdit(i) {
     var it = state.sheet.items[i], v = qView(it, state.sheet.mode); if (!v) return; editIdx = i;
     $('eQ').value = v.qEdit; $('eA').value = v.aEdit; $('eE').value = v.eEdit; $('eFig').checked = !!(it.o && it.o.nofig); $('eFigRow').hidden = !v.hasFig;
+    var gv = it.gap !== undefined ? it.gap : state.sheet.gap; $('eGapAuto').checked = it.gap === undefined; $('eGap').value = gv; $('eGap').disabled = it.gap === undefined; $('eGapOut').textContent = gv + ' mm';
     $('eNum').textContent = String(i + 1); openModal('mEdit'); setTimeout(function () { $('eQ').focus(); }, 30);
   }
   function saveEdit() {
@@ -280,6 +287,7 @@
     var N = AUTO.makeQuestion(it.src, it.id, it.seed), base = AUTO.view(N, null, state.sheet.mode), o = {};
     var q = $('eQ').value.slice(0, 1500), a = $('eA').value.slice(0, 600), e = $('eE').value.slice(0, 1500);
     if (q !== base.qEdit) o.q = q; if (a !== base.aEdit) o.a = a; if (e !== base.eEdit) o.e = e; if ($('eFig').checked) o.nofig = true;
+    if ($('eGapAuto').checked) delete it.gap; else it.gap = clampN($('eGap').value, 0, 40, 5);
     it.o = o; save(); closeModal('mEdit'); renderList(); renderPreview();
   }
   function resetEdit() { var it = state.sheet.items[editIdx]; if (it) it.o = {}; save(); closeModal('mEdit'); renderList(); renderPreview(); }
@@ -289,7 +297,7 @@
     S.items.forEach(function (x, k) { if (k !== i) { var N = AUTO.makeQuestion(x.src, x.id, x.seed); if (N) used[AUTO.signature(N)] = 1; } });
     for (var k = 1; k < 40; k++) {
       var seed = (it.seed + k * 104729 + Math.floor(Math.random() * 1e6)) >>> 0, N2 = AUTO.makeQuestion(it.src, it.id, seed);
-      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; save(); renderList(); renderPreview(); return; }
+      if (N2 && !used[AUTO.signature(N2)]) { S.items[i] = { src: it.src, id: it.id, seed: seed, o: {} }; if (it.gap !== undefined) S.items[i].gap = it.gap; save(); renderList(); renderPreview(); return; }
     }
     toast('Cette notion n’a pas d’autre question différente.', 'err');
   }
@@ -429,8 +437,6 @@
     $('search').addEventListener('input', renderCompose);
     $('n').addEventListener('input', function () { state.n = +this.value; $('nOut').textContent = this.value; save(); });
     $('mode').addEventListener('change', function () { state.mode = this.value; save(); });
-    $('srcF').addEventListener('change', function () { state.srcF = this.checked; save(); renderCompose(); });
-    $('srcM').addEventListener('change', function () { state.srcM = this.checked; save(); renderCompose(); });
     $('allOn').addEventListener('click', function () { levelInfo(state.level).chapters.forEach(function (c) { c.items.forEach(function (it) { if (srcOk(it)) state.sel[it.key] = true; }); }); save(); renderCompose(); });
     $('allOff').addEventListener('click', function () { state.sel = {}; save(); renderCompose(); });
     $('surprise').addEventListener('click', function () {
@@ -449,10 +455,16 @@
     bindS('sNom', 'nom', function (e) { return e.checked; }, 'change'); bindS('sDate', 'date', function (e) { return e.checked; }, 'change'); bindS('sClasse', 'classe', function (e) { return e.checked; }, 'change');
     bindS('sBw', 'bw', function (e) { return e.checked; }, 'change'); bindS('sExpl', 'expl', function (e) { return e.checked; }, 'change');
     bindS('sContent', 'content', function (e) { return e.value; }, 'change');
+    $('sGap').addEventListener('input', function () { state.sheet.gap = clampN(this.value, 0, 30, 5); $('sGapOut').textContent = state.sheet.gap + ' mm'; renderList(); schedulePreview(); });
+    $('sScore').addEventListener('change', function () { state.sheet.score = this.checked; $('sTotal').disabled = !this.checked; schedulePreview(); });
+    $('sTotal').addEventListener('input', function () { var v = Math.round(+this.value); if (isFinite(v) && v >= 1) { state.sheet.total = Math.min(1000, v); schedulePreview(); } });
+    $('eGapAuto').addEventListener('change', function () { $('eGap').disabled = this.checked; });
+    $('eGap').addEventListener('input', function () { $('eGapOut').textContent = this.value + ' mm'; });
     $('sMode').addEventListener('change', function () { state.sheet.mode = this.value === 'qcm' ? 'qcm' : 'auto'; save(); renderList(); schedulePreview(); });
     $('qlist').addEventListener('click', function (e) {
       var b = e.target.closest('button[data-a]'); if (!b) return; var i = +b.closest('li').dataset.i, a = b.dataset.a;
       if (a === 'up') move(i, i - 1); else if (a === 'down') move(i, i + 1); else if (a === 'edit') openEdit(i); else if (a === 'redo') redo(i);
+      else if (a === 'gapm' || a === 'gapp') { var itx = state.sheet.items[i], cur = itx.gap !== undefined ? itx.gap : state.sheet.gap; itx.gap = clampN(cur + (a === 'gapp' ? 3 : -3), 0, 40, cur); save(); renderList(); renderPreview(); }
       else if (a === 'del') { state.sheet.items.splice(i, 1); save(); if (!state.sheet.items.length) go('compose'); else { renderList(); renderPreview(); } }
     });
     var dragFrom = -1;

@@ -1,23 +1,29 @@
 /* Feuille A4 — styles de la page (aperçu, impression et export PDF). Tout ce qui sert à la feuille est ici. */
-.page{--ink:#1d1a3a;--acc:#5B4CF0;--accl:#EEEBFF;--accd:#3B2FC9;--line:#cfcbe8;--line2:#cfcbe8;--violet-l:#EEEBFF;--violet-d:#3B2FC9;
+.page{--ink:#1E2A3A;--acc:#2B4C7E;--accl:#EAF0F8;--accd:#1F3A63;--line:#CFD6E2;--line2:#CFD6E2;--violet-l:#EAF0F8;--violet-d:#1F3A63;
   position:relative;box-sizing:border-box;width:210mm;height:297mm;padding:11mm 13mm 8mm;background:#fff;color:var(--ink);display:flex;flex-direction:column;overflow:hidden;
   font-family:var(--sf,"Nunito",Arial,sans-serif);font-size:var(--sz,11pt);line-height:1.38;text-align:left}
 .page *{box-sizing:border-box}
 .page .ph.first{margin-bottom:5mm}
 .page .ph .band{display:flex;gap:4mm;align-items:stretch}
+.page .ph .bt{flex:1 1 auto;min-width:0}
+.page .ph .score{flex:none;margin-left:auto;border:1.6px solid var(--ink);border-radius:2mm;padding:1.6mm 3mm 1.4mm;min-width:36mm;text-align:center}
+.page .ph .score .sl{font-size:.72em;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#5C6779}
+.page .ph .score .sv{display:flex;align-items:flex-end;justify-content:center;gap:2mm;font-weight:900;font-size:1.25em;margin-top:.6mm}
+.page .ph .score .sv i{flex:1;border-bottom:1.2px solid var(--ink);height:7mm;min-width:14mm}
+.page .ph .score .sp{font-size:.66em;font-weight:700;color:#6B7686;margin-top:.8mm}
 .page .ph .bar{width:2.4mm;border-radius:2mm;background:var(--acc);flex:none}
 .page .ph h1{margin:0;font-size:1.75em;line-height:1.1;font-weight:900;letter-spacing:-.01em;color:var(--ink)}
-.page .ph .sub{margin-top:1.2mm;font-size:.95em;font-weight:700;color:#5b5780}
-.page .ph .meta{margin-top:1.2mm;font-size:.78em;font-weight:700;color:#7a769b}
+.page .ph .sub{margin-top:1.2mm;font-size:.95em;font-weight:700;color:#4F5B6D}
+.page .ph .meta{margin-top:1.2mm;font-size:.78em;font-weight:700;color:#6B7686}
 .page .ph .fields{display:flex;flex-wrap:wrap;gap:3mm 6mm;margin-top:5mm;font-weight:800;font-size:.92em}
 .page .ph .fields span{display:inline-flex;align-items:flex-end;gap:2mm;flex:1 1 auto;min-width:30mm}
 .page .ph .fields i{flex:1;border-bottom:1.2px solid var(--ink);height:5.2mm;min-width:14mm}
-.page .ph.slim{display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid var(--line);padding-bottom:1.6mm;margin-bottom:4mm;font-size:.78em;font-weight:800;color:#7a769b}
+.page .ph.slim{display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid var(--line);padding-bottom:1.6mm;margin-bottom:4mm;font-size:.78em;font-weight:800;color:#6B7686}
 .page .pb{flex:1 1 auto;min-height:0;overflow:hidden;column-count:var(--cols,1);column-gap:9mm;column-fill:auto;column-rule:1px dotted var(--line)}
-.page .pf{flex:none;display:flex;justify-content:space-between;gap:4mm;margin-top:2mm;padding-top:1.5mm;border-top:1px solid var(--line);font-size:.68em;font-weight:700;color:#8a86a8}
+.page .pf{flex:none;display:flex;justify-content:space-between;gap:4mm;margin-top:2mm;padding-top:1.5mm;border-top:1px solid var(--line);font-size:.68em;font-weight:700;color:#7B8594}
 
 /* question */
-.page .qb{display:grid;grid-template-columns:7.2mm 1fr;gap:3mm;break-inside:avoid;page-break-inside:avoid;margin:0 0 4.2mm;padding:0}
+.page .qb{display:grid;grid-template-columns:7.2mm 1fr;gap:3mm;break-inside:avoid;page-break-inside:avoid;margin:0 0 5mm;padding:0}
 .page .qn{width:7.2mm;height:7.2mm;border-radius:50%;background:var(--acc);color:#fff;font-weight:900;font-size:.85em;display:flex;align-items:center;justify-content:center;margin-top:.4mm}
 .page.bw .qn{background:#fff;color:var(--ink);border:1.4px solid var(--ink)}
 .page .qc{min-width:0}
@@ -30,12 +36,12 @@
 .page .figtab th,.page .figtab td{padding:.9mm 2.6mm;text-align:center;border:1px solid var(--ink)}
 .page .figtab th{background:var(--accl);color:var(--accd)}
 .page.bw .figtab th{background:#eee;color:var(--ink)}
-.page .figcode{margin:.5mm auto;background:#f4f2ff;color:#221E4F;border:1px solid var(--line);border-radius:2.5mm;padding:2mm 3mm;font:700 .9em/1.5 "Courier New",ui-monospace,monospace;white-space:pre;overflow:hidden}
+.page .figcode{margin:.5mm auto;background:#F1F4F9;color:#1E2A3A;border:1px solid var(--line);border-radius:2.5mm;padding:2mm 3mm;font:700 .9em/1.5 "Courier New",ui-monospace,monospace;white-space:pre;overflow:hidden}
 .page.bw .figsvg{filter:grayscale(1) contrast(1.15)}
 
 /* zones de réponse */
 .page .al{display:flex;align-items:flex-end;gap:2mm;margin-top:2.4mm;font-weight:800;font-size:.9em}
-.page .al .lab{color:#6a668f;flex:none}
+.page .al .lab{color:#5C6779;flex:none}
 .page .al .line{flex:1 1 auto;border-bottom:1.2px dotted var(--ink);height:5.5mm;min-width:16mm}
 .page .al .un{flex:none;color:var(--ink)}
 .page ul.ch{list-style:none;margin:2mm 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:1.4mm 4mm}
@@ -55,7 +61,7 @@
 .page .asr span{display:inline-flex;align-items:flex-end;gap:1.6mm}
 .page .asr i{display:inline-block;width:9mm;border-bottom:1.2px solid var(--ink);height:5mm}
 .page .or{margin-top:1.8mm;font-weight:700;font-size:.95em}
-.page .or .how{font-weight:800;color:#6a668f;font-size:.9em;margin-bottom:1.2mm}
+.page .or .how{font-weight:800;color:#5C6779;font-size:.9em;margin-bottom:1.2mm}
 .page .or .its{display:flex;flex-wrap:wrap;gap:1.4mm 3mm}
 .page .or .its span{display:inline-flex;gap:1.6mm;align-items:center;border:1.2px solid var(--line);border-radius:2mm;padding:.8mm 2.2mm;background:#fff}
 .page .orr{display:flex;flex-wrap:wrap;gap:1.6mm;margin-top:2.2mm;align-items:center;font-weight:800;font-size:.9em}
@@ -66,6 +72,6 @@
 .page .cr .qn{width:6.4mm;height:6.4mm;font-size:.8em}
 .page .cr .ca{font-weight:800}
 .page .cr .ca .lt{margin-right:1.2mm}
-.page .cr .qs{font-weight:600;color:#6a668f;font-size:.88em;margin-top:.4mm}
-.page .cr .ex{display:block;margin-top:.8mm;font-weight:600;color:#3a3660;font-size:.92em}
+.page .cr .qs{font-weight:600;color:#5C6779;font-size:.88em;margin-top:.4mm}
+.page .cr .ex{display:block;margin-top:.8mm;font-weight:600;color:#2E3A4D;font-size:.92em}
 .page .tex{font-family:"Courier New",monospace}

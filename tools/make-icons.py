@@ -7,9 +7,9 @@ def svg(maskable):
     r = 0 if maskable else 112
     inner = 'transform="translate(96 80) scale(5.2)"' if maskable else 'transform="translate(64 48) scale(5.8)"'
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5B4CF0"/><stop offset=".55" stop-color="#7C4DFF"/><stop offset="1" stop-color="#E64980"/></linearGradient></defs>
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2B4C7E"/><stop offset="1" stop-color="#1F3A63"/></linearGradient></defs>
 <rect width="512" height="512" rx="{r}" fill="url(#g)"/>
-<g {inner}><rect x="14" y="8" width="36" height="48" rx="6" fill="#fff"/><rect x="20" y="16" width="16" height="4" rx="2" fill="#5B4CF0"/><rect x="20" y="25" width="24" height="3.5" rx="1.7" fill="#FFB020"/><rect x="20" y="33" width="24" height="3.5" rx="1.7" fill="#12B886"/><rect x="20" y="41" width="14" height="3.5" rx="1.7" fill="#E64980"/><path d="M47 30 40 44h5l-2 10 9-15h-5z" fill="#FF5A5F" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></g></svg>'''
+<g {inner}><rect x="14" y="8" width="36" height="48" rx="6" fill="#fff"/><rect x="20" y="16" width="16" height="4" rx="2" fill="#2B4C7E"/><rect x="20" y="25" width="24" height="3.5" rx="1.7" fill="#B7791F"/><rect x="20" y="33" width="24" height="3.5" rx="1.7" fill="#2F7D5B"/><rect x="20" y="41" width="14" height="3.5" rx="1.7" fill="#7A4B8A"/><path d="M47 30 40 44h5l-2 10 9-15h-5z" fill="#A8483F" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></g></svg>'''
 with sync_playwright() as p:
     b = p.chromium.launch()
     for name, size, mask in (('icon-512.png', 512, False), ('icon-192.png', 192, False), ('icon-maskable-512.png', 512, True)):
