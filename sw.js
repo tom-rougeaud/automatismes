@@ -1,5 +1,5 @@
 /* Service worker : garde l’appli hors connexion. Aucune donnée n’est collectée. */
-const CACHE = 'automatismes-v3-' + "mvu0rbyt";
+const CACHE = 'automatismes-v3-' + "mvu13se8";
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'favicon-48.png', 'favicon.ico'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('automatismes-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

@@ -174,3 +174,5 @@ label.row{flex-wrap:nowrap;align-items:flex-start}label.row input[type=checkbox]
 .brand .wa{color:#000}.brand .wb{color:#4DA3E8}
 .brand small{color:#4A5568;opacity:1;font-size:.72rem;font-weight:700;display:block;margin-top:.1rem}
 @media(max-width:760px){.brand .wm{font-size:1.2rem}.brand small{display:none}}
+
+.resetrow{display:flex;justify-content:flex-end;margin:-.1rem 0 .6rem}

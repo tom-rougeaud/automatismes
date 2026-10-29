@@ -538,6 +538,8 @@ label.row{flex-wrap:nowrap;align-items:flex-start}label.row input[type=checkbox]
 .brand small{color:#4A5568;opacity:1;font-size:.72rem;font-weight:700;display:block;margin-top:.1rem}
 @media(max-width:760px){.brand .wm{font-size:1.2rem}.brand small{display:none}}
 
+.resetrow{display:flex;justify-content:flex-end;margin:-.1rem 0 .6rem}
+
 </style>
 </head>
 <body>
@@ -612,6 +614,7 @@ label.row{flex-wrap:nowrap;align-items:flex-start}label.row input[type=checkbox]
             <button type="button" role="tab" data-tab="questions" aria-selected="false">Questions</button>
             <button type="button" role="tab" data-tab="fichier" aria-selected="false">Fichier</button>
           </div>
+          <div class="resetrow"><button type="button" class="btn sm sec" id="resetSet" title="Remet police, taille, espacement, lignes, barème, colonnes… aux valeurs par défaut. Les questions et le titre sont conservés.">↺ Réinitialiser les réglages</button></div>
 
           <div class="tabpanel" id="tab-titres" role="tabpanel" data-panel="titres">
             <div class="zone z-titre"><h4>Titre et sous-titre</h4>
@@ -3910,6 +3913,14 @@ var AUTO = (function () {
     $('qlist').addEventListener('dragover', function (e) { var li = e.target.closest('li'); if (!li || dragFrom < 0) return; e.preventDefault(); Array.prototype.forEach.call(document.querySelectorAll('.qcard'), function (x) { x.classList.remove('over'); }); li.classList.add('over'); });
     $('qlist').addEventListener('drop', function (e) { var li = e.target.closest('li'); if (!li || dragFrom < 0) return; e.preventDefault(); var to = +li.dataset.i, from = dragFrom; dragFrom = -1; move(from, to); });
     $('addOne').addEventListener('click', addOne); $('redrawAll').addEventListener('click', redrawAll);
+    $('resetSet').addEventListener('click', function () {
+      if (!window.confirm('Remettre tous les réglages par défaut (police, taille, colonnes, espacement, lignes de réponse, barème, aides) ? Les questions, leurs modifications et le titre sont conservés ; les réglages propres à chaque question sont effacés.')) return;
+      var S = state.sheet, d = defSheet();
+      ['subtitle', 'title', 'items', 'chapIds', 'seed', 'level'].forEach(function (k) { delete d[k]; });
+      for (var k in d) S[k] = d[k];
+      S.items.forEach(function (it) { ['gap', 'lines', 'size', 'font', 'pts'].forEach(function (f) { delete it[f]; }); });
+      save(); renderSheet(); toast('Réglages remis par défaut.', 'ok', 3000);
+    });
     $('pdfBtn').addEventListener('click', function () { exportPdf(state.sheet.content); });
     $('printBtn').addEventListener('click', function () { printSheet(state.sheet.content); });
     $('jsonBtn').addEventListener('click', exportJson);

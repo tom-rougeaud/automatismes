@@ -139,6 +139,11 @@ with sync_playwright() as p:
     d = dl.value; path = os.path.join(SHOTS, 'export.pdf'); d.save_as(path)
     print('   téléchargé :', d.suggested_filename, os.path.getsize(path)//1024, 'Ko')
     check(d.suggested_filename == fn, 'nom du PDF téléchargé = nom annoncé')
+    # réinitialiser les réglages
+    tab(pg, 'police'); pg.select_option('#sFont', 'Verdana'); tab(pg, 'espace'); pg.select_option('#sLines', '5'); pg.wait_for_timeout(300)
+    pg.once('dialog', lambda d: d.accept()); pg.click('#resetSet'); pg.wait_for_timeout(600)
+    st = pg.evaluate("(()=>{const s=window.__auto.state().sheet;return [s.font,s.lines,s.cols,s.gap,s.items.length,s.items.some(i=>i.gap!==undefined||i.pts!==undefined)]})()")
+    check(st[0]=='Trebuchet' and st[1]==2 and st[2]==1 and st[3]==5 and st[4]==14 and st[5]==False, 'réinitialiser les réglages : défauts rétablis, questions conservées ' + str(st))
     pg.click('nav.tabs button[data-go=compose]'); pg.wait_for_timeout(300)
     check(not pg.locator('#pdfBtn').is_visible() and not pg.locator('#printBtn').is_visible(), 'pas de boutons PDF/Imprimer sur la page d’accueil')
     pg.click('nav.tabs button[data-go=sheet]'); pg.wait_for_timeout(300)

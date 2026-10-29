@@ -626,6 +626,14 @@
     $('qlist').addEventListener('dragover', function (e) { var li = e.target.closest('li'); if (!li || dragFrom < 0) return; e.preventDefault(); Array.prototype.forEach.call(document.querySelectorAll('.qcard'), function (x) { x.classList.remove('over'); }); li.classList.add('over'); });
     $('qlist').addEventListener('drop', function (e) { var li = e.target.closest('li'); if (!li || dragFrom < 0) return; e.preventDefault(); var to = +li.dataset.i, from = dragFrom; dragFrom = -1; move(from, to); });
     $('addOne').addEventListener('click', addOne); $('redrawAll').addEventListener('click', redrawAll);
+    $('resetSet').addEventListener('click', function () {
+      if (!window.confirm('Remettre tous les réglages par défaut (police, taille, colonnes, espacement, lignes de réponse, barème, aides) ? Les questions, leurs modifications et le titre sont conservés ; les réglages propres à chaque question sont effacés.')) return;
+      var S = state.sheet, d = defSheet();
+      ['subtitle', 'title', 'items', 'chapIds', 'seed', 'level'].forEach(function (k) { delete d[k]; });
+      for (var k in d) S[k] = d[k];
+      S.items.forEach(function (it) { ['gap', 'lines', 'size', 'font', 'pts'].forEach(function (f) { delete it[f]; }); });
+      save(); renderSheet(); toast('Réglages remis par défaut.', 'ok', 3000);
+    });
     $('pdfBtn').addEventListener('click', function () { exportPdf(state.sheet.content); });
     $('printBtn').addEventListener('click', function () { printSheet(state.sheet.content); });
     $('jsonBtn').addEventListener('click', exportJson);
