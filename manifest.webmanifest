@@ -1,6 +1,6 @@
 {
-  "name": "Automatismes de maths en lycée pro",
-  "short_name": "Automatismes",
+  "name": "AUTOMATHS · automatismes de maths en lycée pro",
+  "short_name": "AUTOMATHS",
   "description": "Feuilles d’automatismes A4 avec corrigé, par chapitre.",
   "lang": "fr",
   "start_url": "./index.html",

@@ -1,4 +1,4 @@
-<h1 align="center">Automatismes · feuilles imprimables</h1>
+<h1 align="center">AUTOMATHS · automatismes de maths en lycée pro</h1>
 
 <p align="center"><b>Des feuilles d’automatismes A4 avec corrigé, par chapitre, pour la voie professionnelle.</b><br>
 Les nombres sont tirés au hasard, les réponses sont calculées : chaque feuille est différente.</p>

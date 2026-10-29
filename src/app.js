@@ -1,4 +1,4 @@
-/* Automatismes — interface. Aucune donnée n’est envoyée : tout reste dans l’appareil. CC BY-NC 4.0 — Tom Rougeaud */
+/* AUTOMATHS — interface. Aucune donnée n’est envoyée : tout reste dans l’appareil. CC BY-NC 4.0 — Tom Rougeaud */
 (function () {
   'use strict';
   var APP_VER = 'v1', PFX = 'automatismes_' + APP_VER + '_';
@@ -266,7 +266,7 @@
       if (label !== 'corrige' && S.score) { var pp = S.total / Math.max(1, n); sc = '<div class="score"><div class="sl">Note</div><div class="sv"><i></i><span>/ ' + String(totalPts(S)).replace('.', ',') + '</span></div>' + (S.scoreMode === 'custom' ? '<div class="sp">barème par question</div>' : '<div class="sp">' + String(Math.round(pp * 100) / 100).replace('.', ',') + ' pt par question</div>') + '</div>'; }
       head = '<div class="ph first"><div class="band"><div class="bar"></div><div class="bt"><h1>' + AUTO.rtUser(tt) + '</h1>' + (S.subtitle ? '<div class="sub">' + AUTO.rtUser(S.subtitle) + '</div>' : '') + '<div class="meta">' + levelInfo(S.level).court + ' · ' + n + ' question' + (n > 1 ? 's' : '') + '</div></div>' + sc + '</div>' + fields + (label !== 'corrige' && S.intro ? '<div class="intro">' + AUTO.rtUser(S.intro) + '</div>' : '') + '</div>';
     } else head = '<div class="ph slim"><span>' + AUTO.rtUser(tt) + '</span><span>' + levelInfo(S.level).court + '</span></div>';
-    p.innerHTML = head + '<div class="pb"></div><div class="pf"><span>Automatismes de maths en lycée pro · Tom Rougeaud · CC BY-NC 4.0</span><span class="pn"></span></div>';
+    p.innerHTML = head + '<div class="pb"></div><div class="pf"><span>AUTOMATHS · Tom Rougeaud · CC BY-NC 4.0</span><span class="pn"></span></div>';
     return p;
   }
   function overflow(pb) { return pb.scrollHeight > pb.clientHeight + 1 || pb.scrollWidth > pb.clientWidth + 1; }
@@ -507,7 +507,7 @@
     obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
     obj(2, '<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + n + ' >>');
     var t = title.replace(/[^\x20-\x7E]/g, '?').replace(/([()\\])/g, '\\$1');
-    obj(3, '<< /Title (' + t + ') /Producer (Automatismes) /Author (Tom Rougeaud) >>');
+    obj(3, '<< /Title (' + t + ') /Producer (AUTOMATHS) /Author (Tom Rougeaud) >>');
     obj(4, '<< /Type /ProcSet >>'.replace('/Type /ProcSet', '/ProcSet [/PDF /ImageC]'));
     imgs.forEach(function (im, i) {
       var pn = 5 + i * 3, cn = pn + 1, xn = pn + 2, content = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
@@ -549,7 +549,7 @@
         var o = JSON.parse(String(r.result)); if (!o || o.app !== 'automatismes' || !o.sheet) throw new Error('format');
         var s = sanitizeSheet(o.sheet); if (!s || !s.items.length) throw new Error('vide');
         state.sheet = s; save(); go('sheet'); toast('Feuille importée (' + s.items.length + ' questions).', 'ok');
-      } catch (e) { toast('Ce fichier n’est pas une feuille Automatismes valide.', 'err', 5000); }
+      } catch (e) { toast('Ce fichier n’est pas une feuille AUTOMATHS valide.', 'err', 5000); }
     };
     r.readAsText(file);
   }

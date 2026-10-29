@@ -167,3 +167,10 @@ main{padding-top:1.6rem}
 
 label.row{flex-wrap:nowrap;align-items:flex-start}label.row input[type=checkbox]{flex:none;margin-top:.2rem}
 .tabbar button{padding:.34rem .7rem}
+
+/* logo AUTOMATHS : pastille blanche, AUTO en noir, MATHS en bleu clair */
+.brand{background:#fff;color:#12203A;border-radius:16px;padding:.3rem .9rem .3rem .35rem;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.brand .wm{font-size:1.5rem;font-weight:900;letter-spacing:.02em;line-height:1;display:block}
+.brand .wa{color:#000}.brand .wb{color:#4DA3E8}
+.brand small{color:#4A5568;opacity:1;font-size:.72rem;font-weight:700;display:block;margin-top:.1rem}
+@media(max-width:760px){.brand .wm{font-size:1.2rem}.brand small{display:none}}
